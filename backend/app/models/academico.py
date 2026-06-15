@@ -155,3 +155,58 @@ class Tema(Base):
         server_default=func.now(),
         onupdate=func.now()
     )
+    
+class Video(Base):
+
+    __tablename__ = "videos"
+
+    id_video = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    id_nivel = Column(
+        Integer,
+        nullable=False
+    )
+
+    id_tema = Column(
+        Integer,
+        nullable=False
+    )
+
+    id_submodulo = Column(
+        Integer,
+        nullable=False
+    )
+
+    id_competencia = Column(
+        Integer,
+        nullable=False
+    )
+
+    tema_codigo = Column(
+        String(50),
+        nullable=True
+    )
+
+    tema_nombre = Column(
+        String(150),
+        nullable=True
+    )
+
+    video_url = Column(
+        String(500),
+        nullable=False
+    )
+
+    actualizado_por = Column(
+        Integer,
+        nullable=False
+    )
+
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )

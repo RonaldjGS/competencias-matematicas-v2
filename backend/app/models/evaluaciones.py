@@ -18,7 +18,6 @@ from app.database.base import Base
 # ==========================================
 
 class PreguntaCompetencia(Base):
-
     __tablename__ = "preguntas_competencias"
 
     id_pregunta = Column(
@@ -27,27 +26,28 @@ class PreguntaCompetencia(Base):
         index=True
     )
 
+    id_profesor = Column(
+        Integer,
+        nullable=False
+    )
+
+    id_nivel = Column(
+        Integer,
+        nullable=False
+    )
+
     id_competencia = Column(
         Integer,
-        ForeignKey(
-            "competencias.id_competencia"
-        ),
         nullable=False
     )
 
     id_tema = Column(
         Integer,
-        ForeignKey(
-            "temas.id_tema"
-        ),
         nullable=False
     )
 
     id_submodulo = Column(
         Integer,
-        ForeignKey(
-            "submodulos.id_submodulo"
-        ),
         nullable=False
     )
 
@@ -88,17 +88,17 @@ class PreguntaCompetencia(Base):
 
     justificacion = Column(
         Text,
-        nullable=False
+        nullable=True
     )
 
     tiempo_estimado = Column(
         Integer,
-        nullable=False
+        nullable=False,
+        default=60
     )
 
     estado = Column(
         Boolean,
-        nullable=False,
         default=True
     )
 
@@ -109,81 +109,7 @@ class PreguntaCompetencia(Base):
 
     update_at = Column(
         DateTime(timezone=True),
-        server_default=func.now(),
-        onupdate=func.now()
-    )
-
-
-# ==========================================
-# VIDEOS
-# ==========================================
-
-class Video(Base):
-
-    __tablename__ = "videos"
-
-    id_video = Column(
-        Integer,
-        primary_key=True,
-        index=True
-    )
-
-    id_nivel = Column(
-        Integer,
-        ForeignKey(
-            "niveles_educativos.id_nivel"
-        ),
-        nullable=False
-    )
-
-    id_tema = Column(
-        Integer,
-        ForeignKey(
-            "temas.id_tema"
-        ),
-        nullable=False
-    )
-
-    id_submodulo = Column(
-        Integer,
-        ForeignKey(
-            "submodulos.id_submodulo"
-        ),
-        nullable=False
-    )
-
-    id_competencia = Column(
-        Integer,
-        ForeignKey(
-            "competencias.id_competencia"
-        ),
-        nullable=False
-    )
-
-    tema_codigo = Column(
-        String(50),
-        nullable=False
-    )
-
-    tema_nombre = Column(
-        String(150),
-        nullable=False
-    )
-
-    video_url = Column(
-        String(500),
-        nullable=False
-    )
-
-    actualizado_por = Column(
-        Integer,
-        nullable=False
-    )
-
-    updated_at = Column(
-        DateTime(timezone=True),
-        server_default=func.now(),
-        onupdate=func.now()
+        nullable=True
     )
 
 

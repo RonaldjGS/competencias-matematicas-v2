@@ -9,6 +9,8 @@ from sqlalchemy.orm import Session
 from app.database.database import get_db
 
 from app.models.usuarios import Estudiante
+
+from app.models.usuarios import Profesor
 from jose import jwt, JWTError
 
 from fastapi import (
@@ -139,3 +141,54 @@ def get_current_estudiante(
         raise credentials_exception
 
     return estudiante
+
+def get_current_profesor(
+    credentials: HTTPAuthorizationCredentials = Depends(
+        bearer_scheme
+    ),
+    db: Session = Depends(get_db)
+):
+    token = credentials.credentials
+
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Token inválido o expirado"
+    )
+
+    try:
+
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+
+        profesor_id = payload.get("sub")
+
+        tipo = payload.get("tipo")
+
+        if profesor_id is None:
+            raise credentials_exception
+
+        if tipo != "profesor":
+            raise credentials_exception
+
+    except JWTError:
+
+        raise credentials_exception
+
+    profesor = (
+        db.query(Profesor)
+        .filter(
+            Profesor.id_profesor == int(
+                profesor_id
+            )
+        )
+        .first()
+    )
+
+    if not profesor:
+
+        raise credentials_exception
+
+    return profesor
