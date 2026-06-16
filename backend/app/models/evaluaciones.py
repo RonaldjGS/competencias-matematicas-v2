@@ -5,12 +5,14 @@ from sqlalchemy import (
     Text,
     Boolean,
     DateTime,
-    ForeignKey
+    ForeignKey,
+    Float
 )
 
 from sqlalchemy.sql import func
 
 from app.database.base import Base
+
 
 
 # ==========================================
@@ -160,7 +162,7 @@ class ResultadoQuiz(Base):
     )
 
     puntaje = Column(
-        Integer,
+        Float,
         nullable=False
     )
 
@@ -181,7 +183,8 @@ class ResultadoQuiz(Base):
 
     tiempo_segundos = Column(
         Integer,
-        nullable=False
+        nullable=False,
+        default=0
     )
 
     intento = Column(
@@ -189,12 +192,82 @@ class ResultadoQuiz(Base):
         nullable=False,
         default=1
     )
+    
+    retroalimentacion = Column(
+        String(255),
+        nullable=True
+    )
 
     fecha = Column(
         DateTime(timezone=True),
         server_default=func.now()
     )
 
+# ==========================================
+# Resultado detalles
+# ==========================================
+
+class ResultadoDetalle(Base):
+
+    __tablename__ = "resultado_detalle"
+
+    id_detalle = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+    
+    id_competencia = Column(
+    Integer,
+    ForeignKey(
+        "competencias.id_competencia"
+    ),
+    nullable=False
+    )
+
+    id_tema = Column(
+        Integer,
+        ForeignKey(
+            "temas.id_tema"
+        ),
+        nullable=False
+    )
+
+    id_resultado = Column(
+        Integer,
+        ForeignKey(
+            "resultados_quiz.id_resultado"
+        ),
+        nullable=False
+    )
+
+    id_pregunta = Column(
+        Integer,
+        ForeignKey(
+            "preguntas_competencias.id_pregunta"
+        ),
+        nullable=False
+    )
+
+    respuesta_estudiante = Column(
+        String(1),
+        nullable=False
+    )
+
+    respuesta_correcta = Column(
+        String(1),
+        nullable=False
+    )
+
+    es_correcta = Column(
+        Boolean,
+        nullable=False
+    )
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
 
 # ==========================================
 # RECUPERACION DE CONTRASEÑA

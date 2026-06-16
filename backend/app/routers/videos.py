@@ -10,7 +10,7 @@ from app.database.database import get_db
 
 from app.models.usuarios import Profesor
 
-from app.models.catalogos import (
+from app.models.academico import (
     Competencia,
     Tema,
     Submodulo,
@@ -152,3 +152,22 @@ def buscar_videos(
     .all()
 )
     
+@router.get(
+    "/mis-videos",
+    response_model=list[VideoOut]
+)
+def mis_videos(
+    profesor: Profesor = Depends(
+        get_current_profesor
+    ),
+    db: Session = Depends(get_db)
+):
+
+    return (
+        db.query(Video)
+        .filter(
+            Video.actualizado_por ==
+            profesor.id_profesor
+        )
+        .all()
+    )

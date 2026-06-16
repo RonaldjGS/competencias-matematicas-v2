@@ -14,7 +14,7 @@ from app.database.database import get_db
 
 from app.models.usuarios import Profesor
 
-from app.models.catalogos import (
+from app.models.academico import (
     Competencia,
     Tema,
     Submodulo

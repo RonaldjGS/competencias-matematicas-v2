@@ -18,12 +18,12 @@ from app.routers.videos import (
     router as videos_router
 )
 
-app.include_router(
-    videos_router
+from app.routers.quiz import (
+    router as quiz_router
 )
 
-app.include_router(
-    preguntas_router
+from app.routers.resultados import (
+    router as resultados_router
 )
 
 app = FastAPI()
@@ -38,4 +38,20 @@ app.include_router(
 
 app.include_router(
     auth_profesor_router
+)
+
+app.include_router(
+    preguntas_router
+)
+
+app.include_router(
+    videos_router
+)
+
+app.include_router(
+    quiz_router
+)
+
+app.include_router(
+    resultados_router
 )
