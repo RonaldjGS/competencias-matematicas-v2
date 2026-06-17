@@ -33,6 +33,10 @@ router = APIRouter(
     tags=["Catálogos"]
 )
 
+# ==========================================
+# NIVELES
+# ==========================================
+
 @router.get(
     "/niveles",
     response_model=list[NivelOut]
@@ -51,6 +55,10 @@ def listar_niveles(
         .all()
     )
     
+# ==========================================
+# CARRERAS
+# ==========================================
+    
 @router.get(
     "/carreras",
     response_model=list[CarreraOut]
@@ -65,6 +73,10 @@ def listar_carreras(
         )
         .all()
     )
+    
+# ==========================================
+# CIUDADES
+# ==========================================
 
 @router.get(
     "/ciudades",
@@ -80,6 +92,10 @@ def listar_ciudades(
         )
         .all()
     )
+
+# ==========================================
+# INTITUCIONES
+# ==========================================
 
 @router.get(
     "/tipos-institucion",
@@ -99,6 +115,10 @@ def listar_tipos_institucion(
         .all()
     )
 
+# ==========================================
+# COMPETENCIAS
+# ==========================================
+
 @router.get(
     "/competencias",
     response_model=list[CompetenciaOut]
@@ -116,6 +136,10 @@ def listar_competencias(
         )
         .all()
     )
+
+# ==========================================
+# SUBMODULOS
+# ==========================================
     
 @router.get(
     "/submodulos",
@@ -135,6 +159,10 @@ def listar_submodulos(
         .all()
     )
 
+# ==========================================
+# TEMAS
+# ==========================================
+
 @router.get(
     "/temas",
     response_model=list[TemaOut]
@@ -152,6 +180,10 @@ def listar_temas(
         )
         .all()
     )
+
+# ==========================================
+# TEMAS - NIVELES
+# ==========================================
     
 @router.get(
     "/temas/{id_nivel}",

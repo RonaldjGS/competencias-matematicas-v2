@@ -668,3 +668,188 @@ def obtener_estudiantes_resumen(
 
     return respuesta
 
+# ==========================================
+# HISTORIAL DEL ESTUDIANTE
+# ==========================================
+
+def obtener_historial_estudiante(
+    id_estudiante: int,
+    db: Session
+):
+
+    resultados = (
+        db.query(
+            ResultadoQuiz,
+            Tema.nombre_tema
+        )
+        .join(
+            Tema,
+            ResultadoQuiz.id_tema ==
+            Tema.id_tema
+        )
+        .filter(
+            ResultadoQuiz.id_estudiante ==
+            id_estudiante
+        )
+        .order_by(
+            ResultadoQuiz.fecha.desc()
+        )
+        .all()
+    )
+
+    respuesta = []
+
+    for resultado, nombre_tema in resultados:
+
+        estado = obtener_estado_resultado(
+            resultado.puntaje
+        )
+
+        respuesta.append({
+
+            "id_resultado":
+            resultado.id_resultado,
+
+            "fecha":
+            resultado.fecha,
+
+            "tema":
+            nombre_tema,
+
+            "puntaje":
+            resultado.puntaje,
+
+            "correctas":
+            resultado.correctas,
+
+            "total_preguntas":
+            resultado.total_preguntas,
+
+            "tiempo_segundos":
+            resultado.tiempo_segundos,
+
+            "estado":
+            estado
+        })
+
+    return respuesta
+
+# ==========================================
+# RENDIMIENTO POR COMPETENCIA
+# ==========================================
+
+def obtener_rendimiento_competencias(
+    id_estudiante: int,
+    db: Session
+):
+
+    competencias = (
+        db.query(
+            Competencia
+        )
+        .all()
+    )
+
+    respuesta = []
+
+    for competencia in competencias:
+
+        detalles = (
+            db.query(
+                ResultadoDetalle
+            )
+            .join(
+                ResultadoQuiz,
+                ResultadoDetalle.id_resultado
+                ==
+                ResultadoQuiz.id_resultado
+            )
+            .filter(
+                ResultadoQuiz.id_estudiante
+                ==
+                id_estudiante,
+
+                ResultadoDetalle.id_competencia
+                ==
+                competencia.id_competencia
+            )
+            .all()
+        )
+
+        total = len(
+            detalles
+        )
+
+        if total == 0:
+
+            continue
+
+        correctas = len(
+            [
+                d for d in detalles
+                if d.es_correcta
+            ]
+        )
+
+        porcentaje = round(
+            (
+                correctas / total
+            ) * 100,
+            2
+        )
+
+        respuesta.append({
+
+            "competencia":
+            competencia.nombre_competencia,
+
+            "total_preguntas":
+            total,
+
+            "correctas":
+            correctas,
+
+            "porcentaje":
+            porcentaje
+        })
+
+    return respuesta
+
+# ==========================================
+# EVOLUCIÓN DEL RENDIMIENTO
+# ==========================================
+
+def obtener_evolucion_rendimiento(
+    id_estudiante: int,
+    db: Session
+):
+
+    resultados = (
+        db.query(
+            ResultadoQuiz
+        )
+        .filter(
+            ResultadoQuiz.id_estudiante ==
+            id_estudiante
+        )
+        .order_by(
+            ResultadoQuiz.fecha.asc()
+        )
+        .all()
+    )
+
+    respuesta = []
+
+    for resultado in resultados:
+
+        respuesta.append({
+
+            "fecha":
+            resultado.fecha,
+
+            "puntaje":
+            resultado.puntaje
+        })
+
+    return respuesta
+

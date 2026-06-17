@@ -33,6 +33,12 @@ from app.core.auth import (
     get_current_profesor
 )
 
+from app.services.preguntas_service import (
+    obtener_preguntas_profesor,
+    buscar_preguntas_profesor,
+    obtener_pregunta_profesor
+)
+
 router = APIRouter(
     prefix="/preguntas",
     tags=["Preguntas"]
@@ -241,9 +247,8 @@ def importar_excel(
         "mensaje": "Importación completada correctamente"
     }
 
-
 # ==========================================
-# MIS PREGUNTAS
+# OBTENER PREGUNTAS
 # ==========================================
 
 @router.get(
@@ -257,18 +262,10 @@ def mis_preguntas(
     db: Session = Depends(get_db)
 ):
 
-    preguntas = (
-        db.query(
-            PreguntaCompetencia
-        )
-        .filter(
-            PreguntaCompetencia.id_profesor ==
-            profesor.id_profesor
-        )
-        .all()
+    return obtener_preguntas_profesor(
+        profesor.id_profesor,
+        db
     )
-
-    return preguntas
 
 
 # ==========================================
@@ -289,28 +286,17 @@ def buscar_preguntas(
     db: Session = Depends(get_db)
 ):
 
-    preguntas = (
-        db.query(
-            PreguntaCompetencia
-        )
-        .filter(
-            PreguntaCompetencia.id_profesor ==
-            profesor.id_profesor,
-
-            PreguntaCompetencia.id_competencia ==
-            id_competencia,
-
-            PreguntaCompetencia.id_submodulo ==
-            id_submodulo,
-
-            PreguntaCompetencia.id_tema ==
-            id_tema
-        )
-        .all()
+    return buscar_preguntas_profesor(
+        profesor.id_profesor,
+        id_competencia,
+        id_submodulo,
+        id_tema,
+        db
     )
-
-    return preguntas
-
+    
+# ==========================================
+# OBTENER PREGUNTA
+# ==========================================
 
 @router.get(
     "/{id_pregunta}",
@@ -325,17 +311,11 @@ def obtener_pregunta(
 ):
 
     pregunta = (
-        db.query(
-            PreguntaCompetencia
-        )
-        .filter(
-            PreguntaCompetencia.id_pregunta ==
+        obtener_pregunta_profesor(
             id_pregunta,
-
-            PreguntaCompetencia.id_profesor ==
-            profesor.id_profesor
+            profesor.id_profesor,
+            db
         )
-        .first()
     )
 
     if not pregunta:

@@ -6,8 +6,6 @@ from fastapi import (
 
 from sqlalchemy.orm import Session
 
-from sqlalchemy import func
-
 from app.database.database import get_db
 
 from app.models.usuarios import (
@@ -16,18 +14,12 @@ from app.models.usuarios import (
 )
 
 from app.models.evaluaciones import (
-    ResultadoQuiz,
-    ResultadoDetalle
+    ResultadoQuiz
 )
 
 from app.core.auth import (
     get_current_estudiante,
     get_current_profesor
-)
-
-from app.models.academico import (
-    Competencia,
-    Tema
 )
 
 from app.schemas.resultados import (
@@ -50,14 +42,14 @@ from app.services.resultados_service import (
     obtener_perfil_estudiante,
     obtener_competencia_debil,
     obtener_tema_debil,
-    obtener_estado_resultado,
     obtener_dashboard_profesor,
     obtener_recomendaciones,
     obtener_ranking_semanal,
-    obtener_estudiantes_resumen
+    obtener_estudiantes_resumen,
+    obtener_historial_estudiante,
+    obtener_rendimiento_competencias,
+    obtener_evolucion_rendimiento
 )
-
-from datetime import datetime, timedelta
 
 router = APIRouter(
     prefix="/resultados",
@@ -397,65 +389,21 @@ def historial_estudiante(
             detail="Estudiante no encontrado"
         )
 
-    resultados = (
-        db.query(
-            ResultadoQuiz,
-            Tema.nombre_tema
+    historial = (
+        obtener_historial_estudiante(
+            id_estudiante,
+            db
         )
-        .join(
-            Tema,
-            ResultadoQuiz.id_tema ==
-            Tema.id_tema
-        )
-        .filter(
-            ResultadoQuiz.id_estudiante ==
-            id_estudiante
-        )
-        .order_by(
-            ResultadoQuiz.fecha.desc()
-        )
-        .all()
     )
 
-    respuesta = []
+    return [
 
-    for resultado, nombre_tema in resultados:
-
-        estado = obtener_estado_resultado(
-            resultado.puntaje
+        HistorialEstudianteOut(
+            **item
         )
 
-        respuesta.append(
-
-            HistorialEstudianteOut(
-
-                id_resultado=
-                resultado.id_resultado,
-
-                fecha=
-                resultado.fecha,
-
-                tema=
-                nombre_tema,
-
-                puntaje=
-                resultado.puntaje,
-
-                correctas=
-                resultado.correctas,
-
-                total_preguntas=
-                resultado.total_preguntas,
-
-                tiempo_segundos=
-                resultado.tiempo_segundos,
-
-                estado=
-                estado
-            )
-        )
-
-    return respuesta
+        for item in historial
+    ]
 
 # ==========================================
 # RENDIMIENTO POR COMPETENCIA
@@ -496,80 +444,21 @@ def rendimiento_competencias(
             detail="Estudiante no encontrado"
         )
 
-    competencias = (
-        db.query(
-            Competencia
+    rendimiento = (
+        obtener_rendimiento_competencias(
+            estudiante.id_estudiante,
+            db
         )
-        .all()
     )
 
-    respuesta = []
+    return [
 
-    for competencia in competencias:
-
-        detalles = (
-            db.query(
-                ResultadoDetalle
-            )
-            .join(
-                ResultadoQuiz,
-                ResultadoDetalle.id_resultado
-                ==
-                ResultadoQuiz.id_resultado
-            )
-            .filter(
-                ResultadoQuiz.id_estudiante
-                ==
-                estudiante.id_estudiante,
-
-                ResultadoDetalle.id_competencia
-                ==
-                competencia.id_competencia
-            )
-            .all()
+        CompetenciaRendimientoOut(
+            **item
         )
 
-        total = len(
-            detalles
-        )
-
-        if total == 0:
-
-            continue
-
-        correctas = len(
-            [
-                d for d in detalles
-                if d.es_correcta
-            ]
-        )
-
-        porcentaje = round(
-            (
-                correctas / total
-            ) * 100,
-            2
-        )
-
-        respuesta.append(
-
-            CompetenciaRendimientoOut(
-
-                competencia=
-                competencia.nombre_competencia,
-
-                total_preguntas=
-                total,
-
-                correctas=
-                correctas,
-
-                porcentaje=
-                porcentaje
-            )
-        )
-
-    return respuesta
+        for item in rendimiento
+    ]
 
 # ==========================================
 # EVOLUCIÓN DEL RENDIMIENTO
@@ -610,35 +499,19 @@ def evolucion_rendimiento(
             detail="Estudiante no encontrado"
         )
 
-    resultados = (
-        db.query(
-            ResultadoQuiz
+    evolucion = (
+        obtener_evolucion_rendimiento(
+            estudiante.id_estudiante,
+            db
         )
-        .filter(
-            ResultadoQuiz.id_estudiante ==
-            estudiante.id_estudiante
-        )
-        .order_by(
-            ResultadoQuiz.fecha.asc()
-        )
-        .all()
     )
 
-    respuesta = []
+    return [
 
-    for resultado in resultados:
-
-        respuesta.append(
-
-            EvolucionRendimientoOut(
-
-                fecha=
-                resultado.fecha,
-
-                puntaje=
-                resultado.puntaje
-            )
+        EvolucionRendimientoOut(
+            **item
         )
 
-    return respuesta
+        for item in evolucion
+    ]
 
