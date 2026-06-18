@@ -6,6 +6,9 @@ from pydantic import (
 
 from typing import List
 
+# ==========================================
+# Preguntas
+# ==========================================
 
 class PreguntaQuizOut(BaseModel):
 
@@ -27,6 +30,9 @@ class PreguntaQuizOut(BaseModel):
         from_attributes=True
     )
 
+# ==========================================
+# Generar Quiz
+# ==========================================
 
 class GenerarQuizRequest(BaseModel):
 
@@ -36,6 +42,9 @@ class GenerarQuizRequest(BaseModel):
 
     id_tema: int
 
+# ==========================================
+# Respuestas Estudainte
+# ==========================================
 
 class RespuestaEstudiante(BaseModel):
 
@@ -45,6 +54,9 @@ class RespuestaEstudiante(BaseModel):
         pattern="^[A-D]$"
     )
 
+# ==========================================
+# Clasificar Quiz
+# ==========================================
 
 class CalificarQuizRequest(BaseModel):
 
@@ -56,6 +68,9 @@ class CalificarQuizRequest(BaseModel):
 
     respuestas: List[RespuestaEstudiante]
 
+# ==========================================
+# Resultado Quiz
+# ==========================================
 
 class ResultadoQuizOut(BaseModel):
 
@@ -72,3 +87,73 @@ class ResultadoQuizOut(BaseModel):
     model_config = ConfigDict(
         from_attributes=True
     )
+   
+# ==========================================
+# Responder Preguntas
+# ========================================== 
+class ResponderPreguntaRequest(
+    BaseModel
+):
+
+    id_pregunta: int
+
+    respuesta: str
+   
+# ==========================================
+# Intentos
+# ========================================== 
+class IntentoPreguntaOut(
+    BaseModel
+):
+
+    correcta: bool
+
+    intentos_usados: int
+
+    intentos_restantes: int
+
+    respuesta_correcta: str | None = None
+
+    justificacion: str | None = None
+
+    opciones_bloqueadas: list[str]
+    
+# ==========================================
+# RESPONDER PREGUNTA
+# ==========================================
+
+class ResponderPreguntaRequest(
+    BaseModel
+):
+
+    id_competencia: int
+
+    id_submodulo: int
+
+    id_tema: int
+
+    id_pregunta: int
+
+    respuesta: str
+
+    usar_intento: bool
+    
+# ==========================================
+# RESPUESTA PREGUNTA
+# ==========================================
+
+class RespuestaPreguntaOut(
+    BaseModel
+):
+
+    correcta: bool
+
+    mostrar_solucion: bool
+
+    intentos_restantes: int
+
+    respuesta_correcta: str | None = None
+
+    justificacion: str | None = None
+
+    opciones_bloqueadas: list[str] = []

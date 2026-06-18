@@ -270,6 +270,114 @@ class ResultadoDetalle(Base):
     )
 
 # ==========================================
+# DETALLE DE INTENTOS
+# ==========================================
+
+class IntentoDetalle(Base):
+
+    __tablename__ = "intentos_detalle"
+
+    id_detalle = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    id_intento = Column(
+        Integer,
+        ForeignKey(
+            "intentos_quiz.id_intento"
+        ),
+        nullable=False
+    )
+
+    id_pregunta = Column(
+        Integer,
+        ForeignKey(
+            "preguntas_competencias.id_pregunta"
+        ),
+        nullable=False
+    )
+
+    opcion_fallida = Column(
+        String(1),
+        nullable=False
+    )
+
+    fecha = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
+
+# ==========================================
+# INTENTOS
+# ==========================================
+class IntentoQuiz(Base):
+
+    __tablename__ = "intentos_quiz"
+
+    id_intento = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    id_estudiante = Column(
+        Integer,
+        ForeignKey(
+            "estudiantes.id_estudiante"
+        ),
+        nullable=False
+    )
+
+    id_competencia = Column(
+        Integer,
+        ForeignKey(
+            "competencias.id_competencia"
+        ),
+        nullable=False
+    )
+
+    id_submodulo = Column(
+        Integer,
+        ForeignKey(
+            "submodulos.id_submodulo"
+        ),
+        nullable=False
+    )
+    
+    id_tema = Column(
+        Integer,
+        ForeignKey(
+            "temas.id_tema"
+        ),
+        nullable=False
+    )
+
+    intentos_usados = Column(
+        Integer,
+        nullable=False,
+        default=0
+    )
+
+    completado = Column(
+        Boolean,
+        nullable=False,
+        default=False
+    )
+
+    fecha_inicio = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
+
+    fecha_actualizacion = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now()
+    )
+
+# ==========================================
 # RECUPERACION DE CONTRASEÑA
 # ==========================================
 

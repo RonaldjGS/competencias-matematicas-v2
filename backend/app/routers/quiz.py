@@ -26,8 +26,15 @@ from app.schemas.quiz import (
     GenerarQuizRequest,
     CalificarQuizRequest,
     PreguntaQuizOut,
-    ResultadoQuizOut
+    ResultadoQuizOut,
+    ResponderPreguntaRequest,
+    RespuestaPreguntaOut
 )
+
+from app.services.quiz_service import (
+    evaluar_respuesta
+)
+
 
 router = APIRouter(
     prefix="/quiz",
@@ -73,7 +80,9 @@ def generar_quiz(
         .order_by(
             func.rand()
         )
-        .limit(10)
+        .limit(
+            data.cantidad_preguntas
+        )
         .all()
     )
 
@@ -333,3 +342,47 @@ def calificar_quiz(
         retroalimentacion=
         retroalimentacion
     )
+    
+# ==========================================
+# RESPONDER PREGUNTA
+# ==========================================
+
+@router.post(
+    "/responder",
+    response_model=RespuestaPreguntaOut
+)
+def responder_pregunta(
+    datos: ResponderPreguntaRequest,
+    estudiante: Estudiante = Depends(
+        get_current_estudiante
+    ),
+    db: Session = Depends(get_db)
+):
+
+    return evaluar_respuesta(
+
+        estudiante=
+        estudiante,
+
+        id_competencia=
+        datos.id_competencia,
+
+        id_submodulo=
+        datos.id_submodulo,
+
+        id_tema=
+        datos.id_tema,
+
+        id_pregunta=
+        datos.id_pregunta,
+
+        respuesta=
+        datos.respuesta,
+
+        usar_intento=
+        datos.usar_intento,
+
+        db=
+        db
+    )
+    
