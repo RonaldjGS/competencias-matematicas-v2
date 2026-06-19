@@ -43,6 +43,8 @@ class GenerarQuizRequest(
     id_submodulo: int
 
     id_tema: int
+    
+    dificultad: str
 
     cantidad_preguntas: int = 10
 

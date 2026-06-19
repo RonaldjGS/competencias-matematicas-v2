@@ -58,7 +58,7 @@ def generar_quiz(
     db: Session = Depends(get_db)
 ):
 
-    preguntas = (
+    query = (
         db.query(
             PreguntaCompetencia
         )
@@ -77,6 +77,24 @@ def generar_quiz(
 
             PreguntaCompetencia.estado == True
         )
+    )
+
+    # ==========================================
+    # FILTRO DE DIFICULTAD
+    # ==========================================
+
+    if data.dificultad != "Todas":
+
+        query = query.filter(
+
+            PreguntaCompetencia.dificultad
+            ==
+            data.dificultad
+
+        )
+
+    preguntas = (
+        query
         .order_by(
             func.rand()
         )
