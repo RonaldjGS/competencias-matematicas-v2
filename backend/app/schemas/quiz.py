@@ -34,13 +34,17 @@ class PreguntaQuizOut(BaseModel):
 # Generar Quiz
 # ==========================================
 
-class GenerarQuizRequest(BaseModel):
+class GenerarQuizRequest(
+    BaseModel
+):
 
     id_competencia: int
 
     id_submodulo: int
 
     id_tema: int
+
+    cantidad_preguntas: int = 10
 
 # ==========================================
 # Respuestas Estudainte
@@ -88,36 +92,7 @@ class ResultadoQuizOut(BaseModel):
         from_attributes=True
     )
    
-# ==========================================
-# Responder Preguntas
-# ========================================== 
-class ResponderPreguntaRequest(
-    BaseModel
-):
 
-    id_pregunta: int
-
-    respuesta: str
-   
-# ==========================================
-# Intentos
-# ========================================== 
-class IntentoPreguntaOut(
-    BaseModel
-):
-
-    correcta: bool
-
-    intentos_usados: int
-
-    intentos_restantes: int
-
-    respuesta_correcta: str | None = None
-
-    justificacion: str | None = None
-
-    opciones_bloqueadas: list[str]
-    
 # ==========================================
 # RESPONDER PREGUNTA
 # ==========================================
@@ -138,6 +113,48 @@ class ResponderPreguntaRequest(
 
     usar_intento: bool
     
+# ==========================================
+# RESPUESTA PREGUNTA
+# ==========================================
+
+class RespuestaPreguntaOut(
+    BaseModel
+):
+
+    correcta: bool
+
+    mostrar_solucion: bool
+
+    intentos_restantes: int
+
+    respuesta_correcta: str | None = None
+
+    justificacion: str | None = None
+
+    opciones_bloqueadas: list[str] = []
+
+
+# ==========================================
+# RESPONDER PREGUNTA
+# ==========================================
+
+class ResponderPreguntaRequest(
+    BaseModel
+):
+
+    id_competencia: int
+
+    id_submodulo: int
+
+    id_tema: int
+
+    id_pregunta: int
+
+    respuesta: str
+
+    usar_intento: bool
+
+
 # ==========================================
 # RESPUESTA PREGUNTA
 # ==========================================
