@@ -263,6 +263,12 @@ class ResultadoDetalle(Base):
         Boolean,
         nullable=False
     )
+    
+    tiempo_pregunta = Column(
+        Integer,
+        nullable=False,
+        default=0
+    )
 
     created_at = Column(
         DateTime(timezone=True),

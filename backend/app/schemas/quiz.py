@@ -59,6 +59,8 @@ class RespuestaEstudiante(BaseModel):
     respuesta: str = Field(
         pattern="^[A-D]$"
     )
+    
+    tiempo_pregunta: int
 
 # ==========================================
 # Clasificar Quiz
@@ -73,6 +75,8 @@ class CalificarQuizRequest(BaseModel):
     id_tema: int
 
     respuestas: List[RespuestaEstudiante]
+    
+    tiempo_total: int
 
 # ==========================================
 # Resultado Quiz
@@ -87,6 +91,8 @@ class ResultadoQuizOut(BaseModel):
     incorrectas: int
 
     total_preguntas: int
+    
+    tiempo_segundos: int
 
     retroalimentacion: str
 
@@ -176,3 +182,31 @@ class RespuestaPreguntaOut(
     justificacion: str | None = None
 
     opciones_bloqueadas: list[str] = []
+    
+# ==========================================
+# ESTADO DE INTENTOS
+# ==========================================
+
+class EstadoIntentosOut(
+    BaseModel
+):
+
+    intentos_usados: int
+
+    intentos_restantes: int
+
+    completado: bool
+    
+# ==========================================
+# CONSULTAR INTENTOS
+# ==========================================
+
+class ConsultarIntentosRequest(
+    BaseModel
+):
+
+    id_competencia: int
+
+    id_submodulo: int
+
+    id_tema: int

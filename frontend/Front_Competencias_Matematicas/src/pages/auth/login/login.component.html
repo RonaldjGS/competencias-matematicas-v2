@@ -1,0 +1,107 @@
+<div class="login-container">
+
+  <div class="login-card">
+
+    <!-- PANEL IZQUIERDO -->
+
+    <div class="left-panel">
+
+      <h1>
+        Competencias
+        <br>
+        Matemáticas
+      </h1>
+
+      <p>
+        Facultad de Ciencias Matemáticas y Físicas
+      </p>
+
+      <p>
+        Universidad de Guayaquil
+      </p>
+
+    </div>
+
+    <!-- PANEL DERECHO -->
+
+    <div class="right-panel">
+
+      <div class="tabs">
+
+        <button class="tab-btn active">
+          Iniciar sesión
+        </button>
+
+        <button class="tab-btn">
+          Crear Cuenta
+        </button>
+
+      </div>
+
+      <h2>Bienvenido</h2>
+
+      <p class="subtitle">
+        Accede a tu cuenta para continuar
+      </p>
+
+      <form>
+
+        <div class="form-group">
+
+          <label>
+            Correo electrónico
+          </label>
+
+          <input
+            type="email"
+            placeholder="Ingrese su correo"
+          />
+
+        </div>
+
+        <div class="form-group">
+
+          <label>
+            Contraseña
+          </label>
+
+          <div class="password-container">
+
+            <input
+              [type]="mostrarPassword ? 'text' : 'password'"
+              placeholder="Ingrese su contraseña"
+            />
+
+            <button
+              type="button"
+              class="eye-btn"
+              (click)="togglePassword()"
+            >
+              👁
+            </button>
+
+          </div>
+
+        </div>
+
+        <button
+          type="submit"
+          class="login-btn"
+        >
+          Iniciar Sesión
+        </button>
+
+      </form>
+
+      <a
+        href="#"
+        class="forgot-password"
+      >
+        ¿Olvidaste tu contraseña?
+      </a>
+
+    </div>
+
+  </div>
+
+</div>

@@ -378,3 +378,51 @@ def evaluar_respuesta(
         "intentos_restantes":
         intentos_restantes
     }
+    
+# ==========================================
+# ESTADO DE INTENTOS
+# ==========================================
+
+def obtener_estado_intentos(
+    id_estudiante: int,
+    id_competencia: int,
+    id_submodulo: int,
+    id_tema: int,
+    db: Session
+):
+
+    intento = obtener_intento(
+        id_estudiante,
+        id_competencia,
+        id_submodulo,
+        id_tema,
+        db
+    )
+
+    if not intento:
+
+        return {
+
+            "intentos_usados":
+            0,
+
+            "intentos_restantes":
+            MAX_INTENTOS,
+
+            "completado":
+            False
+        }
+
+    return {
+
+        "intentos_usados":
+        intento.intentos_usados,
+
+        "intentos_restantes":
+        obtener_intentos_restantes(
+            intento.intentos_usados
+        ),
+
+        "completado":
+        intento.completado
+    }

@@ -9,7 +9,8 @@ from app.models.catalogos import (
     NivelEducativo,
     Carrera,
     Ciudad,
-    TipoInstitucion
+    TipoInstitucion,
+    Provincia
 )
 
 from app.models.academico import (
@@ -25,8 +26,10 @@ from app.schemas.catalogos import (
     TipoInstitucionOut,
     CompetenciaOut,
     SubmoduloOut,
-    TemaOut
+    TemaOut,
+    ProvinciaOut
 )
+
 
 router = APIRouter(
     prefix="/catalogos",
@@ -205,3 +208,52 @@ def listar_temas_por_nivel(
         .all()
     )
     
+
+# ==========================================
+
+# PROVINCIAS
+
+# ==========================================
+
+@router.get(
+"/provincias",
+response_model=list[ProvinciaOut]
+)
+def listar_provincias(
+    db: Session = Depends(get_db)
+):
+
+
+    return (
+        db.query(
+            Provincia
+        )
+        .filter(
+            Provincia.estado == True
+        )
+        .all()
+    )
+
+# ==========================================
+# CIUDADES POR PROVINCIA
+# ==========================================
+
+@router.get(
+    "/ciudades/provincia/{id_provincia}",
+    response_model=list[CiudadOut]
+)
+def listar_ciudades_por_provincia(
+    id_provincia: int,
+    db: Session = Depends(get_db)
+):
+
+    return (
+        db.query(
+            Ciudad
+        )
+        .filter(
+            Ciudad.id_provincia ==
+            id_provincia
+        )
+        .all()
+    )

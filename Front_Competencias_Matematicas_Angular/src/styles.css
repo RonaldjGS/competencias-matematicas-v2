@@ -1,0 +1,44 @@
+/* You can add global styles to this file, and also import other style files */
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+html,
+body {
+
+  margin: 0;
+
+  padding: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  overflow-x: hidden;
+}
+
+* {
+
+  margin: 0;
+
+  padding: 0;
+
+  box-sizing: border-box;
+}
+
+body {
+
+  background: #6579B4;
+}
+
+:root {
+
+  --bg-principal: #6579B4;
+
+  --panel-izquierdo: #8039E1;
+
+  --boton-principal: #B566FF;
+
+  --blanco: #FFFFFF;
+
+  --negro: #000000;
+
+}

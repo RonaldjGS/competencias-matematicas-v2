@@ -28,11 +28,14 @@ from app.schemas.quiz import (
     PreguntaQuizOut,
     ResultadoQuizOut,
     ResponderPreguntaRequest,
-    RespuestaPreguntaOut
+    RespuestaPreguntaOut,
+    EstadoIntentosOut,
+    ConsultarIntentosRequest
 )
 
 from app.services.quiz_service import (
-    evaluar_respuesta
+    evaluar_respuesta,
+    obtener_estado_intentos
 )
 
 
@@ -284,7 +287,7 @@ def calificar_quiz(
         total,
 
         tiempo_segundos=
-        0,
+        data.tiempo_total,
 
         intento=
         1,
@@ -330,7 +333,10 @@ def calificar_quiz(
             detalle["respuesta_correcta"],
 
             es_correcta=
-            detalle["es_correcta"]
+            detalle["es_correcta"],
+            
+            tiempo_pregunta=
+            detalle["tiempo_pregunta"]
         )
 
         db.add(
@@ -356,6 +362,9 @@ def calificar_quiz(
 
         total_preguntas=
         total,
+        
+        tiempo_segundos=
+        data.tiempo_total,
 
         retroalimentacion=
         retroalimentacion
@@ -404,3 +413,36 @@ def responder_pregunta(
         db
     )
     
+# ==========================================
+# ESTADO DE INTENTOS
+# ==========================================
+
+@router.post(
+    "/intentos",
+    response_model=EstadoIntentosOut
+)
+def consultar_intentos(
+    datos: ConsultarIntentosRequest,
+    estudiante: Estudiante = Depends(
+        get_current_estudiante
+    ),
+    db: Session = Depends(get_db)
+):
+
+    return obtener_estado_intentos(
+
+        id_estudiante=
+        estudiante.id_estudiante,
+
+        id_competencia=
+        datos.id_competencia,
+
+        id_submodulo=
+        datos.id_submodulo,
+
+        id_tema=
+        datos.id_tema,
+
+        db=
+        db
+    )

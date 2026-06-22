@@ -1,0 +1,281 @@
+.registro-container {
+
+  min-height: 100vh;
+
+  background: #6579B4;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 0;
+}
+
+.registro-card {
+
+  width: 100%;
+
+  max-width: 1200px;
+
+  min-height: 750px;
+
+  background: white;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  display: flex;
+
+  box-shadow:
+    0 10px 30px rgba(
+      0,
+      0,
+      0,
+      0.20
+    );
+}
+
+.left-panel {
+
+  width: 50%;
+
+  background: #8039E1;
+
+  color: white;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 40px;
+}
+
+.left-panel h1 {
+
+  font-size: 3rem;
+
+  text-align: center;
+
+  margin-bottom: 40px;
+}
+
+.left-panel p {
+
+  text-align: center;
+
+  margin: 8px 0;
+}
+
+.right-panel {
+
+  width: 50%;
+
+  padding: 40px;
+
+  overflow-y: auto;
+}
+
+.tabs {
+
+  display: flex;
+
+  gap: 30px;
+
+  margin-bottom: 30px;
+}
+
+.tab {
+
+  background: transparent;
+
+  border: none;
+
+  font-size: 18px;
+
+  cursor: pointer;
+}
+
+.tab.active {
+
+  border-bottom: 3px solid black;
+
+  padding-bottom: 5px;
+}
+
+.titulo {
+
+  font-size: 3rem;
+
+  margin-bottom: 10px;
+}
+
+.subtitulo {
+
+  color: #666;
+
+  margin-bottom: 30px;
+}
+
+.form-group {
+
+  margin-bottom: 18px;
+}
+
+.form-group label {
+
+  display: block;
+
+  font-weight: 600;
+
+  margin-bottom: 8px;
+}
+
+.input-control {
+
+  width: 100%;
+
+  height: 48px;
+
+  border: 1px solid #d9d9d9;
+
+  border-radius: 8px;
+
+  padding: 0 15px;
+
+  font-size: 15px;
+
+  outline: none;
+}
+
+.input-control:focus {
+
+  border-color: #B566FF;
+}
+
+.btn-registrar {
+
+  width: 100%;
+
+  height: 50px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #B566FF;
+
+  color: white;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  margin-top: 20px;
+}
+
+.btn-registrar:hover {
+
+  opacity: .95;
+}
+
+.password-info {
+
+  font-size: 13px;
+
+  color: #666;
+
+  margin-top: 8px;
+}
+
+.terminos {
+
+  margin-top: 25px;
+
+  text-align: center;
+
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+
+  .registro-card {
+
+    flex-direction: column;
+  }
+
+  .left-panel,
+  .right-panel {
+
+    width: 100%;
+  }
+
+  .left-panel {
+
+    min-height: 250px;
+  }
+
+}
+
+.password-wrapper {
+
+  position: relative;
+
+  width: 100%;
+}
+
+.password-input {
+
+  width: 100%;
+
+  padding-right: 55px;
+
+  box-sizing: border-box;
+}
+
+.password-toggle {
+
+  position: absolute;
+
+  right: 15px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  border: none;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  width: 30px;
+
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 0;
+}
+
+.password-toggle i {
+
+  font-size: 20px;
+
+  color: #555;
+}
+
+.password-toggle:hover i {
+
+  color: #8039E1;
+}

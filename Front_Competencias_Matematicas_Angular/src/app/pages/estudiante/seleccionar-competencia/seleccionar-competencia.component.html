@@ -1,0 +1,353 @@
+<div class="pagina">
+
+  <!-- ===================================== -->
+  <!-- HEADER -->
+  <!-- ===================================== -->
+
+  <header class="topbar">
+
+    <div class="logo">
+
+      Entrena Tus Competencias
+      <br>
+      Matemáticas
+
+    </div>
+
+    <div class="usuario">
+
+      Bienvenido,
+      {{ nombreEstudiante }}
+
+      👨‍🎓
+
+    </div>
+
+  </header>
+
+  <!-- ===================================== -->
+  <!-- SIDEBAR -->
+  <!-- ===================================== -->
+
+  <aside
+    class="sidebar"
+    [class.abierto]="menuAbierto"
+  >
+
+    <button
+      class="btn-menu"
+      (click)="toggleMenu()"
+    >
+      ☰
+    </button>
+
+    <ul>
+
+      <li>
+
+        <span class="icono-menu">
+          🏠
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Inicio
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          📈
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Mi progreso
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          👤
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Perfil
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          ⚙️
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Configuración
+        </span>
+
+      </li>
+
+    </ul>
+
+  </aside>
+
+  <!-- ===================================== -->
+  <!-- CONTENIDO -->
+  <!-- ===================================== -->
+
+  <main
+    class="contenido"
+    [class.contenido-expandido]="menuAbierto"
+  >
+
+    <!-- CABECERA -->
+
+    <div class="cabecera">
+
+      <button
+        class="btn-volver"
+        (click)="volver()"
+      >
+        ←
+      </button>
+
+      <div>
+
+        <h1>
+
+          Selecciona la Competencia
+
+        </h1>
+
+        <p>
+
+          Elige el área matemática
+          que deseas fortalecer
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- MODULO -->
+    <!-- ===================================== -->
+
+    <div class="modulo-card">
+
+      <div class="modulo-header">
+
+        <div class="modulo-icono">
+
+          📚
+
+        </div>
+
+        <div>
+
+          <h2>
+
+            Ejercicios de
+            {{ nombreModulo }}
+
+          </h2>
+
+          <p>
+
+            Ejercicios orientados al
+            desarrollo matemático básico
+
+          </p>
+
+          <small>
+
+            Álgebra,
+            Lógica,
+            Aritmética y Geometría
+
+          </small>
+
+        </div>
+
+      </div>
+
+      <!-- ESTADISTICAS -->
+
+      <div class="estadisticas-titulo">
+
+        📊 Tus estadísticas
+        
+
+      </div>
+
+      <div class="estadisticas-grid">
+
+        <div class="stat-card">
+
+          <div class="stat-icono">
+
+            🎯
+
+          </div>
+
+          <div>
+
+            <span>
+
+              Precisión promedio
+
+            </span>
+
+            <strong>
+
+              {{ precisionPromedio }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div class="stat-card">
+
+          <div class="stat-icono">
+
+            🕒
+
+          </div>
+
+          <div>
+
+            <span>
+
+              Tiempo promedio
+
+            </span>
+
+            <strong>
+
+              {{ tiempoPromedio }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div class="stat-card">
+
+          <div class="stat-icono">
+
+            📖
+
+          </div>
+
+          <div>
+
+            <span>
+
+              Evaluaciones realizadas
+
+            </span>
+
+            <strong>
+
+              {{ evaluacionesRealizadas }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- COMPETENCIAS -->
+    <!-- ===================================== -->
+
+    <div class="competencias-grid">
+
+      <div
+
+        class="competencia-card"
+
+        *ngFor="
+          let competencia
+          of competencias
+        "
+
+      >
+
+        <div class="card-body">
+
+          <div class="icono">
+
+            📋
+
+          </div>
+
+          <div class="info">
+
+            <h2>
+
+              {{
+                competencia.nombre_competencia
+              }}
+
+            </h2>
+
+            <p>
+
+              {{
+                competencia.descripcion
+              }}
+
+            </p>
+
+          </div>
+
+        </div>
+
+        <button
+
+          class="btn-comenzar"
+
+          (click)="
+            seleccionarCompetencia(
+              competencia
+            )
+          "
+
+        >
+
+          Comenzar →
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>

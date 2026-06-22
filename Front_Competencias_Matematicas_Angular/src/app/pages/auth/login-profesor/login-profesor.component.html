@@ -1,0 +1,140 @@
+<div class="login-container">
+<div class="selector-roles">
+
+  <button
+    (click)="irLoginEstudiante()"
+  >
+    👨‍🎓
+  </button>
+
+  <button
+    (click)="irLoginProfesor()"
+  >
+    👨‍🏫
+  </button>
+  <!--
+  <button
+    (click)="irLoginAdmin()"
+  >
+    ⚙️
+  </button>
+  -->
+
+</div>
+  <div class="login-card">
+
+    <!-- PANEL IZQUIERDO -->
+
+    <div class="left-panel">
+
+      <h1>
+        Competencias
+        <br>
+        Matemáticas
+      </h1>
+
+      <div class="university-info">
+
+        <p>
+          Facultad de Ciencias Matemáticas y Físicas
+        </p>
+
+        <p>
+          Universidad de Guayaquil
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- PANEL DERECHO -->
+
+    <div class="right-panel">
+
+      <div class="tabs">
+
+        <button
+          class="tab active"
+        >
+          Iniciar sesión
+        </button>
+
+        <button
+            class="tab"
+            (click)="irRegistroProfesor()"
+        >
+            Crear Cuenta
+        </button>
+
+      </div>
+
+      <h2>
+        Bienvenido
+      </h2>
+
+      <p class="subtitle">
+        Accede a tu cuenta para continuar
+      </p>
+
+      <div class="form-group">
+
+        <label>
+          Correo electrónico
+        </label>
+
+        <input
+          type="email"
+          class="input-control"
+          placeholder="Ingrese su correo"
+          [(ngModel)]="correo"
+        />
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Contraseña
+        </label>
+
+        <div class="password-wrapper">
+
+          <input
+            [type]="mostrarPassword ? 'text' : 'password'"
+            class="input-control"
+
+            placeholder="Ingrese su contraseña"
+
+            [(ngModel)]="password"
+          />
+
+          <button
+            type="button"
+            class="eye-btn"
+            (click)="togglePassword()"
+          >
+            👁
+          </button>
+
+        </div>
+
+      </div>
+
+      <button
+        class="login-btn"
+        (click)="loginProfesor()"
+      >
+        Iniciar Sesión
+      </button>
+
+      <a
+        class="forgot-password"
+      >
+        ¿Olvidaste tu contraseña?
+      </a>
+
+    </div>
+
+  </div>
+
+</div>

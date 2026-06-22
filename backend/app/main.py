@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.routers.auth_estudiantes import (
     router as auth_estudiantes_router
 
@@ -27,6 +29,20 @@ from app.routers.resultados import (
 )
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+
+    allow_origins=[
+        "http://localhost:4200"
+    ],
+
+    allow_credentials=True,
+
+    allow_methods=["*"],
+
+    allow_headers=["*"]
+)
 
 app.include_router(
     auth_estudiantes_router

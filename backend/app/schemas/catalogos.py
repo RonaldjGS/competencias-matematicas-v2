@@ -52,6 +52,8 @@ class CompetenciaOut(BaseModel):
 
     nombre_competencia: str
 
+    descripcion: str
+
     model_config = ConfigDict(
         from_attributes=True
     )
@@ -79,6 +81,17 @@ class TemaOut(BaseModel):
     codigo: str
 
     id_nivel: int
+
+    model_config = ConfigDict(
+        from_attributes=True
+    )
+
+class ProvinciaOut(BaseModel):
+
+
+    id_provincia: int
+
+    nombre_provincia: str
 
     model_config = ConfigDict(
         from_attributes=True

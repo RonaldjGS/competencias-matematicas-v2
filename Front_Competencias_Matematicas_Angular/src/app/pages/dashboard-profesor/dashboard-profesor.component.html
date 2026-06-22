@@ -1,0 +1,286 @@
+<div class="dashboard-container">
+
+  <!-- ===================================== -->
+  <!-- SIDEBAR -->
+  <!-- ===================================== -->
+
+  <aside class="sidebar">
+
+    <h2>
+      Panel Profesor
+    </h2>
+
+    <ul>
+
+      <li class="active">
+        📊 Inicio
+      </li>
+
+    <li
+      (click)="irPreguntas()"
+    >
+      ❓ Preguntas
+    </li>
+
+      <li>
+        🎥 Videos
+      </li>
+
+      <li>
+        📈 Resultados
+      </li>
+
+      <li>
+        ⚙ Configuración
+      </li>
+
+    </ul>
+
+  </aside>
+
+  <!-- ===================================== -->
+  <!-- CONTENIDO -->
+  <!-- ===================================== -->
+
+  <main class="content">
+
+    <!-- CABECERA -->
+
+    <div class="header">
+
+      <div>
+
+        <h1>
+          Resumen General
+        </h1>
+
+        <p>
+          Analítica descriptiva del aprendizaje
+        </p>
+
+      </div>
+
+      <h3>
+        Bienvenido,
+        {{ nombreProfesor }}
+      </h3>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- TARJETAS KPI -->
+    <!-- ===================================== -->
+
+    <div class="cards">
+
+      <div class="card">
+
+        <h3>
+          👨‍🎓 Estudiantes Activos
+        </h3>
+
+        <span>
+          {{ totalEstudiantes }}
+        </span>
+
+      </div>
+
+      <div class="card">
+
+        <h3>
+          📝 Evaluaciones
+        </h3>
+
+        <span>
+          {{ totalEvaluaciones }}
+        </span>
+
+      </div>
+
+      <div class="card">
+
+        <h3>
+          🎯 Precisión Promedio
+        </h3>
+
+        <span>
+          {{ precisionPromedio }}%
+        </span>
+
+      </div>
+
+      <div class="card">
+
+        <h3>
+          ⚠ Competencia Crítica
+        </h3>
+
+        <span>
+          {{ competenciaCritica }}
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- GRAFICOS -->
+    <!-- ===================================== -->
+
+    <div class="graficos">
+
+      <!-- GRAFICO 1 -->
+
+      <div class="grafico">
+
+        <h3>
+          Rendimiento por Competencia
+        </h3>
+
+        <br>
+
+        <canvas
+          id="graficoCompetencias">
+        </canvas>
+
+      </div>
+
+      <!-- GRAFICO 2 -->
+
+      <div class="grafico">
+
+        <h3>
+          Preguntas con más errores
+        </h3>
+
+        <br>
+
+        <ul>
+
+          <li>
+            Simplificar expresiones algebraicas
+            (52%)
+          </li>
+
+          <li>
+            Factorización
+            (47%)
+          </li>
+
+          <li>
+            Modelización de problemas
+            (45%)
+          </li>
+
+          <li>
+            Geometría analítica
+            (38%)
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- ACTIVIDAD RECIENTE -->
+    <!-- ===================================== -->
+
+    <div
+      class="grafico"
+      style="margin-top: 20px;"
+    >
+
+      <h3>
+        Actividad Reciente
+      </h3>
+
+      <br>
+
+      <table
+        style="
+        width:100%;
+        border-collapse: collapse;
+        "
+      >
+
+        <thead>
+
+          <tr>
+
+            <th align="left">
+              Estudiante
+            </th>
+
+            <th align="left">
+              Competencia
+            </th>
+
+            <th align="left">
+              Resultado
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr>
+
+            <td>
+              Juan Pérez
+            </td>
+
+            <td>
+              Álgebra
+            </td>
+
+            <td>
+              80%
+            </td>
+
+          </tr>
+
+          <tr>
+
+            <td>
+              María López
+            </td>
+
+            <td>
+              Geometría
+            </td>
+
+            <td>
+              72%
+            </td>
+
+          </tr>
+
+          <tr>
+
+            <td>
+              Carlos Vera
+            </td>
+
+            <td>
+              Estadística
+            </td>
+
+            <td>
+              68%
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </main>
+
+</div>

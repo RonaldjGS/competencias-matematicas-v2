@@ -230,6 +230,7 @@ def login_estudiante(
         "access_token": token,
         "token_type": "bearer",
         "usuario": {
+
             "id_estudiante":
             estudiante.id_estudiante,
 
@@ -237,7 +238,11 @@ def login_estudiante(
             estudiante.nombre_estudiante,
 
             "correo_estudiante":
-            estudiante.correo_estudiante
+            estudiante.correo_estudiante,
+
+            "id_nivel":
+            estudiante.id_nivel
+
         }
     }
     

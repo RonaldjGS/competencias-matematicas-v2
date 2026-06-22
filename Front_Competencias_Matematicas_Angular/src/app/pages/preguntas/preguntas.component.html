@@ -1,0 +1,167 @@
+<div class="preguntas-container">
+
+  <h1>
+    Banco de Preguntas
+  </h1>
+
+  <p>
+    Importación de preguntas desde Excel
+  </p>
+
+  <!-- COMPETENCIA -->
+
+  <div class="form-group">
+
+    <label>
+      Competencia
+    </label>
+
+    <select
+        class="input-control"
+        [(ngModel)]="competenciaSeleccionada"
+    >
+
+        <option [ngValue]="null">
+            Seleccione competencia
+        </option>
+
+        @for (
+            competencia of competencias;
+            track competencia.id_competencia
+        ) {
+
+        <option
+        [ngValue]="competencia.id_competencia"
+        >
+
+        {{ competencia.nombre_competencia }}
+
+        </option>
+
+        }
+
+    </select>
+
+  </div>
+
+  <!-- SUBMODULO -->
+
+  <div class="form-group">
+
+    <label>
+      Submódulo
+    </label>
+
+    <select
+        class="input-control"
+        [(ngModel)]="submoduloSeleccionado"
+    >
+
+        <option [ngValue]="null">
+            Seleccione submódulo
+        </option>
+
+        @for (
+            submodulo of submodulos;
+            track submodulo.id_submodulo
+        ) {
+
+            <option
+            [ngValue]="submodulo.id_submodulo"
+            >
+
+            {{ submodulo.nombre_submodulo }}
+
+            </option>
+
+        }
+
+    </select>
+
+  </div>
+
+  <!-- TEMA -->
+
+  <div class="form-group">
+
+    <label>
+      Tema
+    </label>
+
+    <select
+        class="input-control"
+        [(ngModel)]="temaSeleccionado"
+    >
+
+        <option [ngValue]="null">
+            Seleccione tema
+        </option>
+
+        @for (
+            tema of temas;
+            track tema.id_tema
+        ) {
+
+            <option
+            [ngValue]="tema.id_tema"
+            >
+
+            {{ tema.nombre_tema }}
+
+            </option>
+
+        }
+
+    </select>
+
+  </div>
+
+  <!-- ARCHIVO -->
+
+  <div class="form-group">
+
+    <label>
+      Archivo Excel
+    </label>
+
+    <input
+        type="file"
+        accept=".xlsx,.xls"
+        (change)="onFileSelected($event)"
+    >
+
+  </div>
+
+  <button
+    class="btn-importar"
+    (click)="importarPreguntas()"
+  >
+
+    Importar Preguntas
+
+  </button>
+
+ <div class="info-seleccion">
+
+  <p>
+    Competencia:
+    {{ competenciaSeleccionada }}
+  </p>
+
+  <p>
+    Submódulo:
+    {{ submoduloSeleccionado }}
+  </p>
+
+  <p>
+    Tema:
+    {{ temaSeleccionado }}
+  </p>
+
+  <p>
+    Archivo:
+    {{ archivoExcel?.name }}
+  </p>
+
+ </div>
+</div>

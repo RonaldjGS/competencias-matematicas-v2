@@ -1,0 +1,257 @@
+<div class="dashboard-container">
+
+  <!-- ===================================== -->
+  <!-- SIDEBAR -->
+  <!-- ===================================== -->
+
+  <aside
+    class="sidebar"
+    [class.collapsed]="!menuAbierto"
+  >
+
+    <button
+      class="menu-btn"
+      (click)="toggleMenu()"
+    >
+      ☰
+    </button>
+
+    <ul>
+
+      <li>
+
+        <span>
+          🏠
+        </span>
+
+        <span *ngIf="menuAbierto">
+          Inicio
+        </span>
+
+      </li>
+
+      <li>
+
+        <span>
+          📈
+        </span>
+
+        <span *ngIf="menuAbierto">
+          Mi progreso
+        </span>
+
+      </li>
+
+      <li>
+
+        <span>
+          👤
+        </span>
+
+        <span *ngIf="menuAbierto">
+          Perfil
+        </span>
+
+      </li>
+
+      <li>
+
+        <span>
+          ⚙️
+        </span>
+
+        <span *ngIf="menuAbierto">
+          Configuración
+        </span>
+
+      </li>
+
+    </ul>
+
+  </aside>
+
+  <!-- ===================================== -->
+  <!-- CONTENIDO -->
+  <!-- ===================================== -->
+
+  <main class="content">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+      <div>
+
+        <h2>
+          Entrena tus Competencias Matemáticas
+        </h2>
+
+      </div>
+
+      <div class="usuario">
+
+        Bienvenido,
+        {{ nombreEstudiante }}
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- BIENVENIDA -->
+    <!-- ===================================== -->
+
+    <div class="welcome-card">
+
+      <div class="avatar">
+
+        👨‍🎓
+
+      </div>
+
+      <div>
+
+        <h1>
+
+          ¡Hola,
+          {{ nombreEstudiante }}!
+
+        </h1>
+
+        <p>
+
+          Continúa entrenando y fortaleciendo
+          tus competencias matemáticas.
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- KPIS -->
+    <!-- ===================================== -->
+
+    <div class="stats-grid">
+
+      <div class="stat-card">
+
+        <h4>
+          Ejercicios completados
+        </h4>
+
+        <span>
+
+          {{
+            ejerciciosCompletados
+            ?? '--'
+          }}
+
+        </span>
+
+      </div>
+
+      <div class="stat-card">
+
+        <h4>
+          Porcentaje de aciertos
+        </h4>
+
+        <span>
+
+          {{
+            porcentajeAciertos
+            ?? '--'
+          }}
+
+        </span>
+
+      </div>
+
+      <div class="stat-card">
+
+        <h4>
+          Tiempo promedio
+        </h4>
+
+        <span>
+
+          {{
+            tiempoPromedio
+            ?? '--'
+          }}
+
+        </span>
+
+      </div>
+
+      <div class="stat-card">
+
+        <h4>
+          Evaluaciones realizadas
+        </h4>
+
+        <span>
+
+          {{
+            evaluacionesRealizadas
+            ?? '--'
+          }}
+
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- MODULO -->
+    <!-- ===================================== -->
+
+    <div class="module-card">
+
+      <h2>
+
+        {{ tituloModulo }}
+
+      </h2>
+
+      <p>
+
+        {{ descripcionModulo }}
+
+      </p>
+
+      <button
+        class="btn-comenzar"
+        (click)="irSeleccionCompetencia()"
+        >
+        Comenzar
+      </button>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- INFORMACIÓN -->
+    <!-- ===================================== -->
+
+    <div class="info-card">
+
+      <h3>
+        Información
+      </h3>
+
+      <p>
+
+        Aquí se mostrarán tus resultados,
+        recomendaciones y avances conforme
+        completes evaluaciones.
+
+      </p>
+
+    </div>
+
+  </main>
+
+</div>

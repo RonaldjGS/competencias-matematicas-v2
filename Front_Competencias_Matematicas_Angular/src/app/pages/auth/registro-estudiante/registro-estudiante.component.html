@@ -1,0 +1,339 @@
+<div class="registro-container">
+
+  <div class="registro-card">
+
+
+<!-- PANEL IZQUIERDO -->
+
+<div class="left-panel">
+
+  <h1>
+    Competencias
+    <br>
+    Matemáticas
+  </h1>
+
+  <p>
+    Facultad de Ciencias Matemáticas y Físicas
+  </p>
+
+  <p>
+    Universidad de Guayaquil
+  </p>
+
+</div>
+
+<!-- PANEL DERECHO -->
+
+<div class="right-panel">
+
+  <div class="tabs">
+
+    <button
+        class="tab"
+        (click)="irLoginEstudiante()"
+    >
+      Iniciar Sesión
+    </button>
+
+    <button class="tab active">
+      Crear Cuenta
+    </button>
+
+  </div>
+
+  <h2 class="titulo">
+    Registro Estudiante
+  </h2>
+
+  <p class="subtitulo">
+    Complete la información solicitada
+  </p>
+
+  <!-- NOMBRE -->
+
+  <div class="form-group">
+
+    <label>
+      Nombre Completo
+    </label>
+
+    <input
+      type="text"
+      class="input-control"
+      [(ngModel)]="nombreEstudiante"
+    >
+
+  </div>
+
+  <!-- INSTITUCIÓN EDUCATIVA -->
+
+  <div class="form-group">
+
+    <label>
+      Institución Educativa
+    </label>
+
+    <input
+      type="text"
+      class="input-control"
+      [(ngModel)]="institucionEducativa"
+    >
+
+  </div>
+
+  <!-- NIVEL EDUCATIVO -->
+
+  <div class="form-group">
+
+    <label>
+      Nivel Educativo
+    </label>
+
+    <select
+      class="input-control"
+      [(ngModel)]="nivelSeleccionado"
+      (change)="onNivelChange()"
+    >
+
+      <option [ngValue]="0">
+        Seleccione nivel educativo
+      </option>
+
+      @for (
+        nivel of niveles;
+        track nivel.id_nivel
+      ) {
+
+        <option
+          [ngValue]="nivel.id_nivel"
+        >
+
+          {{ nivel.nombre_nivel }}
+
+        </option>
+
+      }
+
+    </select>
+
+  </div>
+
+  <!-- TIPO DE INSTITUCIÓN -->
+
+  @if (mostrarInstitucion) {
+
+  <div class="form-group">
+
+    <label>
+      Tipo de Institución
+    </label>
+
+    <select
+      class="input-control"
+      [(ngModel)]="idTipoInstitucion"
+    >
+
+      <option [ngValue]="null">
+        Seleccione tipo institución
+      </option>
+
+      @for (
+        tipo of tiposInstitucion;
+        track tipo.id_tipo
+      ) {
+
+        <option
+          [ngValue]="tipo.id_tipo"
+        >
+
+          {{ tipo.nombre_tipo }}
+
+        </option>
+
+      }
+
+    </select>
+
+  </div>
+
+  }
+
+  <!-- CARRERA -->
+
+  @if (mostrarCarrera) {
+
+  <div class="form-group">
+
+    <label>
+      Carrera
+    </label>
+
+    <select
+      class="input-control"
+      [(ngModel)]="idCarrera"
+    >
+
+      <option [ngValue]="null">
+        Seleccione una carrera
+      </option>
+
+      @for (
+        carrera of carreras;
+        track carrera.id_carrera
+      ) {
+
+        <option
+          [ngValue]="carrera.id_carrera"
+        >
+
+          {{ carrera.nombre_carrera }}
+
+        </option>
+
+      }
+
+    </select>
+
+  </div>
+
+  }
+
+  <!-- PROVINCIA -->
+
+  <div class="form-group">
+
+    <label>
+      Provincia
+    </label>
+
+    <select
+      class="input-control"
+      [(ngModel)]="idProvincia"
+      (change)="onProvinciaChange()"
+    >
+
+      <option [ngValue]="null">
+        Seleccione provincia
+      </option>
+
+      @for (
+        provincia of provincias;
+        track provincia.id_provincia
+      ) {
+
+        <option
+          [ngValue]="provincia.id_provincia"
+        >
+
+          {{ provincia.nombre_provincia }}
+
+        </option>
+
+      }
+
+    </select>
+
+  </div>
+
+  <!-- CIUDAD -->
+
+  <div class="form-group">
+
+    <label>
+      Ciudad
+    </label>
+
+    <select
+      class="input-control"
+      [(ngModel)]="idCiudad"
+    >
+
+      <option [ngValue]="null">
+        Seleccione ciudad
+      </option>
+
+      @for (
+        ciudad of ciudades;
+        track ciudad.id_ciudad
+      ) {
+
+        <option
+          [ngValue]="ciudad.id_ciudad"
+        >
+
+          {{ ciudad.nombre_ciudad }}
+
+        </option>
+
+      }
+
+    </select>
+
+  </div>
+
+  <!-- CORREO -->
+
+  <div class="form-group">
+
+    <label>
+      Correo Electrónico
+    </label>
+
+    <input
+      type="email"
+      class="input-control"
+      [(ngModel)]="correo"
+    >
+
+  </div>
+
+  <!-- CONTRASEÑA -->
+
+ <div class="form-group">
+
+  <label>
+    Contraseña
+  </label>
+
+  <div class="password-wrapper">
+
+    <input
+      [type]="mostrarPassword ? 'text' : 'password'"
+      class="input-control password-input"
+      [(ngModel)]="password"
+    >
+
+    <button
+      type="button"
+      class="password-toggle"
+      (click)="togglePassword()"
+    >
+
+      <i
+        [class]="
+          mostrarPassword
+          ? 'bi bi-eye-slash'
+          : 'bi bi-eye'
+        "
+      ></i>
+
+    </button>
+
+  </div>
+
+</div>
+
+  <button
+    class="btn-registrar"
+    (click)="registrarEstudiante()"
+  >
+  Registrarse
+</button>
+
+</div>
+
+
+  </div>
+
+</div>
