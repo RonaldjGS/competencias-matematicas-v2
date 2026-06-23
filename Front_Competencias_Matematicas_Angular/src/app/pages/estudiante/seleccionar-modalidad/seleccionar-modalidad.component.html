@@ -1,0 +1,420 @@
+<div class="pagina">
+
+  <!-- ===================================== -->
+  <!-- HEADER -->
+  <!-- ===================================== -->
+
+  <header class="topbar">
+
+    <div class="logo">
+
+      Entrena Tus Competencias
+      <br>
+      Matemáticas
+
+    </div>
+
+    <div class="usuario">
+
+      Bienvenido,
+      {{ nombreEstudiante }}
+
+      👨‍🎓
+
+    </div>
+
+  </header>
+
+  <!-- ===================================== -->
+  <!-- SIDEBAR -->
+  <!-- ===================================== -->
+
+  <aside
+    class="sidebar"
+    [class.abierto]="menuAbierto"
+  >
+
+    <button
+      class="btn-menu"
+      (click)="toggleMenu()"
+    >
+      ☰
+    </button>
+
+    <ul>
+
+      <li>
+
+        <span class="icono-menu">
+          🏠
+        </span>
+
+        <span
+          *ngIf="menuAbierto"
+        >
+          Inicio
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          📈
+        </span>
+
+        <span
+          *ngIf="menuAbierto"
+        >
+          Mi progreso
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          👤
+        </span>
+
+        <span
+          *ngIf="menuAbierto"
+        >
+          Perfil
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          ⚙️
+        </span>
+
+        <span
+          *ngIf="menuAbierto"
+        >
+          Configuración
+        </span>
+
+      </li>
+
+    </ul>
+
+  </aside>
+
+  <!-- ===================================== -->
+  <!-- CONTENIDO -->
+  <!-- ===================================== -->
+
+  <main
+    class="contenido"
+    [class.contenido-expandido]="menuAbierto"
+  >
+
+    <!-- CABECERA -->
+
+    <div class="cabecera">
+
+      <button
+        class="btn-volver"
+        (click)="volver()"
+      >
+        ←
+      </button>
+
+      <div>
+
+        <h1>
+
+          Selecciona el tipo de prueba
+
+        </h1>
+
+        <p>
+
+          Elige cómo trabajar
+          en el módulo seleccionado
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- MODULO -->
+    <!-- ===================================== -->
+
+    <div class="modulo-card">
+
+      <div class="modulo-header">
+
+        <div class="modulo-icono">
+
+          📚
+
+        </div>
+
+        <div>
+
+          <h2>
+
+            Ejercicios de
+            {{ nombreModulo }}
+
+          </h2>
+
+          <p>
+
+            Ejercicios orientados al
+            desarrollo matemático básico
+
+          </p>
+
+          <small>
+
+            Álgebra,
+            Lógica,
+            Aritmética y Geometría
+
+          </small>
+
+        </div>
+
+      </div>
+
+      <!-- ESTADISTICAS -->
+
+      <div class="estadisticas-titulo">
+
+        📊 Tus estadísticas
+        en este módulo
+
+      </div>
+
+      <div class="estadisticas-grid">
+
+        <div class="stat-card">
+
+          <div class="stat-icono">
+
+            🎯
+
+          </div>
+
+          <div>
+
+            <span>
+
+              Precisión promedio
+
+            </span>
+
+            <strong>
+
+              {{ precisionPromedio }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div class="stat-card">
+
+          <div class="stat-icono">
+
+            🕒
+
+          </div>
+
+          <div>
+
+            <span>
+
+              Tiempo promedio
+
+            </span>
+
+            <strong>
+
+              {{ tiempoPromedio }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div class="stat-card">
+
+          <div class="stat-icono">
+
+            📖
+
+          </div>
+
+          <div>
+
+            <span>
+
+              Evaluaciones realizadas
+
+            </span>
+
+            <strong>
+
+              {{ evaluacionesRealizadas }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- SUBMODULOS -->
+    <!-- ===================================== -->
+
+    <div class="competencias-grid">
+
+      <div
+
+        *ngFor="
+          let submodulo
+          of submodulos
+        "
+
+        class="competencia-card"
+
+        [class.bloqueado]="
+          submodulo.estado
+          === 'bloqueado'
+        "
+
+      >
+
+        <div class="card-body">
+
+          <div class="icono">
+
+            📋
+
+          </div>
+
+          <div class="info">
+
+            <h2>
+
+              {{
+                submodulo.nombre_submodulo
+              }}
+
+            </h2>
+
+            <p>
+
+              <ng-container
+                [ngSwitch]="
+                  submodulo.id_submodulo
+                "
+              >
+
+                <span
+                  *ngSwitchCase="1"
+                >
+                  Evalúa tu nivel actual
+                  para identificar fortalezas
+                  y oportunidades de mejora.
+                </span>
+
+                <span
+                  *ngSwitchCase="2"
+                >
+                  Actividades enfocadas
+                  en reforzar conocimientos
+                  con dificultades detectadas.
+                </span>
+
+                <span
+                  *ngSwitchCase="3"
+                >
+                  Actividades avanzadas
+                  para fortalecer y consolidar
+                  competencias matemáticas.
+                </span>
+
+              </ng-container>
+
+            </p>
+
+            <div
+              class="estado-bloqueado"
+              *ngIf="
+                submodulo.estado
+                === 'bloqueado'
+              "
+            >
+
+              🔒 Disponible al completar
+              el nivel anterior
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <button
+
+          class="btn-comenzar"
+
+          [disabled]="
+            submodulo.estado
+            === 'bloqueado'
+          "
+
+          (click)="
+            seleccionarSubmodulo(
+              submodulo
+            )
+          "
+
+        >
+
+          <span
+            *ngIf="
+              submodulo.estado
+              === 'disponible'
+            "
+          >
+
+            Comenzar →
+
+          </span>
+
+          <span
+            *ngIf="
+              submodulo.estado
+              === 'bloqueado'
+            "
+          >
+
+            🔒 Bloqueado
+
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>

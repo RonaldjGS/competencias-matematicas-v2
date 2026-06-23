@@ -10,6 +10,8 @@ from sqlalchemy import (
 from sqlalchemy.sql import func
 
 from app.database.base import Base
+
+from sqlalchemy.orm import relationship
 # ==========================================
 # admin
 # ==========================================
@@ -142,6 +144,10 @@ class Estudiante(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now()
+    )
+    
+    nivel = relationship(
+        "NivelEducativo"
     )
 
 # ==========================================

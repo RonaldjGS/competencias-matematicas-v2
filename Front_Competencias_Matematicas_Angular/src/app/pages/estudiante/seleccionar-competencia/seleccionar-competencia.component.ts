@@ -4,7 +4,8 @@ import {
 } from '@angular/core';
 
 import {
-  CommonModule
+  CommonModule,
+  isPlatformBrowser
 } from '@angular/common';
 
 import {
@@ -23,10 +24,6 @@ import {
   PLATFORM_ID,
   inject
 } from '@angular/core';
-
-import {
-  isPlatformBrowser
-} from '@angular/common';
 
 @Component({
   selector:
@@ -49,17 +46,17 @@ export class SeleccionarCompetenciaComponent
 implements OnInit {
 
   private platformId =
-  inject(PLATFORM_ID);
-  
+    inject(PLATFORM_ID);
+
   nombreEstudiante = '';
 
   menuAbierto = false;
 
   competencias: any[] = [];
 
-  // ===========================
-  // ESTADISTICAS
-  // ===========================
+  // ==========================
+  // ESTADÍSTICAS
+  // ==========================
 
   nombreModulo = '';
 
@@ -85,55 +82,25 @@ implements OnInit {
 
     if (
 
-        isPlatformBrowser(
+      isPlatformBrowser(
         this.platformId
-        )
+      )
 
     ) {
 
-        this.nombreEstudiante =
+      this.nombreEstudiante =
 
         localStorage.getItem(
-            'nombre_estudiante'
+          'nombre_estudiante'
         ) || 'Estudiante';
 
-        const idNivel = Number(
+      this.nombreModulo =
 
         localStorage.getItem(
-            'id_nivel'
-        )
+          'nombre_nivel'
+        ) ||
 
-        );
-
-        switch (idNivel) {
-
-        case 1:
-
-            this.nombreModulo =
-            'Bachillerato';
-
-            break;
-
-        case 2:
-
-            this.nombreModulo =
-            'Nivelación y Admisión';
-
-            break;
-
-        case 3:
-
-            this.nombreModulo =
-            'Primer Semestre';
-
-            break;
-
-        default:
-
-            this.nombreModulo =
-            'Entrenamiento Matemático';
-
-        }
+        'Entrenamiento Matemático';
 
     }
 
@@ -152,11 +119,17 @@ implements OnInit {
           this.competencias =
             data;
 
+          console.log(
+            'Competencias:',
+            data
+          );
+
         },
 
         error: (error) => {
 
           console.error(
+            'Error cargando competencias',
             error
           );
 
@@ -175,8 +148,17 @@ implements OnInit {
         competencia.id_competencia
       );
 
+    console.log(
+
+      this.quizConfigService
+        .obtenerConfiguracion()
+
+    );
+
     this.router.navigate([
+
       '/seleccionar-modalidad'
+
     ]);
 
   }
@@ -191,7 +173,9 @@ implements OnInit {
   volver(): void {
 
     this.router.navigate([
+
       '/dashboard-estudiante'
+
     ]);
 
   }

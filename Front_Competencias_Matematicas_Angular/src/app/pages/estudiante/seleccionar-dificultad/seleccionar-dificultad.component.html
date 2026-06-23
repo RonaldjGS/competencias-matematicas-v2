@@ -1,0 +1,494 @@
+<div class="pagina">
+
+  <!-- ===================================== -->
+  <!-- HEADER -->
+  <!-- ===================================== -->
+
+  <header class="topbar">
+
+    <div class="logo">
+
+      Entrena Tus Competencias
+      <br>
+      Matemáticas
+
+    </div>
+
+    <div class="usuario">
+
+      Bienvenido,
+      {{ nombreEstudiante }}
+
+      👨‍🎓
+
+    </div>
+
+  </header>
+
+  <!-- ===================================== -->
+  <!-- SIDEBAR -->
+  <!-- ===================================== -->
+
+  <aside
+    class="sidebar"
+    [class.abierto]="menuAbierto"
+  >
+
+    <button
+      class="btn-menu"
+      (click)="toggleMenu()"
+    >
+      ☰
+    </button>
+
+    <ul>
+
+      <li>
+
+        <span class="icono-menu">
+          🏠
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Inicio
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          📈
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Mi progreso
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          📊
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Estadísticas
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          👤
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Perfil
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          ⚙️
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Configuración
+        </span>
+
+      </li>
+
+    </ul>
+
+  </aside>
+
+  <!-- ===================================== -->
+  <!-- CONTENIDO -->
+  <!-- ===================================== -->
+
+  <main
+    class="contenido"
+    [class.contenido-expandido]="menuAbierto"
+  >
+
+    <!-- CABECERA -->
+
+    <div class="cabecera">
+
+      <button
+        class="btn-volver"
+        (click)="volver()"
+      >
+        ←
+      </button>
+
+      <div>
+
+        <h1>
+
+          Selecciona el nivel de dificultad
+
+        </h1>
+
+        <p>
+
+          Elije el nivel de dificultad
+          de las preguntas según tu preparación
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- RESUMEN -->
+    <!-- ===================================== -->
+
+    <div class="resumen-card">
+
+      <div class="resumen-item">
+
+        <div class="resumen-icono">
+          📖
+        </div>
+
+        <div>
+
+          <span>
+            Módulo Actual
+          </span>
+
+          <h3>
+            {{ nombreModulo }}
+          </h3>
+
+        </div>
+
+      </div>
+
+      <div class="separador"></div>
+
+      <div class="resumen-item">
+
+        <div class="resumen-icono">
+          📋
+        </div>
+
+        <div>
+
+          <span>
+            Modalidad
+          </span>
+
+          <h3>
+            {{ nombreSubmodulo }}
+          </h3>
+
+        </div>
+
+      </div>
+
+      <div class="separador"></div>
+
+      <div class="resumen-item">
+
+        <div class="resumen-icono">
+          🧮
+        </div>
+
+        <div>
+
+          <span>
+            Tema
+          </span>
+
+          <h3>
+            {{ nombreTema }}
+          </h3>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- ESTADISTICAS -->
+    <!-- ===================================== -->
+
+    <div class="estadisticas-section">
+
+      <h2>
+
+        📊 Tus estadísticas
+        en este módulo
+
+      </h2>
+
+      <div class="estadisticas-grid">
+
+        <div class="stat-card">
+
+          <div class="stat-icono">
+            🎯
+          </div>
+
+          <div>
+
+            <span>
+              Precisión promedio
+            </span>
+
+            <strong>
+              {{ precisionPromedio }}
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div class="stat-card">
+
+          <div class="stat-icono">
+            📚
+          </div>
+
+          <div>
+
+            <span>
+              Intentos realizados
+            </span>
+
+            <strong>
+              {{ intentosRealizados }}
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div class="stat-card">
+
+          <div class="stat-icono">
+            🕒
+          </div>
+
+          <div>
+
+            <span>
+              Tiempo promedio
+            </span>
+
+            <strong>
+              {{ tiempoPromedio }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- DIFICULTADES -->
+    <!-- ===================================== -->
+
+    <div class="niveles-titulo">
+
+      📈 Niveles de Dificultad
+
+    </div>
+
+    <div class="niveles-grid">
+
+      <!-- BASICO -->
+
+      <div
+
+        class="nivel-card"
+
+        [class.seleccionado]="
+          dificultadSeleccionada === 'Basico'
+        "
+
+        (click)="
+          seleccionarDificultad(
+            'Basico'
+          )
+        "
+
+      >
+
+        <h2>🟢 Básico</h2>
+
+        <p>
+
+          Conceptos fundamentales
+          y ejercicios introductorios
+
+        </p>
+
+        <hr>
+
+        <p>
+          📋 10 preguntas
+        </p>
+
+        <p>
+          🕒 Tiempo estimado: 10 min
+        </p>
+
+        <p>
+          ⭐ Nivel recomendado
+          para iniciar
+        </p>
+
+      </div>
+
+      <!-- INTERMEDIO -->
+
+      <div
+
+        class="nivel-card"
+
+        [class.seleccionado]="
+          dificultadSeleccionada === 'Intermedio'
+        "
+
+        (click)="
+          seleccionarDificultad(
+            'Intermedio'
+          )
+        "
+
+      >
+
+        <h2>🟠 Intermedio</h2>
+
+        <p>
+
+          Aplicación de conceptos
+          en problemas más complejos
+
+        </p>
+
+        <hr>
+
+        <p>
+          📋 10 preguntas
+        </p>
+
+        <p>
+          🕒 Tiempo estimado: 15 min
+        </p>
+
+        <p>
+          ⭐ Ideal para reforzar
+          conocimientos
+        </p>
+
+      </div>
+
+      <!-- AVANZADO -->
+
+      <div
+
+        class="nivel-card"
+
+        [class.seleccionado]="
+          dificultadSeleccionada === 'Avanzado'
+        "
+
+        (click)="
+          seleccionarDificultad(
+            'Avanzado'
+          )
+        "
+
+      >
+
+        <h2>🔴 Avanzado</h2>
+
+        <p>
+
+          Problemas complejos
+          que requieren mayor análisis
+
+        </p>
+
+        <hr>
+
+        <p>
+          📋 10 preguntas
+        </p>
+
+        <p>
+          🕒 Tiempo estimado: 20 min
+        </p>
+
+        <p>
+          ⭐ Recomendado para
+          nivel avanzado
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- INFO -->
+    <!-- ===================================== -->
+
+    <div class="info-quiz">
+
+      ℹ️ Todos los niveles contienen
+      10 preguntas con opción múltiple.
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- BOTON -->
+    <!-- ===================================== -->
+
+    <button
+
+      class="btn-continuar"
+
+      [disabled]="
+        !dificultadSeleccionada
+      "
+
+      (click)="continuar()"
+
+    >
+
+      Continuar →
+
+    </button>
+
+  </main>
+
+</div>

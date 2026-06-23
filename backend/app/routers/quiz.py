@@ -12,6 +12,10 @@ from app.database.database import get_db
 
 from app.models.usuarios import Estudiante
 
+from app.models.estudiante_submodulo import EstudianteSubmodulo
+
+from app.models.academico import Tema
+
 from app.models.evaluaciones import (
     PreguntaCompetencia,
     ResultadoQuiz,
@@ -30,13 +34,18 @@ from app.schemas.quiz import (
     ResponderPreguntaRequest,
     RespuestaPreguntaOut,
     EstadoIntentosOut,
-    ConsultarIntentosRequest
+    ConsultarIntentosRequest,
+    FinalizarSubmoduloIn,
+    TemaDisponibleOut
 )
 
 from app.services.quiz_service import (
     evaluar_respuesta,
     obtener_estado_intentos
 )
+
+
+from datetime import datetime
 
 
 router = APIRouter(
@@ -445,4 +454,222 @@ def consultar_intentos(
 
         db=
         db
+    )
+    
+# ==========================================
+# Submodulos Disponibles
+# ==========================================
+
+@router.get(
+    "/submodulos-disponibles"
+)
+def obtener_submodulos_disponibles(
+    id_estudiante: int,
+    id_competencia: int,
+    db: Session = Depends(get_db)
+):
+
+    diagnostico = True
+
+    refuerzo = False
+
+    fortalecimiento = False
+
+    # --------------------------------------
+    # Diagnóstico realizado
+    # --------------------------------------
+
+    diagnostico_realizado = (
+
+        db.query(
+            EstudianteSubmodulo
+        )
+        .filter(
+            EstudianteSubmodulo.id_estudiante
+            == id_estudiante,
+
+            EstudianteSubmodulo.id_competencia
+            == id_competencia,
+
+            EstudianteSubmodulo.id_submodulo
+            == 1,
+
+            EstudianteSubmodulo.completado
+            == True
+        )
+        .first()
+
+    )
+
+    if diagnostico_realizado:
+
+        refuerzo = True
+
+    # --------------------------------------
+    # Refuerzo realizado
+    # --------------------------------------
+
+    refuerzo_realizado = (
+
+        db.query(
+            EstudianteSubmodulo
+        )
+        .filter(
+            EstudianteSubmodulo.id_estudiante
+            == id_estudiante,
+
+            EstudianteSubmodulo.id_competencia
+            == id_competencia,
+
+            EstudianteSubmodulo.id_submodulo
+            == 2,
+
+            EstudianteSubmodulo.completado
+            == True
+        )
+        .first()
+
+    )
+
+    if refuerzo_realizado:
+
+        fortalecimiento = True
+
+    return [
+
+        {
+            "id_submodulo": 1,
+            "nombre_submodulo": "Diagnóstico",
+            "estado": "disponible"
+        },
+
+        {
+            "id_submodulo": 2,
+            "nombre_submodulo": "Refuerzo",
+            "estado": (
+                "disponible"
+                if refuerzo
+                else "bloqueado"
+            )
+        },
+
+        {
+            "id_submodulo": 3,
+            "nombre_submodulo": "Fortalecimiento",
+            "estado": (
+                "disponible"
+                if fortalecimiento
+                else "bloqueado"
+            )
+        }
+
+    ]
+    
+# ==========================================
+# Finalizar Submódulo
+# ==========================================
+
+@router.post(
+    "/finalizar-submodulo"
+)
+def finalizar_submodulo(
+    data: FinalizarSubmoduloIn,
+    db: Session = Depends(get_db)
+):
+
+    registro = (
+
+        db.query(
+            EstudianteSubmodulo
+        )
+        .filter(
+
+            EstudianteSubmodulo.id_estudiante
+            == data.id_estudiante,
+
+            EstudianteSubmodulo.id_competencia
+            == data.id_competencia,
+
+            EstudianteSubmodulo.id_submodulo
+            == data.id_submodulo
+
+        )
+        .first()
+
+    )
+
+    if registro:
+
+        return {
+
+            "mensaje":
+            "Submódulo ya completado"
+
+        }
+
+    nuevo = EstudianteSubmodulo(
+
+        id_estudiante=
+        data.id_estudiante,
+
+        id_competencia=
+        data.id_competencia,
+
+        id_submodulo=
+        data.id_submodulo,
+
+        completado=True,
+
+        fecha_completado=
+        datetime.now()
+
+    )
+
+    db.add(
+        nuevo
+    )
+
+    db.commit()
+
+    db.refresh(
+        nuevo
+    )
+
+    return {
+
+        "mensaje":
+        "Submódulo completado correctamente"
+
+    }
+    
+    
+# ==========================================
+# TEMAS DISPONIBLES
+# ==========================================
+
+@router.get(
+    "/temas-disponibles",
+    response_model=list[TemaDisponibleOut]
+)
+def obtener_temas_disponibles(
+
+    id_nivel: int,
+
+    db: Session = Depends(get_db)
+
+):
+
+    return (
+
+        db.query(
+            Tema
+        )
+
+        .filter(
+            Tema.id_nivel == id_nivel,
+            Tema.estado == True
+        )
+
+        .all()
+
     )

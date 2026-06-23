@@ -34,6 +34,20 @@ import {
   SeleccionarCompetenciaComponent
 } from './pages/estudiante/seleccionar-competencia/seleccionar-competencia.component';
 
+import {
+  SeleccionarModalidadComponent
+}
+from './pages/estudiante/seleccionar-modalidad/seleccionar-modalidad.component';
+
+import {
+  SeleccionarTemaComponent
+}
+from './pages/estudiante/seleccionar-tema/seleccionar-tema.component';
+
+import {
+  SeleccionarDificultadComponent
+} from './pages/estudiante/seleccionar-dificultad/seleccionar-dificultad.component';
+
 export const routes: Routes = [
 
   {
@@ -85,6 +99,21 @@ export const routes: Routes = [
   {
   path: 'seleccionar-competencia',
   component: SeleccionarCompetenciaComponent
+  },
+
+  {
+  path: 'seleccionar-modalidad',
+  component: SeleccionarModalidadComponent
+  },
+
+  {
+  path: 'seleccionar-tema',
+  component: SeleccionarTemaComponent
+  },
+
+  {
+  path: 'seleccionar-dificultad',
+  component: SeleccionarDificultadComponent
   }
 
 

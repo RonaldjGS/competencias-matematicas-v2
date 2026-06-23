@@ -132,6 +132,23 @@ export class LoginEstudianteComponent {
 
           );
 
+          localStorage.setItem(
+
+            'id_estudiante',
+
+            response.usuario.id_estudiante
+              .toString()
+
+          );
+
+          localStorage.setItem(
+
+            'nombre_nivel',
+
+            response.usuario.nombre_nivel
+
+          );
+
           this.router.navigate([
 
             '/dashboard-estudiante'

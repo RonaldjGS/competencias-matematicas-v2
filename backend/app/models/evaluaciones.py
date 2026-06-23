@@ -15,6 +15,7 @@ from app.database.base import Base
 
 
 
+
 # ==========================================
 # PREGUNTAS DE COMPETENCIAS
 # ==========================================

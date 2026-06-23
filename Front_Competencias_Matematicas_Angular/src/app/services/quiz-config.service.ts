@@ -11,6 +11,9 @@ export class QuizConfigService {
   // CONFIGURACIÓN DEL QUIZ
   // =====================================
 
+  idEstudiante:
+  number | null = null;
+
   idNivel:
   number | null = null;
 
@@ -30,6 +33,14 @@ export class QuizConfigService {
   // SETTERS
   // =====================================
 
+  setEstudiante(
+    idEstudiante: number
+  ): void {
+
+    this.idEstudiante = idEstudiante;
+
+  } 
+  
   setNivel(
     idNivel: number
   ): void {
@@ -81,6 +92,9 @@ export class QuizConfigService {
   obtenerConfiguracion() {
 
     return {
+
+      idEstudiante:
+      this.idEstudiante,
 
       idNivel:
       this.idNivel,

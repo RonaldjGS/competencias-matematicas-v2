@@ -210,3 +210,47 @@ class ConsultarIntentosRequest(
     id_submodulo: int
 
     id_tema: int
+    
+# ==========================================
+# Submodulo Disponible
+# ==========================================
+
+class SubmoduloDisponibleOut(
+    BaseModel
+):
+
+    id_submodulo: int
+
+    nombre_submodulo: str
+
+    estado: str
+    
+ 
+# ==========================================
+# Submodulo finalizado
+# ==========================================    
+
+class FinalizarSubmoduloIn(
+    BaseModel
+):
+
+    id_estudiante: int
+
+    id_competencia: int
+
+    id_submodulo: int
+    
+# ==========================================
+# Tema Disponible
+# ==========================================  
+class TemaDisponibleOut(BaseModel):
+
+    id_tema: int
+
+    nombre_tema: str
+
+    descripcion_tema: str
+
+    model_config = ConfigDict(
+        from_attributes=True
+    )

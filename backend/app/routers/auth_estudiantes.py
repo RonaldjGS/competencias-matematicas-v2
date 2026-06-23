@@ -241,7 +241,10 @@ def login_estudiante(
             estudiante.correo_estudiante,
 
             "id_nivel":
-            estudiante.id_nivel
+            estudiante.id_nivel,
+            
+            "nombre_nivel":
+            estudiante.nivel.nombre_nivel
 
         }
     }

@@ -1,0 +1,334 @@
+<div class="pagina">
+
+  <!-- ===================================== -->
+  <!-- HEADER -->
+  <!-- ===================================== -->
+
+  <header class="topbar">
+
+    <div class="logo">
+
+      Entrena Tus Competencias
+      <br>
+      Matemáticas
+
+    </div>
+
+    <div class="usuario">
+
+      Bienvenido,
+      {{ nombreEstudiante }}
+
+      👨‍🎓
+
+    </div>
+
+  </header>
+
+  <!-- ===================================== -->
+  <!-- SIDEBAR -->
+  <!-- ===================================== -->
+
+  <aside
+    class="sidebar"
+    [class.abierto]="menuAbierto"
+  >
+
+    <button
+      class="btn-menu"
+      (click)="toggleMenu()"
+    >
+      ☰
+    </button>
+
+    <ul>
+
+      <li>
+
+        <span class="icono-menu">
+          🏠
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Inicio
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          📈
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Mi progreso
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          👤
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Perfil
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          ⚙️
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Configuración
+        </span>
+
+      </li>
+
+    </ul>
+
+  </aside>
+
+  <!-- ===================================== -->
+  <!-- CONTENIDO -->
+  <!-- ===================================== -->
+
+  <main
+    class="contenido"
+    [class.contenido-expandido]="menuAbierto"
+  >
+
+    <!-- CABECERA -->
+
+    <div class="cabecera">
+
+      <button
+        class="btn-volver"
+        (click)="volver()"
+      >
+        ←
+      </button>
+
+      <div>
+
+        <h1>
+
+          Selecciona los tipos de ejercicio
+
+        </h1>
+
+        <p>
+
+          Elije el área matemática
+          en la que deseas realizar
+          tu actividad.
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- RESUMEN -->
+    <!-- ===================================== -->
+
+    <div class="resumen-card">
+
+      <div class="resumen-item">
+
+        <div class="resumen-icono">
+
+          📖
+
+        </div>
+
+        <div>
+
+          <small>
+
+            Módulo Actual
+
+          </small>
+
+          <h3>
+
+            Ejercicios de
+            {{ nombreModulo }}
+
+          </h3>
+
+        </div>
+
+      </div>
+
+      <div class="linea">
+
+      </div>
+
+      <div class="resumen-item">
+
+        <div class="resumen-icono">
+
+          📋
+
+        </div>
+
+        <div>
+
+          <small>
+
+            Modalidad
+
+          </small>
+
+          <h3>
+
+            {{ nombreSubmodulo }}
+
+          </h3>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- TITULO -->
+    <!-- ===================================== -->
+
+    <h2 class="titulo-seccion">
+
+      {{ nombreCompetencia }}
+
+    </h2>
+
+    <!-- ===================================== -->
+    <!-- TEMAS -->
+    <!-- ===================================== -->
+
+    <div class="temas-grid">
+
+      <div
+        class="tema-card"
+
+        *ngFor="
+          let tema
+          of temas
+        "
+      >
+
+        <!-- IZQUIERDA -->
+
+        <div class="tema-info">
+
+          <div class="tema-icono">
+
+            🧮
+
+          </div>
+
+          <div>
+
+            <h3>
+
+              {{ tema.nombre_tema }}
+
+            </h3>
+
+            <p>
+
+              {{ tema.descripcion_tema }}
+
+            </p>
+
+            <div class="tema-badges">
+
+              <span>
+
+                10 preguntas
+                disponibles
+
+              </span>
+
+              <span>
+
+                Tiempo estimado
+                10 min
+
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- CENTRO -->
+
+        <div class="tema-resultado">
+
+          <small>
+
+            Tu último resultado
+
+          </small>
+
+          <h2>
+
+            --
+
+          </h2>
+
+          <span>
+
+            Realizado: --
+
+          </span>
+
+        </div>
+
+        <!-- DERECHA -->
+
+        <button
+
+          class="btn-seleccionar"
+
+          (click)="
+            seleccionarTema(
+              tema
+            )
+          "
+
+        >
+
+          Seleccionar →
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
