@@ -97,6 +97,12 @@ def importar_excel(
             status_code=404,
             detail="Tema no encontrado"
         )
+    if tema.id_nivel != profesor.id_nivel:
+
+        raise HTTPException(
+            status_code=400,
+            detail="El tema seleccionado no pertenece al nivel del profesor"
+        )
 
     submodulo = (
         db.query(Submodulo)

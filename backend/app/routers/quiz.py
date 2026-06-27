@@ -30,18 +30,37 @@ from app.schemas.quiz import (
     GenerarQuizRequest,
     CalificarQuizRequest,
     PreguntaQuizOut,
-    ResultadoQuizOut,
+    ResultadoQuizBasicoOut,
+    ResumenQuizOut,
     ResponderPreguntaRequest,
     RespuestaPreguntaOut,
     EstadoIntentosOut,
     ConsultarIntentosRequest,
     FinalizarSubmoduloIn,
-    TemaDisponibleOut
+    TemaDisponibleOut,
+    QuizGeneradoOut,
+    ReintentarPreguntaRequest,
+    ContinuarPreguntaRequest,
+    RespuestaReintentoOut,
+    FinalizarQuizOut,
+    FinalizarQuizRequest
 )
 
 from app.services.quiz_service import (
     evaluar_respuesta,
-    obtener_estado_intentos
+    validar_respuesta,
+    obtener_estado_intentos,
+    consumir_intento,
+    mostrar_solucion,
+    crear_intento
+)
+
+from app.services.resultados_service import (
+
+    guardar_resultado_quiz,
+    
+    obtener_resumen_quiz
+
 )
 
 
@@ -60,7 +79,9 @@ router = APIRouter(
 
 @router.post(
     "/generar",
-    response_model=list[PreguntaQuizOut]
+    response_model=QuizGeneradoOut
+    
+    
 )
 def generar_quiz(
     data: GenerarQuizRequest,
@@ -69,7 +90,7 @@ def generar_quiz(
     ),
     db: Session = Depends(get_db)
 ):
-
+    
     query = (
         db.query(
             PreguntaCompetencia
@@ -115,6 +136,7 @@ def generar_quiz(
         )
         .all()
     )
+    
 
     if not preguntas:
 
@@ -122,8 +144,51 @@ def generar_quiz(
             status_code=404,
             detail="No existen preguntas disponibles"
         )
+        
+    # ==========================================
+    # TIEMPO TOTAL DEL QUIZ
+    # ==========================================
 
-    return preguntas
+        
+    tiempo_total = sum(
+
+        pregunta.tiempo_estimado
+
+        for pregunta in preguntas
+
+    )
+        
+    
+    nuevo_intento = crear_intento(
+
+        id_estudiante=
+        estudiante.id_estudiante,
+
+        id_competencia=
+        data.id_competencia,
+
+        id_submodulo=
+        data.id_submodulo,
+
+        id_tema=
+        data.id_tema,
+
+        db=db
+
+    )
+
+    return QuizGeneradoOut(
+
+        id_intento=
+        nuevo_intento.id_intento,
+
+        preguntas=
+        preguntas,
+
+        tiempo_segundos=
+        tiempo_total
+
+    )
 
 
 # ==========================================
@@ -132,7 +197,7 @@ def generar_quiz(
 
 @router.post(
     "/calificar",
-    response_model=ResultadoQuizOut
+    response_model=ResultadoQuizBasicoOut
 )
 def calificar_quiz(
     data: CalificarQuizRequest,
@@ -358,7 +423,7 @@ def calificar_quiz(
     # RESPUESTA
     # ==========================================
 
-    return ResultadoQuizOut(
+    return ResultadoQuizBasicoOut(
 
         puntaje=
         round(puntaje, 2),
@@ -388,26 +453,17 @@ def calificar_quiz(
     response_model=RespuestaPreguntaOut
 )
 def responder_pregunta(
+
     datos: ResponderPreguntaRequest,
-    estudiante: Estudiante = Depends(
-        get_current_estudiante
-    ),
+
     db: Session = Depends(get_db)
+
 ):
 
-    return evaluar_respuesta(
+    return validar_respuesta(
 
-        estudiante=
-        estudiante,
-
-        id_competencia=
-        datos.id_competencia,
-
-        id_submodulo=
-        datos.id_submodulo,
-
-        id_tema=
-        datos.id_tema,
+        id_intento=
+        datos.id_intento,
 
         id_pregunta=
         datos.id_pregunta,
@@ -415,11 +471,86 @@ def responder_pregunta(
         respuesta=
         datos.respuesta,
 
-        usar_intento=
-        datos.usar_intento,
+        numero_pregunta=
+        datos.numero_pregunta,
 
-        db=
-        db
+        tiempo_respuesta=
+        datos.tiempo_respuesta,
+
+        db=db
+
+    )
+    
+# ==========================================
+# Reintentar PREGUNTA
+# ==========================================    
+
+@router.post(
+    "/reintentar",
+    response_model=RespuestaReintentoOut
+)
+def reintentar_pregunta(
+
+    datos: ReintentarPreguntaRequest,
+
+    db: Session = Depends(get_db)
+
+):
+
+    return consumir_intento(
+
+        id_intento=
+        datos.id_intento,
+
+        id_pregunta=
+        datos.id_pregunta,
+
+        respuesta=
+        datos.respuesta,
+
+        numero_pregunta=
+        datos.numero_pregunta,
+
+        tiempo_respuesta=
+        datos.tiempo_respuesta,
+
+        db=db
+
+    )
+    
+# ==========================================
+# Continuar PREGUNTA
+# ==========================================    
+    
+
+@router.post(
+    "/continuar",
+    response_model=RespuestaPreguntaOut
+)
+def continuar_pregunta(
+
+    datos: ContinuarPreguntaRequest,
+
+    db: Session = Depends(get_db)
+
+):
+
+    return mostrar_solucion(
+
+        id_intento=
+        datos.id_intento,
+
+        id_pregunta=
+        datos.id_pregunta,
+
+        numero_pregunta=
+        datos.numero_pregunta,
+
+        tiempo_respuesta=
+        datos.tiempo_respuesta,
+
+        db=db
+
     )
     
 # ==========================================
@@ -673,3 +804,85 @@ def obtener_temas_disponibles(
         .all()
 
     )
+    
+# ==========================================
+# FINALIZAR QUIZ
+# ==========================================
+
+@router.post(
+
+    "/finalizar",
+
+    response_model=FinalizarQuizOut
+
+)
+
+def finalizar_quiz(
+
+    datos: FinalizarQuizRequest,
+
+    db: Session = Depends(get_db)
+
+):
+
+    resultado = guardar_resultado_quiz(
+
+        id_intento=
+        datos.id_intento,
+
+        tiempo_total=
+        datos.tiempo_total,
+
+        db=db
+
+    )
+
+    return {
+
+        "id_resultado":
+
+        resultado.id_resultado
+
+    }
+    
+# ==========================================
+# OBTENER RESUMEN DEL QUIZ
+# ==========================================
+
+@router.get(
+
+    "/resultado/{id_resultado}",
+
+    response_model=ResumenQuizOut
+
+)
+
+def obtener_resultado_quiz(
+
+    id_resultado: int,
+
+    db: Session = Depends(get_db)
+
+):
+
+    resultado = obtener_resumen_quiz(
+
+        id_resultado=id_resultado,
+
+        db=db
+
+    )
+
+    if not resultado:
+
+        raise HTTPException(
+
+            status_code=404,
+
+            detail="Resultado no encontrado"
+
+        )
+
+    return resultado
+
+

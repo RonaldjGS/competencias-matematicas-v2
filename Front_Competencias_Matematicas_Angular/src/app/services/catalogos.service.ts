@@ -90,4 +90,16 @@ obtenerTemas() {
 
 }
 
+obtenerTemasPorNivel(
+  idNivel: number
+) {
+
+  return this.http.get(
+
+    `${this.apiUrl}/temas/${idNivel}`
+
+  );
+
+}
+
 }

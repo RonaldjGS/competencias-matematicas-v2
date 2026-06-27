@@ -182,6 +182,11 @@ implements OnInit {
     ) {
 
       localStorage.setItem(
+        'id_submodulo',
+        submodulo.id_submodulo
+      );
+
+      localStorage.setItem(
 
         'nombre_submodulo',
 
@@ -196,6 +201,11 @@ implements OnInit {
 
         submodulo.id_submodulo
 
+      );
+
+    this.quizConfigService
+      .setNombreSubmodulo(
+        submodulo.nombre_submodulo
       );
 
     console.log(

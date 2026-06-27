@@ -1,4 +1,4 @@
- import {
+import {
   Injectable
 } from '@angular/core';
 
@@ -17,14 +17,26 @@ export class QuizConfigService {
   idNivel:
   number | null = null;
 
+  nombreNivel:
+  string | null = null;
+
   idCompetencia:
   number | null = null;
+
+  nombreCompetencia:
+  string | null = null;
 
   idSubmodulo:
   number | null = null;
 
+  nombreSubmodulo:
+  string | null = null;
+
   idTema:
   number | null = null;
+
+  nombreTema:
+  string | null = null;
 
   dificultad:
   string | null = null;
@@ -37,15 +49,26 @@ export class QuizConfigService {
     idEstudiante: number
   ): void {
 
-    this.idEstudiante = idEstudiante;
+    this.idEstudiante =
+      idEstudiante;
 
-  } 
-  
+  }
+
   setNivel(
     idNivel: number
   ): void {
 
-    this.idNivel = idNivel;
+    this.idNivel =
+      idNivel;
+
+  }
+
+  setNombreNivel(
+    nombreNivel: string
+  ): void {
+
+    this.nombreNivel =
+      nombreNivel;
 
   }
 
@@ -58,6 +81,15 @@ export class QuizConfigService {
 
   }
 
+  setNombreCompetencia(
+    nombreCompetencia: string
+  ): void {
+
+    this.nombreCompetencia =
+      nombreCompetencia;
+
+  }
+
   setSubmodulo(
     idSubmodulo: number
   ): void {
@@ -67,12 +99,30 @@ export class QuizConfigService {
 
   }
 
+  setNombreSubmodulo(
+    nombreSubmodulo: string
+  ): void {
+
+    this.nombreSubmodulo =
+      nombreSubmodulo;
+
+  }
+
   setTema(
     idTema: number
   ): void {
 
     this.idTema =
       idTema;
+
+  }
+
+  setNombreTema(
+    nombreTema: string
+  ): void {
+
+    this.nombreTema =
+      nombreTema;
 
   }
 
@@ -99,14 +149,26 @@ export class QuizConfigService {
       idNivel:
       this.idNivel,
 
+      nombreNivel:
+      this.nombreNivel,
+
       idCompetencia:
       this.idCompetencia,
+
+      nombreCompetencia:
+      this.nombreCompetencia,
 
       idSubmodulo:
       this.idSubmodulo,
 
+      nombreSubmodulo:
+      this.nombreSubmodulo,
+
       idTema:
       this.idTema,
+
+      nombreTema:
+      this.nombreTema,
 
       dificultad:
       this.dificultad
@@ -121,13 +183,23 @@ export class QuizConfigService {
 
   limpiar(): void {
 
+    this.idEstudiante = null;
+
     this.idNivel = null;
+
+    this.nombreNivel = null;
 
     this.idCompetencia = null;
 
+    this.nombreCompetencia = null;
+
     this.idSubmodulo = null;
 
+    this.nombreSubmodulo = null;
+
     this.idTema = null;
+
+    this.nombreTema = null;
 
     this.dificultad = null;
 

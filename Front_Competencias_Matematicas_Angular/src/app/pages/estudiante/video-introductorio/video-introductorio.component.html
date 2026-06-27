@@ -1,0 +1,330 @@
+<div class="pagina">
+
+  <!-- ===================================== -->
+  <!-- HEADER -->
+  <!-- ===================================== -->
+
+  <header class="topbar">
+
+    <div class="logo">
+
+      Entrena Tus Competencias
+      <br>
+      Matemáticas
+
+    </div>
+
+    <div class="usuario">
+
+      Bienvenido,
+      {{ nombreEstudiante }}
+
+      👨‍🎓
+
+    </div>
+
+  </header>
+
+  <!-- ===================================== -->
+  <!-- SIDEBAR -->
+  <!-- ===================================== -->
+
+  <aside
+    class="sidebar"
+    [class.abierto]="menuAbierto"
+  >
+
+    <button
+      class="btn-menu"
+      (click)="toggleMenu()"
+    >
+      ☰
+    </button>
+
+    <ul>
+
+      <li>
+
+        <span class="icono-menu">
+          🏠
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Inicio
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          📈
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Mi progreso
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          👤
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Perfil
+        </span>
+
+      </li>
+
+      <li>
+
+        <span class="icono-menu">
+          ⚙️
+        </span>
+
+        <span
+          class="texto-menu"
+          *ngIf="menuAbierto"
+        >
+          Configuración
+        </span>
+
+      </li>
+
+    </ul>
+
+  </aside>
+
+  <!-- ===================================== -->
+  <!-- CONTENIDO -->
+  <!-- ===================================== -->
+
+  <main
+    class="contenido"
+    [class.contenido-expandido]="menuAbierto"
+  >
+
+    <!-- CABECERA -->
+
+    <div class="cabecera">
+
+      <button
+        class="btn-volver"
+        (click)="volver()"
+      >
+        ←
+      </button>
+
+      <div>
+
+        <h1>
+
+          🎬 Material Introductorio
+
+        </h1>
+
+        <p>
+
+          Este recurso te ayudará a
+          comprender mejor los conceptos
+          antes de iniciar la evaluación
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- RESUMEN -->
+    <!-- ===================================== -->
+
+    <div class="resumen-card">
+
+      <div class="resumen-item">
+
+        <span class="resumen-icono">
+
+          📖
+
+        </span>
+
+        <div>
+
+          <small>
+
+            Competencia
+
+          </small>
+
+          <h4>
+
+            {{
+              configuracion.nombreCompetencia
+            }}
+
+          </h4>
+
+        </div>
+
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="resumen-item">
+
+        <span class="resumen-icono">
+
+          📋
+
+        </span>
+
+        <div>
+
+          <small>
+
+            Modalidad
+
+          </small>
+
+          <h4>
+
+            {{
+              configuracion.nombreSubmodulo
+            }}
+
+          </h4>
+
+        </div>
+
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="resumen-item">
+
+        <span class="resumen-icono">
+
+          🎯
+
+        </span>
+
+        <div>
+
+          <small>
+
+            Dificultad
+
+          </small>
+
+          <h4>
+
+            {{
+              configuracion.dificultad
+            }}
+
+          </h4>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- VIDEO -->
+    <!-- ===================================== -->
+
+    <div class="video-container">
+
+      <div class="aprendizaje-card">
+
+        <h3>
+
+          🏅 ¿Qué aprenderás?
+
+        </h3>
+
+        <ul>
+
+          <li>
+
+            Variables e incógnitas
+
+          </li>
+
+          <li>
+
+            Expresiones algebraicas
+
+          </li>
+
+          <li>
+
+            Ecuaciones básicas
+
+          </li>
+
+          <li>
+
+            Resolución de problemas
+
+          </li>
+
+        </ul>
+
+      </div>
+
+      <div class="video-card">
+
+        <div class="video-placeholder">
+
+          VIDEO
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- BOTONES -->
+    <!-- ===================================== -->
+
+    <div class="acciones">
+
+      <button
+        class="btn-comenzar"
+        (click)="iniciarQuiz()"
+      >
+
+        Comenzar
+
+      </button>
+
+      <button
+        class="btn-saltar"
+        (click)="iniciarQuiz()"
+      >
+
+        Omitir recurso
+
+      </button>
+
+    </div>
+
+  </main>
+
+</div>

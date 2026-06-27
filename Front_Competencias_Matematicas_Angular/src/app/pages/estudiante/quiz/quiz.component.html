@@ -1,0 +1,550 @@
+<div class="pagina">
+
+  <!-- ===================================== -->
+  <!-- CABECERA -->
+  <!-- ===================================== -->
+
+  <header class="topbar">
+
+    <div>
+
+      <h2>
+
+        Evaluación en Curso
+
+      </h2>
+
+      <p>
+
+        {{ nombreCompetencia }}
+        ·
+        {{ nombreSubmodulo }}
+        ·
+        {{ nombreDificultad }}
+
+      </p>
+
+    </div>
+
+    <div class="usuario">
+
+      👨‍🎓
+      {{ nombreEstudiante }}
+
+    </div>
+
+  </header>
+
+  <!-- ===================================== -->
+  <!-- CARGANDO -->
+  <!-- ===================================== -->
+
+  <div
+    *ngIf="cargandoQuiz"
+    class="cargando"
+  >
+    Cargando preguntas...
+  </div>
+
+  <!-- ===================================== -->
+  <!-- CONTENIDO -->  
+  <!-- ===================================== -->
+
+  <div
+
+    class="contenedor"
+
+  >
+
+    <!-- ===================================== -->
+    <!-- PANEL IZQUIERDO -->
+    <!-- ===================================== -->
+
+    <div class="contenido-principal">
+
+      <!-- PROGRESO -->
+
+      <div class="progreso-card">
+
+        <div class="progreso-info">
+
+          <span>
+
+            Pregunta
+
+            {{ preguntaActual + 1 }}
+
+            de
+
+            {{ preguntas.length }}
+
+          </span>
+
+          <span>
+
+            {{
+
+              porcentajeProgreso()
+
+              | number:'1.0-0'
+
+            }}%
+
+          </span>
+
+        </div>
+
+        <div class="barra">
+
+          <div
+
+            class="barra-llenado"
+
+            [style.width.%]="
+              porcentajeProgreso()
+            "
+
+          ></div>
+
+        </div>
+
+      </div>
+
+      <!-- ===================================== -->
+      <!-- PREGUNTA -->
+      <!-- ===================================== -->
+
+      <div class="pregunta-card">
+
+        <h2>
+
+          {{ preguntaActualObjeto?.pregunta }}
+
+        </h2>
+
+        
+
+      <!-- ===================================== -->
+      <!-- OPCIONES -->
+      <!-- ===================================== -->
+
+      <div class="opciones">
+
+        <button
+
+          class="opcion"
+
+          [class.seleccionada]="
+            !preguntaRespondida &&
+            respuestaSeleccionada === 'A'
+          "
+
+          [class.correcta]="
+            preguntaRespondida &&
+            respuestaCorrecta === 'A'
+          "
+
+          [class.incorrecta]="
+            respuestasIncorrectas.includes('A')
+          "
+
+          [disabled]="
+            preguntaRespondida ||
+            opcionesBloqueadas.includes('A')
+          "
+
+          (click)="
+            seleccionarRespuesta('A')
+          "
+
+        >
+
+          <strong>A.</strong>
+
+          {{ preguntaActualObjeto?.opcion_a }}
+
+        </button>
+
+        <button
+
+          class="opcion"
+
+          [class.seleccionada]="
+            !preguntaRespondida &&
+            respuestaSeleccionada === 'B'
+          "
+
+          [class.correcta]="
+            preguntaRespondida &&
+            respuestaCorrecta === 'B'
+          "
+
+          [class.incorrecta]="
+            respuestasIncorrectas.includes('B')
+          "
+
+          [disabled]="
+            preguntaRespondida ||
+            opcionesBloqueadas.includes('B')
+          "
+
+          (click)="
+            seleccionarRespuesta('B')
+          "
+
+        >
+
+          <strong>B.</strong>
+
+          {{ preguntaActualObjeto?.opcion_b }}
+
+        </button>
+
+        <button
+
+          class="opcion"
+
+          [class.seleccionada]="
+            !preguntaRespondida &&
+            respuestaSeleccionada === 'C'
+          "
+
+          [class.correcta]="
+            preguntaRespondida &&
+            respuestaCorrecta === 'C'
+          "
+
+          [class.incorrecta]="
+            respuestasIncorrectas.includes('C')
+          "
+
+          [disabled]="
+            preguntaRespondida ||
+            opcionesBloqueadas.includes('C')
+          "
+
+          (click)="
+            seleccionarRespuesta('C')
+          "
+
+        >
+
+          <strong>C.</strong>
+
+          {{ preguntaActualObjeto?.opcion_c }}
+
+        </button>
+
+        <button
+
+          class="opcion"
+
+          [class.seleccionada]="
+            !preguntaRespondida &&
+            respuestaSeleccionada === 'D'
+          "
+
+          [class.correcta]="
+            preguntaRespondida &&
+            respuestaCorrecta === 'D'
+          "
+
+          [class.incorrecta]="
+            respuestasIncorrectas.includes('D')
+          "
+
+          [disabled]="
+            preguntaRespondida ||
+            opcionesBloqueadas.includes('D')
+          "
+
+          (click)="
+            seleccionarRespuesta('D')
+          "
+
+        >
+
+          <strong>D.</strong>
+
+          {{ preguntaActualObjeto?.opcion_d }}
+
+        </button>
+
+      </div>
+
+      <!-- ===================================== -->
+      <!-- EXPLICACION -->
+      <!-- ===================================== -->
+
+      <div
+
+        class="explicacion"
+
+        *ngIf="
+          mostrarExplicacion
+        "
+
+      >
+
+        <h3>
+
+          ✅ Respuesta correcta:
+
+          {{ respuestaCorrecta }}
+
+        </h3>
+
+        <p>
+
+          {{ justificacion }}
+
+        </p>
+
+      </div>
+
+      <!-- ===================================== -->
+      <!-- BOTONES -->
+      <!-- ===================================== -->
+
+      <div class="acciones">
+
+        <button
+
+          *ngIf="
+            !esUltimaPregunta()
+          "
+
+          class="btn-siguiente"
+
+          (click)="
+            siguientePregunta()
+          "
+
+        >
+
+          Siguiente →
+
+        </button>
+
+        <button
+
+          *ngIf="
+            esUltimaPregunta()
+          "
+
+          class="btn-finalizar"
+
+          (click)="
+            finalizarUltimaPregunta()
+          "
+
+        >
+
+          Finalizar Quiz
+
+        </button>
+
+      </div>
+
+    </div>
+    </div>
+
+    <!-- ===================================== -->
+    <!-- PANEL DERECHO -->
+    <!-- ===================================== -->
+
+    <aside class="panel">
+
+      <!-- INTENTOS -->
+
+      <div class="panel-card">
+
+        <h3>
+
+          Intentos disponibles
+
+        </h3>
+
+        <div class="intentos">
+
+          <span
+            [class.activo]="
+              intentosRestantes >= 1
+            "
+          >
+            ●
+          </span>
+
+          <span
+            [class.activo]="
+              intentosRestantes >= 2
+            "
+          >
+            ●
+          </span>
+
+          <span
+            [class.activo]="
+              intentosRestantes >= 3
+            "
+          >
+            ●
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- TIEMPO -->
+
+      <div class="panel-card">
+
+        <h3>
+
+          Tiempo restante
+
+        </h3>
+
+        <div class="tiempo">
+
+          {{ minutos }}:{{ segundos }}
+
+        </div>
+
+      </div>
+
+      <!-- PREGUNTAS -->
+
+      <div class="card-progreso">
+
+        <h3>Progreso</h3>
+
+        <div class="preguntas-grid">
+
+          <div
+
+            *ngFor="
+              let estado of estadoPreguntas;
+              let i = index
+            "
+
+            class="numero"
+
+            [ngClass]="estado"
+
+          >
+
+            {{ i + 1 }}
+
+          </div>
+
+        </div>
+
+        <div class="leyenda">
+
+          <div class="item">
+
+            <span class="color correcta"></span>
+
+            <span>Correcta</span>
+
+          </div>
+
+          <div class="item">
+
+            <span class="color incorrecta"></span>
+
+            <span>Incorrecta</span>
+
+          </div>
+
+          <div class="item">
+
+            <span class="color actual"></span>
+
+            <span>Actual</span>
+
+          </div>
+
+          <div class="item">
+
+            <span class="color sin_responder"></span>
+
+            <span>Sin responder</span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- ===================================== -->
+  <!-- MODAL ERROR -->
+  <!-- ===================================== -->
+
+  <div
+
+    class="modal-fondo"
+
+    *ngIf="
+      mostrarModalError
+    "
+
+  >
+
+    <div class="modal">
+
+      <h2>
+
+        ❌ Respuesta incorrecta
+
+      </h2>
+
+      <p>
+
+        ¿Deseas utilizar un intento
+        para volver a responder?
+
+      </p>
+
+      <div class="modal-botones">
+
+        <button
+
+          class="btn-reintentar"
+
+          (click)="
+            reintentar()
+          "
+
+        >
+
+          Sí, reintentar
+
+        </button>
+
+        <button
+
+          class="btn-continuar"
+
+          (click)="
+            continuarSinIntento()
+          "
+
+        >
+
+          No, continuar
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

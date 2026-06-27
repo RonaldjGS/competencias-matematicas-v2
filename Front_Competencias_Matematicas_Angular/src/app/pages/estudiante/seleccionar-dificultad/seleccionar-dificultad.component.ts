@@ -62,8 +62,8 @@ implements OnInit {
   // DIFICULTAD
   // =====================================
 
-  dificultadSeleccionada =
-    'Básico';
+  dificultadSeleccionada:
+    string | null = null;
 
   dificultades = [
 
@@ -180,6 +180,22 @@ implements OnInit {
 
     if (
 
+      !this.dificultadSeleccionada
+
+    ) {
+
+      alert(
+
+        'Debe seleccionar una dificultad antes de continuar.'
+
+      );
+
+      return;
+
+    }
+
+    if (
+
       isPlatformBrowser(
         this.platformId
       )
@@ -212,7 +228,7 @@ implements OnInit {
 
     this.router.navigate([
 
-      '/videos'
+      '/video-introductorio'
 
     ]);
 

@@ -5,6 +5,14 @@ from sqlalchemy.orm import Session
 
 from app.database.database import get_db
 
+from app.core.auth import (
+    get_current_profesor
+)
+
+from app.models.usuarios import (
+    Profesor
+)
+
 from app.models.catalogos import (
     NivelEducativo,
     Carrera,
@@ -203,6 +211,34 @@ def listar_temas_por_nivel(
         )
         .filter(
             Tema.id_nivel == id_nivel,
+            Tema.estado == True
+        )
+        .all()
+    )
+    
+# ==========================================
+# TEMAS DEL PROFESOR LOGUEADO
+# ==========================================
+
+@router.get(
+    "/temas-profesor",
+    response_model=list[TemaOut]
+)
+def listar_temas_profesor(
+    profesor: Profesor = Depends(
+        get_current_profesor
+    ),
+    db: Session = Depends(get_db)
+):
+
+    return (
+        db.query(
+            Tema
+        )
+        .filter(
+            Tema.id_nivel ==
+            profesor.id_nivel,
+
             Tema.estado == True
         )
         .all()

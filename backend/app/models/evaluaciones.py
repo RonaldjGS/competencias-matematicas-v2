@@ -13,6 +13,10 @@ from sqlalchemy.sql import func
 
 from app.database.base import Base
 
+from datetime import datetime
+
+from sqlalchemy import DateTime
+
 
 
 
@@ -129,6 +133,14 @@ class ResultadoQuiz(Base):
         primary_key=True,
         index=True
     )
+    
+    id_intento = Column(
+        Integer,
+        ForeignKey(
+            "intentos_quiz.id_intento"
+        ),
+        nullable=False
+    )
 
     id_estudiante = Column(
         Integer,
@@ -166,6 +178,11 @@ class ResultadoQuiz(Base):
         Float,
         nullable=False
     )
+    
+    porcentaje = Column(
+        Float,
+        nullable=False
+    )
 
     correctas = Column(
         Integer,
@@ -192,6 +209,11 @@ class ResultadoQuiz(Base):
         Integer,
         nullable=False,
         default=1
+    )
+    
+    nivel_desempeno = Column(
+        String(40),
+        nullable=False
     )
     
     retroalimentacion = Column(
@@ -249,6 +271,11 @@ class ResultadoDetalle(Base):
         ),
         nullable=False
     )
+    
+    numero_pregunta = Column(
+        Integer,
+        nullable=False
+    )
 
     respuesta_estudiante = Column(
         String(1),
@@ -265,7 +292,7 @@ class ResultadoDetalle(Base):
         nullable=False
     )
     
-    tiempo_pregunta = Column(
+    tiempo_respuesta = Column(
         Integer,
         nullable=False,
         default=0
@@ -305,10 +332,32 @@ class IntentoDetalle(Base):
         ),
         nullable=False
     )
+    
+    numero_pregunta = Column(
+        Integer,
+        nullable=False
+    )
+
+    respuesta_estudiante = Column(
+        String(1),
+        nullable=False
+    )
+
+    es_correcta = Column(
+        Boolean,
+        nullable=False,
+        default=False
+    )
+
+    tiempo_respuesta = Column(
+        Integer,
+        nullable=False,
+        default=0
+    )
 
     opcion_fallida = Column(
         String(1),
-        nullable=False
+        nullable=True
     )
 
     fecha = Column(
@@ -376,6 +425,17 @@ class IntentoQuiz(Base):
     fecha_inicio = Column(
         DateTime(timezone=True),
         server_default=func.now()
+    )
+    
+    fecha_fin = Column(
+        DateTime,
+        nullable=True
+    )
+
+    abandonado = Column(
+        Boolean,
+        default=False,
+        nullable=False
     )
 
     fecha_actualizacion = Column(

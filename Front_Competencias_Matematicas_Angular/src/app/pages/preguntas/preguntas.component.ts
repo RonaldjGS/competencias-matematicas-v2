@@ -149,8 +149,18 @@ implements OnInit {
 
   cargarTemas(): void {
 
+    const idNivel = Number(
+
+      localStorage.getItem(
+        'id_nivel'
+      )
+
+    );
+
     this.catalogosService
-      .obtenerTemas()
+      .obtenerTemasPorNivel(
+        idNivel
+      )
       .subscribe({
 
         next: (data: any) => {

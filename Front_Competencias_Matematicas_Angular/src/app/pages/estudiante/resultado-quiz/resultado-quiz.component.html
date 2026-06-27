@@ -1,0 +1,397 @@
+<div class="pagina">
+
+    <header class="topbar">
+
+        <div class="logo">
+
+            Entrena Tus Competencias
+            <br>
+            Matemáticas
+
+        </div>
+
+        <div class="usuario">
+
+            Bienvenido,
+
+            {{ nombreEstudiante }}
+
+            👨‍🎓
+
+        </div>
+
+    </header>
+
+    <div class="contenedor">
+
+        <header class="cabecera">
+
+            <div class="icono-cabecera">
+
+                <i class="bi bi-bar-chart-line-fill"></i>
+
+            </div>
+
+            <div>
+
+                <h1>
+
+                    Resumen de desempeño
+
+                </h1>
+
+                <p>
+
+                    Has finalizado tu evaluación, revisa tus resultados y sigue mejorando
+
+                </p>
+
+            </div>
+
+        </header>
+
+    </div>
+    <!-- ===================================== -->
+    <!-- RESUMEN PRINCIPAL -->
+    <!-- ===================================== -->
+
+    <div
+    class="tarjeta-resumen"
+    [ngClass]="colorNivel">
+
+        <!-- IZQUIERDA -->
+
+        <div class="panel-nivel">
+
+            <div class="estrellas">
+
+                <i
+                *ngFor="let s of estrellas"
+                class="bi bi-star-fill">
+                </i>
+
+            </div>
+
+            <h3>
+
+                Nivel de desempeño
+
+            </h3>
+
+            <h1>
+
+                {{ nivelDesempeno }}
+
+            </h1>
+
+            <p>
+
+                {{ retroalimentacion }}
+
+            </p>
+
+        </div>
+
+        <!-- CENTRO -->
+
+        <div class="panel-precision">
+
+            <h3>
+
+                Precisión general
+
+            </h3>
+
+            <h1>
+
+                {{ porcentaje }}%
+
+            </h1>
+
+            <span>
+
+                {{ correctas }}
+                de
+                {{ totalPreguntas }}
+                correctas
+
+            </span>
+
+        </div>
+
+        <!-- DERECHA -->
+
+        <div class="panel-circulo">
+
+            <div
+            class="circulo"
+            [style.--porcentaje]="porcentaje + '%'">
+
+                {{ porcentaje }}%
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- TARJETAS DE ESTADÍSTICAS -->
+    <!-- ===================================== -->
+
+    <div class="estadisticas">
+
+        <!-- Correctas -->
+
+        <div class="card-estadistica">
+
+            <i class="bi bi-check-circle-fill icono verde"></i>
+
+            <h2>
+
+                {{ correctas }}
+
+            </h2>
+
+            <h3>
+
+                Correctas
+
+            </h3>
+
+            <span>
+
+                {{ porcentaje }}% del total
+
+            </span>
+
+        </div>
+
+        <!-- Incorrectas -->
+
+        <div class="card-estadistica">
+
+            <i class="bi bi-x-circle-fill icono rojo"></i>
+
+            <h2>
+
+                {{ incorrectas }}
+
+            </h2>
+
+            <h3>
+
+                Incorrectas
+
+            </h3>
+
+            <span>
+
+                {{ 100 - porcentaje }}% del total
+
+            </span>
+
+        </div>
+
+        <!-- Tiempo -->
+
+        <div class="card-estadistica">
+
+            <i class="bi bi-stopwatch icono morado"></i>
+
+            <h2>
+
+                {{ tiempoSegundos }} s
+
+            </h2>
+
+            <h3>
+
+                Tiempo total
+
+            </h3>
+
+            <span>
+
+                Duración del quiz
+
+            </span>
+
+        </div>
+
+        <!-- Intentos -->
+
+        <div class="card-estadistica">
+
+            <i class="bi bi-arrow-clockwise icono gris"></i>
+
+            <h2>
+
+                {{ intentosUtilizados }}
+
+            </h2>
+
+            <h3>
+
+                Intentos utilizados
+
+            </h3>
+
+            <span>
+
+                Reintentos empleados
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- GRÁFICO Y ACCIONES -->
+    <!-- ===================================== -->
+
+    <div class="panel-inferior">
+
+        <!-- Gráfico -->
+
+        <div class="grafico-card">
+
+            <h2>
+
+                Distribución de respuestas
+
+            </h2>
+
+            <div class="contenedor-grafico">
+
+                <canvas
+                id="graficoResultado">
+                </canvas>
+
+                <div class="centro-grafico">
+
+                    <h2>
+
+                        {{ porcentaje }}%
+
+                    </h2>
+
+                    <span>
+
+                        Precisión
+
+                    </span>
+
+                </div>
+
+                <div class="leyenda">
+
+                    <div>
+
+                        <span class="verde"></span>
+
+                        Correctas
+
+                        <strong>
+
+                            {{ correctas }}
+
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span class="rojo"></span>
+
+                        Incorrectas
+
+                        <strong>
+
+                            {{ incorrectas }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Botones -->
+
+        <div class="acciones">
+
+            <button
+            class="btn-outline"
+            (click)="repetirEvaluacion()"
+            >
+
+                <i class="bi bi-arrow-clockwise"></i>
+
+                <div>
+
+                    <strong>
+
+                        Repetir evaluación
+
+                    </strong>
+
+                    <span>
+
+                        Intentar nuevamente
+
+                    </span>
+
+                </div>
+
+            </button>
+
+            <button
+            class="btn-outline"
+            (click)="verEstadisticas()"
+            >
+
+                <i class="bi bi-bar-chart-line"></i>
+
+                <div>
+
+                    <strong>
+
+                        Ver estadísticas
+
+                    </strong>
+
+                    <span>
+
+                        Revisa tu progreso
+
+                    </span>
+
+                </div>
+
+            </button>
+
+            <button
+            class="btn-principal"
+            (click)="irMenuPrincipal()"
+            >
+
+                <i class="bi bi-house-door"></i>
+
+                <span>
+
+                    Ir al menú principal
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

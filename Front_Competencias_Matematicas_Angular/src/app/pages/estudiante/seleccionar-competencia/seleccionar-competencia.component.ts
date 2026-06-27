@@ -137,15 +137,48 @@ implements OnInit {
 
       });
 
+
   }
 
   seleccionarCompetencia(
     competencia: any
   ): void {
 
+    if (
+
+      isPlatformBrowser(
+        this.platformId
+      )
+
+    ) {
+
+      localStorage.setItem(
+
+        'id_competencia',
+
+        competencia.id_competencia
+          .toString()
+
+      );
+
+      localStorage.setItem(
+
+        'nombre_competencia',
+
+        competencia.nombre_competencia
+
+      );
+
+    }
+
     this.quizConfigService
       .setCompetencia(
         competencia.id_competencia
+      );
+
+    this.quizConfigService
+      .setNombreCompetencia(
+        competencia.nombre_competencia
       );
 
     console.log(

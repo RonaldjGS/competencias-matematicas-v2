@@ -48,6 +48,18 @@ import {
   SeleccionarDificultadComponent
 } from './pages/estudiante/seleccionar-dificultad/seleccionar-dificultad.component';
 
+import {
+  VideoIntroductorioComponent
+} from './pages/estudiante/video-introductorio/video-introductorio.component';
+
+import {
+  QuizComponent
+} from './pages/estudiante/quiz/quiz.component';
+
+import {
+  ResultadoQuizComponent
+} from './pages/estudiante/resultado-quiz/resultado-quiz.component';
+
 export const routes: Routes = [
 
   {
@@ -114,7 +126,22 @@ export const routes: Routes = [
   {
   path: 'seleccionar-dificultad',
   component: SeleccionarDificultadComponent
-  }
+  },
+
+  {
+  path: 'video-introductorio',
+  component: VideoIntroductorioComponent
+  },
+
+  {
+  path: 'quiz',
+  component: QuizComponent
+  },
+
+  {
+    path: 'resultado-quiz/:id',
+    component: ResultadoQuizComponent
+}
 
 
 ];

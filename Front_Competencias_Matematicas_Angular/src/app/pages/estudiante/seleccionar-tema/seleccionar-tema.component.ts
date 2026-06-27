@@ -175,6 +175,11 @@ implements OnInit {
 
     ) {
 
+      localStorage.setItem(
+        'id_tema',
+        tema.id_tema
+      );
+
         localStorage.setItem(
 
         'nombre_tema',
@@ -191,6 +196,11 @@ implements OnInit {
         tema.id_tema
 
         );
+
+    this.quizConfigService
+      .setNombreTema(
+        tema.nombre_tema
+      );
 
     this.router.navigate([
 
