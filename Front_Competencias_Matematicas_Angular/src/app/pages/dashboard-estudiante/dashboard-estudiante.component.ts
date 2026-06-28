@@ -11,12 +11,35 @@ import {
   Router
 } from '@angular/router';
 
+import { TopbarEstudianteComponent } from '../../components/topbar-estudiante/topbar-estudiante.component';
+
+import { SidebarEstudianteComponent } from '../../components/sidebar-estudiante/sidebar-estudiante.component';
+
+import {
+
+  DashboardEstudianteService
+
+} from '../../services/dashboard-estudiante.service';
+
+import {
+
+  ChangeDetectorRef
+
+} from '@angular/core';
+
 @Component({
   selector: 'app-dashboard-estudiante',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+
+    TopbarEstudianteComponent,
+
+    SidebarEstudianteComponent
   ],
+
+  
+
   templateUrl:
     './dashboard-estudiante.component.html',
 
@@ -30,11 +53,13 @@ implements OnInit {
 
   idNivel = 0;
 
+  idEstudiante = 0;
+
   tituloModulo = '';
 
   descripcionModulo = '';
 
-  menuAbierto = true;
+  menuAbierto = false;
 
   ejerciciosCompletados:
   number | null = null;
@@ -48,8 +73,20 @@ implements OnInit {
   evaluacionesRealizadas:
   number | null = null;
 
+  ranking:any[]=[];
+
+  miPosicion=0;
+
+  actividades: any[] = [];
+
   constructor(
-  private router: Router
+
+    private router: Router,
+
+    private dashboardService: DashboardEstudianteService,
+
+    private cdr: ChangeDetectorRef
+
   ) {}
 
   ngOnInit(): void {
@@ -68,7 +105,23 @@ implements OnInit {
 
     );
 
+    this.idEstudiante = Number(
+
+      localStorage.getItem(
+
+        'id_estudiante'
+
+      )
+
+    );
+
     this.configurarModulo();
+
+    this.cargarResumen();
+
+    this.cargarRanking();
+
+    this.cargarActividadReciente();
 
   }
 
@@ -118,6 +171,134 @@ implements OnInit {
 
   }
 
+  cargarResumen(): void {
+
+    this.dashboardService
+
+      .obtenerResumen(
+
+        this.idEstudiante
+
+      )
+
+      .subscribe({
+
+        next: (resp) => {
+
+          console.log(
+
+            'RESUMEN DASHBOARD'
+
+          );
+
+          console.log(resp);
+
+          this.ejerciciosCompletados =
+
+            resp.ejercicios_completados;
+
+          this.porcentajeAciertos =
+
+            resp.porcentaje_aciertos != null
+
+            ? Number(resp.porcentaje_aciertos.toFixed(1))
+
+            : null;
+
+          this.tiempoPromedio =
+
+            resp.tiempo_promedio != null
+
+            ? this.formatearTiempo(
+
+                resp.tiempo_promedio
+
+              )
+
+            : null;
+
+          this.evaluacionesRealizadas =
+
+            resp.evaluaciones_realizadas;
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (err) => {
+
+          console.error(err);
+
+        }
+
+      });
+
+  }
+
+  cargarRanking(){
+
+    this.dashboardService
+
+    .obtenerRanking(
+
+        this.idEstudiante
+
+    )
+
+    .subscribe({
+
+        next:(resp)=>{
+
+            this.ranking=resp.top;
+
+            this.miPosicion=resp.mi_posicion;
+
+            this.cdr.detectChanges();
+
+        },
+
+        error:(err)=>{
+
+            console.log(err);
+
+        }
+
+    });
+
+}
+
+cargarActividadReciente(){
+
+    this.dashboardService
+
+        .obtenerActividadReciente(
+
+            this.idEstudiante
+
+        )
+
+        .subscribe({
+
+            next:(respuesta)=>{
+
+                this.actividades =
+
+                    respuesta.actividades;
+
+                this.cdr.detectChanges();
+
+            },
+
+            error:(error)=>{
+
+                console.error(error);
+
+            }
+
+        });
+
+}
+
   toggleMenu(): void {
 
     this.menuAbierto =
@@ -130,6 +311,36 @@ implements OnInit {
     this.router.navigate([
       '/seleccionar-competencia'
     ]);
+
+  }
+
+  cerrarSesion(): void {
+
+    localStorage.clear();
+
+    this.router.navigate([
+      '/login-estudiante'
+    ]);
+
+  }
+
+  formatearTiempo(segundos: number): string {
+
+    if (segundos < 60) {
+
+      return `${segundos} s`;
+
+    }
+
+    const minutos = Math.floor(
+
+      segundos / 60
+
+    );
+
+    const resto = segundos % 60;
+
+    return `${minutos} min ${resto} s`;
 
   }
 

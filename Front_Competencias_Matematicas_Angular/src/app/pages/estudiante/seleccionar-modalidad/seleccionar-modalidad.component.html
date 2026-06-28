@@ -4,104 +4,17 @@
   <!-- HEADER -->
   <!-- ===================================== -->
 
-  <header class="topbar">
-
-    <div class="logo">
-
-      Entrena Tus Competencias
-      <br>
-      Matemáticas
-
-    </div>
-
-    <div class="usuario">
-
-      Bienvenido,
-      {{ nombreEstudiante }}
-
-      👨‍🎓
-
-    </div>
-
-  </header>
+  <app-topbar-estudiante
+    [nombreEstudiante]="nombreEstudiante">
+  </app-topbar-estudiante>
 
   <!-- ===================================== -->
   <!-- SIDEBAR -->
   <!-- ===================================== -->
 
-  <aside
-    class="sidebar"
-    [class.abierto]="menuAbierto"
-  >
-
-    <button
-      class="btn-menu"
-      (click)="toggleMenu()"
-    >
-      ☰
-    </button>
-
-    <ul>
-
-      <li>
-
-        <span class="icono-menu">
-          🏠
-        </span>
-
-        <span
-          *ngIf="menuAbierto"
-        >
-          Inicio
-        </span>
-
-      </li>
-
-      <li>
-
-        <span class="icono-menu">
-          📈
-        </span>
-
-        <span
-          *ngIf="menuAbierto"
-        >
-          Mi progreso
-        </span>
-
-      </li>
-
-      <li>
-
-        <span class="icono-menu">
-          👤
-        </span>
-
-        <span
-          *ngIf="menuAbierto"
-        >
-          Perfil
-        </span>
-
-      </li>
-
-      <li>
-
-        <span class="icono-menu">
-          ⚙️
-        </span>
-
-        <span
-          *ngIf="menuAbierto"
-        >
-          Configuración
-        </span>
-
-      </li>
-
-    </ul>
-
-  </aside>
+  <app-sidebar-estudiante
+    [(menuAbierto)]="menuAbierto">
+  </app-sidebar-estudiante>
 
   <!-- ===================================== -->
   <!-- CONTENIDO -->
@@ -120,7 +33,7 @@
         class="btn-volver"
         (click)="volver()"
       >
-        ←
+        <i class="bi bi-arrow-left"></i>
       </button>
 
       <div>
@@ -152,7 +65,7 @@
 
         <div class="modulo-icono">
 
-          📚
+          <i class="bi bi-journal-bookmark-fill"></i>
 
         </div>
 
@@ -188,8 +101,11 @@
 
       <div class="estadisticas-titulo">
 
-        📊 Tus estadísticas
-        en este módulo
+        <i class="bi bi-bar-chart-line-fill"></i>
+
+        <span>
+            Tus estadísticas en este módulo
+        </span>
 
       </div>
 
@@ -199,7 +115,7 @@
 
           <div class="stat-icono">
 
-            🎯
+            <i class="bi bi-bullseye"></i>
 
           </div>
 
@@ -225,7 +141,7 @@
 
           <div class="stat-icono">
 
-            🕒
+            <i class="bi bi-clock-history"></i>
 
           </div>
 
@@ -251,7 +167,7 @@
 
           <div class="stat-icono">
 
-            📖
+            <i class="bi bi-journal-check"></i>
 
           </div>
 
@@ -303,7 +219,7 @@
 
           <div class="icono">
 
-            📋
+            <i class="bi bi-clipboard-check"></i>
 
           </div>
 
@@ -361,7 +277,9 @@
               "
             >
 
-              🔒 Disponible al completar
+              <i class="bi bi-lock-fill"></i>
+
+               Disponible al completar
               el nivel anterior
 
             </div>
@@ -405,7 +323,7 @@
             "
           >
 
-            🔒 Bloqueado
+            <i class="bi bi-lock-fill"></i> Bloqueado
 
           </span>
 

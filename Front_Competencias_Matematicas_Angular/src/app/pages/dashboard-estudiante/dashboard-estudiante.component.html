@@ -1,257 +1,367 @@
-<div class="dashboard-container">
+<div class="pagina">
 
-  <!-- ===================================== -->
-  <!-- SIDEBAR -->
-  <!-- ===================================== -->
+    <!-- ===================================== -->
+    <!-- TOPBAR -->
+    <!-- ===================================== -->
 
-  <aside
-    class="sidebar"
-    [class.collapsed]="!menuAbierto"
-  >
+    <app-topbar-estudiante
+        [nombreEstudiante]="nombreEstudiante">
+    </app-topbar-estudiante>
 
-    <button
-      class="menu-btn"
-      (click)="toggleMenu()"
-    >
-      ☰
-    </button>
+    <div class="dashboard-container">
 
-    <ul>
+        <!-- ===================================== -->
+        <!-- SIDEBAR -->
+        <!-- ===================================== -->
 
-      <li>
+        <app-sidebar-estudiante
+            [(menuAbierto)]="menuAbierto">
+        </app-sidebar-estudiante>
 
-        <span>
-          🏠
-        </span>
+        <!-- ===================================== -->
+        <!-- CONTENIDO -->
+        <!-- ===================================== -->
 
-        <span *ngIf="menuAbierto">
-          Inicio
-        </span>
+        <main
+            class="content"
+            [class.menu-cerrado]="!menuAbierto">
 
-      </li>
+            <div class="dashboard-layout">
 
-      <li>
+                <!-- ===================================== -->
+                <!-- COLUMNA IZQUIERDA -->
+                <!-- ===================================== -->
 
-        <span>
-          📈
-        </span>
+                <section class="dashboard-main">
 
-        <span *ngIf="menuAbierto">
-          Mi progreso
-        </span>
+                    <!-- BIENVENIDA -->
 
-      </li>
+                    <div class="welcome-card">
 
-      <li>
+                        <div class="avatar">
 
-        <span>
-          👤
-        </span>
+                            👨‍🎓
 
-        <span *ngIf="menuAbierto">
-          Perfil
-        </span>
+                        </div>
 
-      </li>
+                        <div>
 
-      <li>
+                            <h1>
 
-        <span>
-          ⚙️
-        </span>
+                                ¡Hola,
+                                {{ nombreEstudiante }}!
 
-        <span *ngIf="menuAbierto">
-          Configuración
-        </span>
+                            </h1>
 
-      </li>
+                            <p>
 
-    </ul>
+                                Continúa entrenando y fortaleciendo
+                                tus competencias matemáticas.
 
-  </aside>
+                            </p>
 
-  <!-- ===================================== -->
-  <!-- CONTENIDO -->
-  <!-- ===================================== -->
+                        </div>
 
-  <main class="content">
+                    </div>
 
-    <!-- HEADER -->
+                    <!-- KPIS -->
 
-    <div class="header">
+                    <div class="stats-grid">
 
-      <div>
+                        <div class="stat-card">
 
-        <h2>
-          Entrena tus Competencias Matemáticas
-        </h2>
+                            <h4>
+                                Ejercicios completados
+                            </h4>
 
-      </div>
+                            <span>
 
-      <div class="usuario">
+                                {{
+                                    ejerciciosCompletados
+                                    ?? '--'
+                                }}
 
-        Bienvenido,
-        {{ nombreEstudiante }}
+                            </span>
 
-      </div>
+                        </div>
+
+                        <div class="stat-card">
+
+                            <h4>
+                                Porcentaje de aciertos
+                            </h4>
+
+                            <span>
+
+                                {{
+                                    porcentajeAciertos != null
+                                    ? porcentajeAciertos + ' %'
+                                    : '--'
+                                }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="stat-card">
+
+                            <h4>
+                                Tiempo promedio
+                            </h4>
+
+                            <span>
+
+                                {{
+                                    tiempoPromedio
+                                    ?? '--'
+                                }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="stat-card">
+
+                            <h4>
+                                Evaluaciones realizadas
+                            </h4>
+
+                            <span>
+
+                                {{
+                                    evaluacionesRealizadas
+                                    ?? '--'
+                                }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- MODULO -->
+
+                    <div class="module-card">
+
+                        <h2>
+
+                            {{ tituloModulo }}
+
+                        </h2>
+
+                        <p>
+
+                            {{ descripcionModulo }}
+
+                        </p>
+
+                        <button
+                            class="btn-comenzar"
+                            (click)="irSeleccionCompetencia()">
+
+                            Comenzar
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+                <!-- ===================================== -->
+                <!-- COLUMNA DERECHA -->
+                <!-- ===================================== -->
+
+                <aside class="dashboard-side">
+
+                    <!-- Ranking -->
+
+                    <div class="ranking-card">
+
+                        <h3>
+
+                            Top estudiantes
+                            <span>(Semanal)</span>
+
+                        </h3>
+
+                        <div class="ranking-empty">
+
+                            <div class="ranking-lista">
+
+                              <div
+
+                                  class="ranking-item"
+
+                                  *ngFor="let estudiante of ranking"
+
+                              >
+
+                                   <!-- POSICIÓN -->
+
+                                  <div class="ranking-posicion">
+
+                                    <span *ngIf="estudiante.posicion==1">🥇</span>
+
+                                    <span *ngIf="estudiante.posicion==2">🥈</span>
+
+                                    <span *ngIf="estudiante.posicion==3">🥉</span>
+
+                                    <span *ngIf="estudiante.posicion>3">
+
+                                      {{estudiante.posicion}}
+
+                                    </span>
+
+                                  </div>
+
+                                  <!-- AVATAR -->
+
+                                  <div class="ranking-avatar">
+
+                                    <i class="bi bi-person-circle"></i>
+
+                                  </div>
+
+                                  <!-- INFORMACIÓN -->
+
+                                  <div class="ranking-info">
+
+                                    <strong>
+
+                                        {{estudiante.nombre}}
+
+                                    </strong>
+
+                                    <small>
+
+                                        {{estudiante.porcentaje}} %
+
+                                    </small>
+
+                                </div>
+
+                                  <!-- PUNTAJE -->
+
+                                  <div class="ranking-puntos">
+
+                                      {{estudiante.puntaje}}
+
+                                  </div>
+
+                              </div>
+
+                          </div>
+
+                          <div
+
+                              class="mi-posicion"
+
+                              *ngIf="miPosicion>0"
+
+                          >
+
+                              Mi posición:
+
+                              <strong>
+
+                                  #{{miPosicion}}
+
+                              </strong>
+
+                          </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- INFORMACIÓN -->
+
+                    <div class="info-card">
+
+                        <h3>
+
+                            Actividad reciente
+
+                        </h3>
+
+                        <div class="activity-lista">
+
+                            <div
+                                class="activity-item"
+                                *ngFor="let actividad of actividades"
+                            >
+
+                                <!-- Icono -->
+
+                                <div
+                                    class="activity-icono"
+                                    [ngClass]="{
+
+                                        'excelente': actividad.nivel=='Excelente',
+
+                                        'competente': actividad.nivel=='Competente',
+
+                                        'desarrollo': actividad.nivel=='En desarrollo',
+
+                                        'insuficiente': actividad.nivel=='Insuficiente'
+
+                                    }"
+                                >
+
+                                    <i
+                                        class="bi bi-check-circle-fill"
+                                        *ngIf="actividad.nivel=='Excelente'"
+                                    ></i>
+
+                                    <i
+                                        class="bi bi-check-circle"
+                                        *ngIf="actividad.nivel=='Competente'"
+                                    ></i>
+
+                                    <i
+                                        class="bi bi-exclamation-circle"
+                                        *ngIf="actividad.nivel=='En desarrollo'"
+                                    ></i>
+
+                                    <i
+                                        class="bi bi-x-circle"
+                                        *ngIf="actividad.nivel=='Insuficiente'"
+                                    ></i>
+
+                                </div>
+
+                                <!-- Información -->
+
+                                <div class="activity-info">
+
+                                    <strong>
+
+                                        {{ actividad.titulo }}
+
+                                    </strong>
+
+                                    <small>
+
+                                        {{ actividad.porcentaje }} %
+                                        ·
+                                        {{ actividad.nivel }}
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </main>
 
     </div>
-
-    <!-- ===================================== -->
-    <!-- BIENVENIDA -->
-    <!-- ===================================== -->
-
-    <div class="welcome-card">
-
-      <div class="avatar">
-
-        👨‍🎓
-
-      </div>
-
-      <div>
-
-        <h1>
-
-          ¡Hola,
-          {{ nombreEstudiante }}!
-
-        </h1>
-
-        <p>
-
-          Continúa entrenando y fortaleciendo
-          tus competencias matemáticas.
-
-        </p>
-
-      </div>
-
-    </div>
-
-    <!-- ===================================== -->
-    <!-- KPIS -->
-    <!-- ===================================== -->
-
-    <div class="stats-grid">
-
-      <div class="stat-card">
-
-        <h4>
-          Ejercicios completados
-        </h4>
-
-        <span>
-
-          {{
-            ejerciciosCompletados
-            ?? '--'
-          }}
-
-        </span>
-
-      </div>
-
-      <div class="stat-card">
-
-        <h4>
-          Porcentaje de aciertos
-        </h4>
-
-        <span>
-
-          {{
-            porcentajeAciertos
-            ?? '--'
-          }}
-
-        </span>
-
-      </div>
-
-      <div class="stat-card">
-
-        <h4>
-          Tiempo promedio
-        </h4>
-
-        <span>
-
-          {{
-            tiempoPromedio
-            ?? '--'
-          }}
-
-        </span>
-
-      </div>
-
-      <div class="stat-card">
-
-        <h4>
-          Evaluaciones realizadas
-        </h4>
-
-        <span>
-
-          {{
-            evaluacionesRealizadas
-            ?? '--'
-          }}
-
-        </span>
-
-      </div>
-
-    </div>
-
-    <!-- ===================================== -->
-    <!-- MODULO -->
-    <!-- ===================================== -->
-
-    <div class="module-card">
-
-      <h2>
-
-        {{ tituloModulo }}
-
-      </h2>
-
-      <p>
-
-        {{ descripcionModulo }}
-
-      </p>
-
-      <button
-        class="btn-comenzar"
-        (click)="irSeleccionCompetencia()"
-        >
-        Comenzar
-      </button>
-
-    </div>
-
-    <!-- ===================================== -->
-    <!-- INFORMACIÓN -->
-    <!-- ===================================== -->
-
-    <div class="info-card">
-
-      <h3>
-        Información
-      </h3>
-
-      <p>
-
-        Aquí se mostrarán tus resultados,
-        recomendaciones y avances conforme
-        completes evaluaciones.
-
-      </p>
-
-    </div>
-
-  </main>
 
 </div>

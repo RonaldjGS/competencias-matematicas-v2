@@ -2,7 +2,9 @@ import {
   Component,
   OnInit,
   Inject,
-  PLATFORM_ID
+  PLATFORM_ID,
+  ChangeDetectorRef,
+  AfterViewInit
 } from '@angular/core';
 
 import {
@@ -22,6 +24,19 @@ import {
   SubmoduloService
 } from '../../../services/submodulo.service';
 
+import {
+  TopbarEstudianteComponent
+} from '../../../components/topbar-estudiante/topbar-estudiante.component';
+
+import {
+  SidebarEstudianteComponent
+} from '../../../components/sidebar-estudiante/sidebar-estudiante.component';
+
+
+import {
+  DashboardEstudianteService
+} from '../../../services/dashboard-estudiante.service';
+
 @Component({
   selector:
     'app-seleccionar-modalidad',
@@ -29,7 +44,11 @@ import {
   standalone: true,
 
   imports: [
-    CommonModule
+    CommonModule,
+    
+    TopbarEstudianteComponent,
+
+    SidebarEstudianteComponent
   ],
 
   templateUrl:
@@ -40,7 +59,7 @@ import {
 })
 
 export class SeleccionarModalidadComponent
-implements OnInit {
+implements OnInit, AfterViewInit {
 
   nombreEstudiante = '';
 
@@ -66,12 +85,19 @@ implements OnInit {
     private submoduloService:
     SubmoduloService,
 
+    private dashboardService:
+    DashboardEstudianteService,
+
+    private cdr: ChangeDetectorRef,
+
     @Inject(PLATFORM_ID)
     private platformId: Object
 
   ) {}
 
   ngOnInit(): void {
+
+    
 
     if (
 
@@ -97,7 +123,22 @@ implements OnInit {
 
     }
 
+    const idEstudiante = Number(
+
+        localStorage.getItem(
+            'id_estudiante'
+        )
+
+    );
+
+    this.cargarResumen(
+        idEstudiante
+    );
+
+    
     this.cargarSubmodulos();
+
+    
 
   }
 
@@ -143,6 +184,8 @@ implements OnInit {
 
             this.submodulos =
             data;
+
+            this.refrescarVista();
 
         },
 
@@ -238,6 +281,78 @@ implements OnInit {
       '/seleccionar-competencia'
 
     ]);
+
+  }
+
+  ngAfterViewInit(): void {
+
+    setTimeout(() => {
+
+        this.refrescarVista();
+
+    });
+
+  }
+
+  cargarResumen(
+      idEstudiante: number
+  ): void {
+
+      this.dashboardService
+      .obtenerResumen(idEstudiante)
+      .subscribe({
+
+          next: (data) => {
+
+              this.precisionPromedio =
+                  `${data.porcentaje_aciertos} %`;
+
+              this.evaluacionesRealizadas =
+                  data.evaluaciones_realizadas;
+
+              this.tiempoPromedio =
+
+                    data.tiempo_promedio != null
+
+                    ? this.formatearTiempo(
+                        data.tiempo_promedio
+                      )
+
+                    : '--';
+
+              this.refrescarVista();
+
+          },
+
+          error: (err) => {
+
+              console.error(err);
+
+          }
+
+      });
+
+  }
+
+  private refrescarVista(): void {
+
+      this.cdr.detectChanges();
+
+  }
+
+  formatearTiempo(segundos: number): string {
+
+      const minutos = Math.floor(segundos / 60);
+
+      const restoSegundos = segundos % 60;
+
+      if (minutos > 0) {
+
+          return `${minutos} min ${restoSegundos} s`;
+
+      }
+
+      return `${restoSegundos} s`;
 
   }
 

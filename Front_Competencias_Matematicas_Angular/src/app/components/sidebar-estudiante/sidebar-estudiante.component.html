@@ -1,0 +1,79 @@
+<!-- ===================================== -->
+    <!-- SIDEBAR -->
+    <!-- ===================================== -->
+
+    <aside
+      class="sidebar"
+      [class.collapsed]="!menuAbierto"
+    >
+
+      <button
+        class="menu-btn"
+        (click)="toggleMenu()"
+      >
+        <i class="bi bi-list"></i>
+      </button>
+
+      <ul>
+
+        <li>
+
+          <i class="bi bi-house"></i>
+
+          <span *ngIf="menuAbierto">
+            Inicio
+          </span>
+
+        </li>
+
+        <li>
+
+          <i class="bi bi-graph-up"></i>
+
+          <span *ngIf="menuAbierto">
+            Mi progreso
+          </span>
+
+        </li>
+
+        <li>
+
+          <i class="bi bi-person"></i>
+
+          <span *ngIf="menuAbierto">
+            Perfil
+          </span>
+
+        </li>
+
+        <li>
+
+          <i class="bi bi-gear"></i>
+
+          <span *ngIf="menuAbierto">
+            Configuración
+          </span>
+
+        </li>
+
+        <li
+          class="cerrar-sesion"
+          (click)="cerrarSesion()">
+
+          <span>
+
+              <i class="bi bi-box-arrow-right"></i>
+
+          </span>
+
+          <span *ngIf="menuAbierto">
+
+              Cerrar sesión
+
+          </span>
+
+        </li>
+
+      </ul>
+
+    </aside>

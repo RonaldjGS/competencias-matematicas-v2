@@ -155,9 +155,9 @@
 
   margin-left:100px;
 
-  margin-top:110px;
+  margin-top:40px;
 
-  padding:30px;
+  padding:15px 25px;
 
   transition:.3s;
 
@@ -196,6 +196,12 @@
   width:70px;
 
   height:70px;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
 
   border:none;
 
@@ -271,15 +277,15 @@
 
 .icono{
 
-  min-width:100px;
+  min-width:90px;
 
-  width:100px;
+  width:90px;
 
-  height:100px;
+  height:90px;
 
   border-radius:50%;
 
-  background:#ead8ff;
+  background:#efe4ff;
 
   display:flex;
 
@@ -288,6 +294,14 @@
   align-items:center;
 
   font-size:40px;
+
+}
+
+.icono i{
+
+    font-size:42px;
+
+    color:#7c3aed;
 
 }
 
@@ -403,6 +417,14 @@
 
 }
 
+.modulo-icono i{
+
+    font-size:42px;
+
+    color:#7c3aed;
+
+}
+
 .modulo-header h2{
 
   margin:0;
@@ -423,11 +445,27 @@
 
   padding:20px 25px;
 
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  padding:20px 25px;
+
   border-top:1px solid #ead0ff;
 
   font-size:28px;
 
   font-weight:700;
+
+}
+
+.estadisticas-titulo i{
+
+    color:#7c3aed;
+
+    font-size:28px;
 
 }
 
@@ -484,7 +522,29 @@
 
 .stat-icono{
 
-  font-size:40px;
+    width:58px;
+
+    height:58px;
+
+    border-radius:50%;
+
+    background:#efe4ff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-shrink:0;
+
+}
+
+.stat-icono i{
+
+    font-size:28px;
+
+    color:#7c3aed;
 
 }
 

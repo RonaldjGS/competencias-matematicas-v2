@@ -1,0 +1,135 @@
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+
+
+.sidebar{
+
+    position: fixed;
+
+    top: 110px;
+
+    left: 0;
+
+    bottom:0;
+
+    width: 240px;
+
+    background: #ffffff;
+
+    border-right: 1px solid #ececec;
+
+    display: flex;
+
+    flex-direction: column;
+
+    transition: .3s;
+
+    z-index: 999;
+
+}
+
+.sidebar.collapsed{
+
+    width: 85px;
+
+}
+
+
+.menu-btn{
+
+    width:52px;
+
+    height:52px;
+
+    margin:18px auto;
+
+    border:none;
+
+    background:transparent;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+}
+
+.menu-btn:hover{
+
+    background:#f3e8ff;
+
+}
+
+.sidebar ul{
+
+    list-style:none;
+
+    display:flex;
+
+    flex-direction:column;
+
+    flex:1;
+
+    margin:0;
+
+    padding:15px 0;
+
+}
+
+.sidebar li{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    padding:18px 25px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    font-size:18px;
+
+}
+
+.sidebar li:hover{
+
+    background:#f3e8ff;
+
+    color:#6d28d9;
+
+}
+
+.sidebar li span:first-child {
+
+  font-size: 26px;
+
+}
+
+.sidebar li i{
+
+    font-size:26px;
+
+}
+
+.cerrar-sesion{
+
+    margin-top:auto;
+
+    border-top:1px solid #ececec;
+
+    color:#dc2626;
+
+}
+
+.cerrar-sesion:hover{
+
+    background:#fef2f2;
+
+    color:#dc2626;
+
+}
+

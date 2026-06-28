@@ -1,6 +1,7 @@
 import {
   Component,
-  OnInit
+  OnInit,
+  AfterViewInit
 } from '@angular/core';
 
 import {
@@ -20,6 +21,16 @@ import {
   QuizConfigService
 } from '../../../services/quiz-config.service';
 
+import { TopbarEstudianteComponent } from '../../../components/topbar-estudiante/topbar-estudiante.component';
+
+import { SidebarEstudianteComponent } from '../../../components/sidebar-estudiante/sidebar-estudiante.component';
+
+import { ChangeDetectorRef } from '@angular/core';
+
+import {
+  DashboardEstudianteService
+} from '../../../services/dashboard-estudiante.service';
+
 import {
   PLATFORM_ID,
   inject
@@ -32,7 +43,11 @@ import {
   standalone: true,
 
   imports: [
-    CommonModule
+    CommonModule,
+
+    TopbarEstudianteComponent,
+  
+    SidebarEstudianteComponent
   ],
 
   templateUrl:
@@ -40,6 +55,7 @@ import {
 
   styleUrl:
     './seleccionar-competencia.component.css'
+
 })
 
 export class SeleccionarCompetenciaComponent
@@ -73,8 +89,13 @@ implements OnInit {
     private competenciaService:
     CompetenciaService,
 
+    private dashboardService:
+    DashboardEstudianteService,
+
     private quizConfigService:
-    QuizConfigService
+    QuizConfigService,
+
+    private cdr: ChangeDetectorRef
 
   ) {}
 
@@ -106,6 +127,8 @@ implements OnInit {
 
     this.cargarCompetencias();
 
+    this.cargarResumen();
+
   }
 
   cargarCompetencias(): void {
@@ -118,6 +141,8 @@ implements OnInit {
 
           this.competencias =
             data;
+
+          this.refrescarVista();
 
           console.log(
             'Competencias:',
@@ -137,6 +162,58 @@ implements OnInit {
 
       });
 
+
+  }
+
+  cargarResumen(): void {
+
+      const idEstudiante = Number(
+
+          localStorage.getItem(
+              'id_estudiante'
+          )
+
+      );
+
+      this.dashboardService
+          .obtenerResumen(idEstudiante)
+          .subscribe({
+
+              next: (data) => {
+
+                  this.precisionPromedio =
+
+                      data.porcentaje_aciertos != null
+                      ? data.porcentaje_aciertos + ' %'
+                      : '--';
+
+                  this.tiempoPromedio =
+
+                    data.tiempo_promedio != null
+
+                    ? this.formatearTiempo(
+                        data.tiempo_promedio
+                      )
+
+                    : '--';
+
+                  this.evaluacionesRealizadas =
+
+                      data.evaluaciones_realizadas
+                      ?? '--';
+
+              },
+
+              error: (error) => {
+
+                  console.error(
+                      'Error cargando resumen',
+                      error
+                  );
+
+              }
+
+          });
 
   }
 
@@ -210,6 +287,38 @@ implements OnInit {
       '/dashboard-estudiante'
 
     ]);
+
+  }
+
+  ngAfterViewInit(): void{
+
+      setTimeout(()=>{
+
+          this.cdr.detectChanges();
+
+      });
+
+  }
+
+  private refrescarVista(): void {
+
+    this.cdr.detectChanges();
+
+  }
+
+  formatearTiempo(segundos: number): string {
+
+      const minutos = Math.floor(segundos / 60);
+
+      const restoSegundos = segundos % 60;
+
+      if (minutos > 0) {
+
+          return `${minutos} min ${restoSegundos} s`;
+
+      }
+
+      return `${restoSegundos} s`;
 
   }
 
