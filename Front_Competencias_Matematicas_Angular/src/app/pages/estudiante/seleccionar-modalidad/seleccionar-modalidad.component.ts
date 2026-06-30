@@ -90,6 +90,8 @@ implements OnInit, AfterViewInit {
 
     private cdr: ChangeDetectorRef,
 
+    
+
     @Inject(PLATFORM_ID)
     private platformId: Object
 

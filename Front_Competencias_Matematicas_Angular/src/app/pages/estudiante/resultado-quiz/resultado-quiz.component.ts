@@ -450,19 +450,8 @@ implements OnInit {
 
   }
 
-  // =====================================
-  // VER ESTADÍSTICAS
-  // =====================================
+  
 
-  verEstadisticas(): void {
-
-    alert(
-
-      'Esta funcionalidad estará disponible próximamente.'
-
-    );
-
-  }
 
   // =====================================
   // MENÚ PRINCIPAL
@@ -473,6 +462,20 @@ implements OnInit {
     this.router.navigate([
 
       '/dashboard-estudiante'
+
+    ]);
+
+  }
+
+  // =====================================
+  // VER ESTADÍSTICAS
+  // =====================================
+
+  irProgreso(): void {
+
+    this.router.navigate([
+
+        '/progreso-estudiante'
 
     ]);
 

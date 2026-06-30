@@ -297,6 +297,8 @@ def guardar_resultado_quiz(
 
         id_tema=
         intento.id_tema,
+        
+        dificultad=intento.dificultad,
 
         puntaje=
         porcentaje,
@@ -619,12 +621,12 @@ def obtener_estado_resultado(
         return "Excelente"
 
     if puntaje >= 75:
-        return "Bueno"
+        return "Competente"
 
     if puntaje >= 50:
-        return "Regular"
+        return "En proceso"
 
-    return "Reforzar"
+    return "En desarrollo"
     
 # ==========================================
 # RETROALIMENTACIÓN

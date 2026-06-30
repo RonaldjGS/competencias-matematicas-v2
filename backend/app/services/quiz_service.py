@@ -26,6 +26,7 @@ def obtener_intento(
     id_competencia: int,
     id_submodulo: int,
     id_tema: int,
+    dificultad:str,
     db: Session
 ):
 
@@ -45,6 +46,8 @@ def obtener_intento(
 
             IntentoQuiz.id_tema ==
             id_tema,
+            
+            IntentoQuiz.dificultad == dificultad,
 
             IntentoQuiz.completado ==
             False
@@ -67,6 +70,7 @@ def crear_intento(
     id_competencia: int,
     id_submodulo: int,
     id_tema: int,
+    dificultad:str,
     db: Session
 ):
 
@@ -128,6 +132,8 @@ def crear_intento(
         id_submodulo=id_submodulo,
 
         id_tema=id_tema,
+        
+        dificultad=dificultad,
 
         intentos_usados=0,
 

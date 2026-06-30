@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   Inject,
-  PLATFORM_ID
+  PLATFORM_ID,
+  ChangeDetectorRef,
 } from '@angular/core';
 
 import {
@@ -13,6 +14,14 @@ import {
 import {
   Router
 } from '@angular/router';
+
+import {
+  TopbarEstudianteComponent
+} from '../../../components/topbar-estudiante/topbar-estudiante.component';
+
+import {
+  SidebarEstudianteComponent
+} from '../../../components/sidebar-estudiante/sidebar-estudiante.component';
 
 import {
   QuizConfigService
@@ -29,7 +38,10 @@ import {
   standalone: true,
 
   imports: [
-    CommonModule
+    CommonModule,
+    TopbarEstudianteComponent,
+    
+    SidebarEstudianteComponent
   ],
 
   templateUrl:
@@ -63,6 +75,8 @@ implements OnInit {
 
     private quizConfigService:
     QuizConfigService,
+
+    private cdr: ChangeDetectorRef,
 
     @Inject(PLATFORM_ID)
     private platformId: Object
@@ -106,6 +120,7 @@ implements OnInit {
     }
 
     this.cargarTemas();
+    this.refrescarVista();
 
   }
 
@@ -127,26 +142,53 @@ implements OnInit {
 
             localStorage.getItem(
             'id_nivel'
+            ) 
+
+        );
+
+        const idEstudiante = Number(
+
+            localStorage.getItem(
+                'id_estudiante'
+            )
+
+        );
+
+        const idCompetencia = Number(
+
+            localStorage.getItem(
+                'id_competencia'
+            )
+
+        );
+
+        const idSubmodulo = Number(
+
+            localStorage.getItem(
+                'id_submodulo'
             )
 
         );
 
         this.temaService
             .obtenerTemas(
-            idNivel
+            idNivel,
+            idEstudiante,
+            idCompetencia,
+            idSubmodulo
             )
 
             .subscribe({
 
             next: (data) => {
 
-                console.log(
-                'Temas:',
-                data
-                );
+                 console.log("TEMAS COMPLETOS");
+                  console.table(data);
 
                 this.temas =
                 data;
+
+                this.refrescarVista();
 
             },
 
@@ -225,6 +267,148 @@ implements OnInit {
       '/seleccionar-modalidad'
 
     ]);
+
+  }
+
+   private refrescarVista(): void {
+
+      this.cdr.detectChanges();
+
+  }
+
+  obtenerIconoTema(
+    nombreTema: string
+  ): string {
+
+      if (!nombreTema) {
+
+          return 'bi bi-book';
+
+      }
+
+      const tema = nombreTema
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+
+      if (tema.includes('algebra')) {
+
+          return 'bi bi-calculator';
+
+      }
+
+      if (tema.includes('geometr')) {
+
+          return 'bi bi-rulers';
+
+      }
+
+      if (tema.includes('estad')) {
+
+          return 'bi bi-bar-chart-fill';
+
+      }
+
+      return 'bi bi-book';
+
+  }
+
+  obtenerClaseResultado(
+    porcentaje: number | null
+  ): string {
+
+      if (
+
+          porcentaje == null
+
+      ) {
+
+          return '';
+
+      }
+
+      if (
+
+          porcentaje >= 80
+
+      ) {
+
+          return 'resultado-verde';
+
+      }
+
+      if (
+
+          porcentaje >= 60
+
+      ) {
+
+          return 'resultado-naranja';
+
+      }
+      return 'resultado-morado';
+
+  }
+
+  obtenerClaseBoton(
+    nombreTema: string
+  ): string {
+
+      const tema = nombreTema
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g,'');
+
+      if (tema.includes('algebra')) {
+
+          return 'btn-verde';
+
+      }
+
+      if (tema.includes('geometr')) {
+
+          return 'btn-naranja';
+
+      }
+
+      if (tema.includes('estad')) {
+
+          return 'btn-morado';
+
+      }
+
+      return 'btn-morado';
+
+  }
+
+  obtenerClaseBadge(
+    nombreTema:string
+  ):string{
+
+      const tema = nombreTema
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g,'');
+
+      if(tema.includes('algebra')){
+
+          return 'badge-verde';
+
+      }
+
+      if(tema.includes('geometr')){
+
+          return 'badge-naranja';
+
+      }
+
+      if(tema.includes('estad')){
+
+          return 'badge-azul';
+
+      }
+
+      return 'badge-verde';
 
   }
 

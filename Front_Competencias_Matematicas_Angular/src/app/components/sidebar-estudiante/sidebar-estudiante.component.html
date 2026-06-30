@@ -16,42 +16,24 @@
 
       <ul>
 
-        <li>
+        <li (click)="irInicio()">
 
           <i class="bi bi-house"></i>
 
           <span *ngIf="menuAbierto">
-            Inicio
+
+              Inicio
+
           </span>
 
         </li>
 
-        <li>
+        <li (click)="irProgreso()">
 
           <i class="bi bi-graph-up"></i>
 
           <span *ngIf="menuAbierto">
             Mi progreso
-          </span>
-
-        </li>
-
-        <li>
-
-          <i class="bi bi-person"></i>
-
-          <span *ngIf="menuAbierto">
-            Perfil
-          </span>
-
-        </li>
-
-        <li>
-
-          <i class="bi bi-gear"></i>
-
-          <span *ngIf="menuAbierto">
-            Configuración
           </span>
 
         </li>

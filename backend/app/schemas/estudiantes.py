@@ -99,4 +99,4 @@ class ChangePasswordRequest(BaseModel):
         min_length=8,
         max_length=100
     )
-    
+

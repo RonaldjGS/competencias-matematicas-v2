@@ -33,107 +33,158 @@
                 <!-- ===================================== -->
 
                 <section class="dashboard-main">
+                    
+                    <!-- ===================================== -->
+                    <!-- TARJETA PRINCIPAL -->
+                    <!-- ===================================== -->
 
-                    <!-- BIENVENIDA -->
+                    <div class="dashboard-card">
 
-                    <div class="welcome-card">
+                        <!-- Bienvenida -->
 
-                        <div class="avatar">
+                        <div class="welcome-card">
 
-                            👨‍🎓
+                            <div class="avatar">
 
-                        </div>
+                                <i class="bi bi-person-circle"></i>
 
-                        <div>
+                            </div>
 
-                            <h1>
+                            <div class="welcome-info">
 
-                                ¡Hola,
-                                {{ nombreEstudiante }}!
+                                <h1>
 
-                            </h1>
+                                    ¡Hola,
+                                    {{ nombreEstudiante }}!
 
-                            <p>
+                                </h1>
 
-                                Continúa entrenando y fortaleciendo
-                                tus competencias matemáticas.
+                                <p>
 
-                            </p>
+                                    Continúa entrenando y fortaleciendo
+                                    tus competencias matemáticas.
 
-                        </div>
+                                </p>
 
-                    </div>
-
-                    <!-- KPIS -->
-
-                    <div class="stats-grid">
-
-                        <div class="stat-card">
-
-                            <h4>
-                                Ejercicios completados
-                            </h4>
-
-                            <span>
-
-                                {{
-                                    ejerciciosCompletados
-                                    ?? '--'
-                                }}
-
-                            </span>
+                            </div>
 
                         </div>
 
-                        <div class="stat-card">
+                        <!-- Estadísticas -->
 
-                            <h4>
-                                Porcentaje de aciertos
-                            </h4>
+                        <div class="stats-grid">
 
-                            <span>
+                            <div class="stat-card">
 
-                                {{
-                                    porcentajeAciertos != null
-                                    ? porcentajeAciertos + ' %'
-                                    : '--'
-                                }}
+                                <div class="stat-icon">
 
-                            </span>
+                                    <i class="bi bi-journal-bookmark"></i>
 
-                        </div>
+                                </div>
 
-                        <div class="stat-card">
+                                <div>
 
-                            <h4>
-                                Tiempo promedio
-                            </h4>
+                                    <small>
 
-                            <span>
+                                        Ejercicios completados
 
-                                {{
-                                    tiempoPromedio
-                                    ?? '--'
-                                }}
+                                    </small>
 
-                            </span>
+                                    <strong>
 
-                        </div>
+                                        {{ ejerciciosCompletados ?? '--' }}
 
-                        <div class="stat-card">
+                                    </strong>
 
-                            <h4>
-                                Evaluaciones realizadas
-                            </h4>
+                                </div>
 
-                            <span>
+                            </div>
 
-                                {{
-                                    evaluacionesRealizadas
-                                    ?? '--'
-                                }}
+                            <div class="stat-card">
 
-                            </span>
+                                <div class="stat-icon">
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <small>
+
+                                        Porcentaje de aciertos
+
+                                    </small>
+
+                                    <strong>
+
+                                        {{
+
+                                        porcentajeAciertos!=null
+
+                                        ? porcentajeAciertos+' %'
+
+                                        :'--'
+
+                                        }}
+
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="stat-card">
+
+                                <div class="stat-icon">
+
+                                    <i class="bi bi-clock-history"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <small>
+
+                                        Tiempo promedio
+
+                                    </small>
+
+                                    <strong>
+
+                                        {{ tiempoPromedio ?? '--' }}
+
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="stat-card">
+
+                                <div class="stat-icon">
+
+                                    <i class="bi bi-journal-check"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <small>
+
+                                        Evaluaciones realizadas
+
+                                    </small>
+
+                                    <strong>
+
+                                        {{ evaluacionesRealizadas ?? '--' }}
+
+                                    </strong>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -143,23 +194,37 @@
 
                     <div class="module-card">
 
-                        <h2>
+                        <div class="module-icon">
 
-                            {{ tituloModulo }}
+                            <i class="bi bi-bookshelf"></i>
 
-                        </h2>
+                        </div>
 
-                        <p>
+                        <div class="module-info">
 
-                            {{ descripcionModulo }}
+                            <h2>
 
-                        </p>
+                                {{ tituloModulo }}
+
+                            </h2>
+
+                            <p>
+
+                                {{ descripcionModulo }}
+
+                            </p>
+
+                        </div>
 
                         <button
-                            class="btn-comenzar"
-                            (click)="irSeleccionCompetencia()">
 
-                            Comenzar
+                            class="btn-arrow"
+
+                            (click)="irSeleccionCompetencia()"
+
+                        >
+
+                            <i class="bi bi-arrow-right"></i>
 
                         </button>
 
@@ -301,9 +366,9 @@
 
                                         'competente': actividad.nivel=='Competente',
 
-                                        'desarrollo': actividad.nivel=='En desarrollo',
+                                        'proceso': actividad.nivel=='En proceso',
 
-                                        'insuficiente': actividad.nivel=='Insuficiente'
+                                        'desarrollo': actividad.nivel=='En desarrollo'
 
                                     }"
                                 >
@@ -320,12 +385,12 @@
 
                                     <i
                                         class="bi bi-exclamation-circle"
-                                        *ngIf="actividad.nivel=='En desarrollo'"
+                                        *ngIf="actividad.nivel=='En proceso'"
                                     ></i>
 
                                     <i
                                         class="bi bi-x-circle"
-                                        *ngIf="actividad.nivel=='Insuficiente'"
+                                        *ngIf="actividad.nivel=='En desarrollo'"
                                     ></i>
 
                                 </div>

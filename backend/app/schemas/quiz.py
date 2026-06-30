@@ -210,9 +210,25 @@ class TemaDisponibleOut(BaseModel):
 
     descripcion_tema: str
 
+    ultimo_resultado: float | None = None
+
+    fecha: str | None = None
+
     model_config = ConfigDict(
         from_attributes=True
     )
+    
+# ==========================================
+# ESTADÍSTICAS DEL TEMA
+# ==========================================
+
+class EstadisticasTemaOut(BaseModel):
+
+    precision_promedio: float | None = None
+
+    intentos_realizados: int
+
+    tiempo_promedio: int | None = None
     
 # ==========================================
 # QUIZ GENERADO

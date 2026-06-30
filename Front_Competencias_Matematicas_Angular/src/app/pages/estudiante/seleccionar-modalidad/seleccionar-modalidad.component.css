@@ -6,6 +6,8 @@
 
   min-height:100vh;
 
+  margin-top:100px;
+
   background:#f4efff;
 
 }
@@ -259,6 +261,42 @@
 
 }
 
+.card-diagnostico{
+
+    border-color:#ffd27a;
+
+}
+
+.card-refuerzo{
+
+    border-color:#bba8ff;
+
+}
+
+.card-fortalecimiento{
+
+    border-color:#8be8b5;
+
+}
+
+.card-diagnostico .icono{
+
+    background:#fff0c9;
+
+}
+
+.card-refuerzo .icono{
+
+    background:#dde2ff;
+
+}
+
+.card-fortalecimiento .icono{
+
+    background:#d8f8e6;
+
+}
+
 .card-body{
 
   display:flex;
@@ -323,28 +361,51 @@
 
 .btn-comenzar{
 
-  width:100%;
+    width:100%;
 
-  height:60px;
+    height:60px;
 
-  border:none;
+    border:none;
 
-  border-radius:15px;
+    border-radius:15px;
 
-  background:
-  linear-gradient(
-    90deg,
-    #c000ff,
-    #8a00ff
-  );
+    color:white;
 
-  color:white;
+    font-size:22px;
 
-  font-size:22px;
+    cursor:pointer;
 
-  cursor:pointer;
+    transition:.25s;
 
-  transition:.2s;
+}
+
+.btn-diagnostico{
+
+    background:linear-gradient(
+        90deg,
+        #ff9900,
+        #ff7b00
+    );
+
+}
+
+.btn-refuerzo{
+
+    background:linear-gradient(
+        90deg,
+        #5f19ff,
+        #7d2cff
+    );
+
+}
+
+.btn-fortalecimiento{
+
+    background:linear-gradient(
+        90deg,
+        #08b94d,
+        #00c853
+    );
 
 }
 
@@ -522,10 +583,12 @@
 
 }
 
-.btn-comenzar:disabled {
+.btn-comenzar:disabled{
 
-  background: #cfcfcf;
+    background:#d4d4d4 !important;
 
-  cursor: not-allowed;
+    color:white;
+
+    cursor:not-allowed;
 
 }

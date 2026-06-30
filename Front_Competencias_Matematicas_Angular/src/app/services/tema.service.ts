@@ -19,12 +19,25 @@ export class TemaService {
   ) {}
 
   obtenerTemas(
-    idNivel: number
+
+    idNivel: number,
+    idEstudiante: number,
+    idCompetencia: number,
+    idSubmodulo: number
+
   ) {
 
     return this.http.get<any[]>(
 
-      `${this.apiUrl}/temas-disponibles?id_nivel=${idNivel}`
+        `${this.apiUrl}/temas-disponibles` +
+
+        `?id_nivel=${idNivel}` +
+
+        `&id_estudiante=${idEstudiante}` +
+
+        `&id_competencia=${idCompetencia}` +
+
+        `&id_submodulo=${idSubmodulo}`
 
     );
 

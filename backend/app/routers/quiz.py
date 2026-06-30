@@ -43,7 +43,8 @@ from app.schemas.quiz import (
     ContinuarPreguntaRequest,
     RespuestaReintentoOut,
     FinalizarQuizOut,
-    FinalizarQuizRequest
+    FinalizarQuizRequest,
+    EstadisticasTemaOut,
 )
 
 from app.services.quiz_service import (
@@ -172,6 +173,9 @@ def generar_quiz(
 
         id_tema=
         data.id_tema,
+        
+        dificultad=
+        data.dificultad,
 
         db=db
 
@@ -785,25 +789,164 @@ def finalizar_submodulo(
 def obtener_temas_disponibles(
 
     id_nivel: int,
+    id_estudiante: int,
+    id_competencia: int,
+    id_submodulo: int,
 
     db: Session = Depends(get_db)
 
 ):
 
-    return (
+    temas = (
 
-        db.query(
-            Tema
-        )
+        db.query(Tema)
 
         .filter(
+
             Tema.id_nivel == id_nivel,
             Tema.estado == True
+
         )
 
         .all()
 
     )
+
+    respuesta = []
+
+    for tema in temas:
+
+        ultimo = (
+
+            db.query(ResultadoQuiz)
+
+            .filter(
+
+                ResultadoQuiz.id_estudiante == id_estudiante,
+
+                ResultadoQuiz.id_competencia == id_competencia,
+
+                ResultadoQuiz.id_submodulo == id_submodulo,
+
+                ResultadoQuiz.id_tema == tema.id_tema
+
+            )
+
+            .order_by(
+
+                ResultadoQuiz.fecha.desc()
+
+            )
+
+            .first()
+
+        )
+
+        respuesta.append({
+
+            "id_tema": tema.id_tema,
+
+            "nombre_tema": tema.nombre_tema,
+
+            "descripcion_tema": tema.descripcion_tema,
+
+            "ultimo_resultado":
+
+                ultimo.porcentaje
+                if ultimo else None,
+
+            "fecha":
+
+                ultimo.fecha.strftime("%d/%m/%Y")
+                if ultimo else None
+
+        })
+        
+    print(respuesta)
+
+    return respuesta
+
+
+# ==========================================
+# ESTADÍSTICAS DEL TEMA
+# ==========================================
+
+@router.get(
+    "/estadisticas-tema",
+    response_model=EstadisticasTemaOut
+)
+def obtener_estadisticas_tema(
+
+    id_estudiante: int,
+
+    id_competencia: int,
+
+    id_submodulo: int,
+
+    id_tema: int,
+
+    db: Session = Depends(get_db)
+
+):
+
+    resultados = (
+
+        db.query(ResultadoQuiz)
+
+        .filter(
+
+            ResultadoQuiz.id_estudiante == id_estudiante,
+
+            ResultadoQuiz.id_competencia == id_competencia,
+
+            ResultadoQuiz.id_submodulo == id_submodulo,
+
+            ResultadoQuiz.id_tema == id_tema
+
+        )
+
+        .all()
+
+    )
+
+    if not resultados:
+
+        return {
+
+            "precision_promedio": None,
+
+            "intentos_realizados": 0,
+
+            "tiempo_promedio": None
+
+        }
+
+    precision = (
+
+        sum(r.porcentaje for r in resultados)
+
+        / len(resultados)
+
+    )
+
+    tiempo = (
+
+        sum(r.tiempo_segundos for r in resultados)
+
+        / len(resultados)
+
+    )
+
+    return {
+
+        "precision_promedio": round(precision, 1),
+
+        "intentos_realizados": len(resultados),
+
+        "tiempo_promedio": int(tiempo)
+
+    }
+    
     
 # ==========================================
 # FINALIZAR QUIZ

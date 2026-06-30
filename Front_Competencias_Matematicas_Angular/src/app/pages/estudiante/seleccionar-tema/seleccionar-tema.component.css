@@ -6,6 +6,8 @@
 
   min-height:100vh;
 
+  margin-top:100px;
+
   background:#f4efff;
 
 }
@@ -136,6 +138,23 @@
   min-width:25px;
 
 }
+.icono-verde{
+
+    background:#dff8ea;
+
+}
+
+.icono-naranja{
+
+    background:#fff2dc;
+
+}
+
+.icono-azul{
+
+    background:#edf1ff;
+
+}
 
 .texto-menu{
 
@@ -149,11 +168,13 @@
 
 .contenido{
 
-  margin-left:90px;
+    margin-left:100px;
 
-  padding:35px;
+    margin-top:40px;
 
-  transition:.3s;
+    padding:15px 25px;
+
+    transition:.3s;
 
 }
 
@@ -328,35 +349,34 @@
 
 .tema-card{
 
-  background:white;
+    background:#fff;
 
-  border-radius:24px;
+    border-radius:26px;
 
-  padding:25px;
+    border:1px solid #ead8ff;
 
-  display:flex;
+    padding:30px;
 
-  justify-content:space-between;
+    display:flex;
 
-  align-items:center;
+    justify-content:space-between;
 
-  gap:25px;
+    align-items:center;
 
-  border:1px solid #ead8ff;
+    gap:30px;
 
-  transition:.2s;
+    transition:.25s;
 
 }
 
 .tema-card:hover{
 
-  transform:
-  translateY(-2px);
+    transform:translateY(-3px);
 
-  box-shadow:
-  0 8px 20px rgba(0,0,0,.08);
+    box-shadow:0 12px 28px rgba(0,0,0,.08);
 
 }
+
 
 .tema-info{
 
@@ -370,13 +390,13 @@
 
 .tema-icono{
 
-  width:90px;
+  width:120px;
 
-  height:90px;
+  height:120px;
 
   border-radius:50%;
 
-  background:#ead8ff;
+  background:#edd3ff;
 
   display:flex;
 
@@ -384,7 +404,13 @@
 
   align-items:center;
 
-  font-size:42px;
+  flex-shrink:0;
+
+}
+
+.tema-icono i{
+
+    font-size:52px;
 
 }
 
@@ -414,27 +440,29 @@
 
   display:flex;
 
-  gap:12px;
+  gap:15px;
 
   margin-top:15px;
 
   flex-wrap:wrap;
 
+  margin-top:18px;
+
 }
 
 .tema-badges span{
 
-  background:#f5f0ff;
+  background:#f6ebff;
 
-  padding:8px 14px;
+  padding:10px 18px;
 
-  border-radius:12px;
+  border-radius:14px;
 
-  color:#5d00b5;
+  color:#6c1ce0;
 
   font-size:14px;
 
-  font-weight:600;
+  font-weight:700;
 
 }
 
@@ -448,6 +476,10 @@
 
   text-align:center;
 
+  border-left:1px solid #ece3ff;
+
+  padding-left:45px;
+
 }
 
 .tema-resultado small{
@@ -458,11 +490,36 @@
 
 .tema-resultado h2{
 
-  margin:10px 0;
+  margin:8px 0;
 
-  color:#5d00b5;
+  font-size:52px;
 
-  font-size:36px;
+  font-weight:800;
+
+}
+
+.resultado-verde{
+
+    color:#00b74a;
+
+  }
+
+  .resultado-naranja{
+
+      color:#ff9800;
+
+  }
+
+  .resultado-morado{
+
+      color:#7c3aed;
+
+  }
+
+
+.tema-resultado small{
+
+    color:#6f6f6f;
 
 }
 
@@ -480,13 +537,13 @@
 
 .btn-seleccionar{
 
-  min-width:180px;
+  width:210px;
 
-  height:55px;
+  height:68px;
 
   border:none;
 
-  border-radius:14px;
+  border-radius:18px;
 
   background:
   linear-gradient(
@@ -497,7 +554,9 @@
 
   color:white;
 
-  font-size:18px;
+  font-size:24px;
+
+  font-weight:700;
 
   cursor:pointer;
 
@@ -509,6 +568,74 @@
 
   transform:
   translateY(-2px);
+
+}
+
+.btn-verde{
+
+    background:#09c04f;
+
+}
+
+.btn-verde:hover{
+
+    background:#08b048;
+
+}
+
+.btn-naranja{
+
+    background:#ff8b00;
+
+}
+
+.btn-naranja:hover{
+
+    background:#ef8200;
+
+}
+
+.btn-morado{
+
+    background:linear-gradient(
+        90deg,
+        #6b2dff,
+        #5a1ef0
+    );
+
+}
+
+.btn-morado:hover{
+
+    background:linear-gradient(
+        90deg,
+        #5e22f8,
+        #4b17dc
+    );
+
+}
+
+.badge-verde{
+
+    background:#e7f8ef !important;
+
+    color:#0c9e47 !important;
+
+}
+
+.badge-naranja{
+
+    background:#fff0d5 !important;
+
+    color:#d17b00 !important;
+
+}
+
+.badge-azul{
+
+    background:#eef2ff !important;
+
+    color:#4d3cff !important;
 
 }
 
@@ -538,4 +665,5 @@
 
   }
 
+  
 }

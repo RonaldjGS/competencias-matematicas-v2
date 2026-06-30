@@ -173,12 +173,18 @@ class ResultadoQuiz(Base):
         ),
         nullable=False
     )
+    
+    dificultad = Column(
+        String(20),
+        nullable=False
+    )
 
     puntaje = Column(
         Float,
         nullable=False
     )
     
+        
     porcentaje = Column(
         Float,
         nullable=False
@@ -407,6 +413,11 @@ class IntentoQuiz(Base):
         ForeignKey(
             "temas.id_tema"
         ),
+        nullable=False
+    )
+    
+    dificultad = Column(
+        String(20),
         nullable=False
     )
 

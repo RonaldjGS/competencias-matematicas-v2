@@ -22,14 +22,41 @@ import {
 } from 'chart.js/auto';
 
 import {
+
+TopbarProfesorComponent
+
+} from '../../components/topbar-profesor/topbar-profesor.component';
+
+import {
+
+SidebarProfesorComponent
+
+} from '../../components/sidebar-profesor/sidebar-profesor.component';
+
+import {
+
+DashboardProfesorService
+
+} from '../../services/dashboard-profesor.service';
+
+import {
   Router
 } from '@angular/router';
+
+import {
+
+  ChangeDetectorRef
+
+} from '@angular/core';
+
 
 @Component({
   selector: 'app-dashboard-profesor',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    TopbarProfesorComponent,
+    SidebarProfesorComponent
   ],
   templateUrl:
     './dashboard-profesor.component.html',
@@ -41,102 +68,78 @@ import {
 
 
 export class DashboardProfesorComponent
-
-
-implements OnInit, AfterViewInit {
+implements OnInit{
   private platformId =
     inject(PLATFORM_ID);
   nombreProfesor = '';
 
-  totalEstudiantes = 125;
+  idProfesor=0;
 
-  totalEvaluaciones = 480;
+  totalEstudiantes='--';
 
-  precisionPromedio = 72;
+  totalEvaluaciones='--';
 
-  competenciaCritica =
-    'Conexiones y Modelización';
+  precisionPromedio='--';
+
+  competenciaCritica='--';
+
+  menuAbierto=false;
+
+  graficoCompetencias!:Chart;
+
+  datosCompetencias:any[]=[];
+
+  preguntasError:any[]=[];
 
   constructor(
-  private router: Router
+    private router: Router,
+
+    private dashboardProfesorService:
+    DashboardProfesorService,
+    
+    private cdr: ChangeDetectorRef
+
   ) {}
-  ngAfterViewInit(): void {
-
-    new Chart(
-      'graficoCompetencias',
-      {
-
-        type: 'bar',
-
-        data: {
-
-          labels: [
-
-            'Comunicación',
-
-            'Razonamiento',
-
-            'Resolución',
-
-            'Conexiones'
-
-          ],
-
-          datasets: [
-
-            {
-
-              label:
-              'Precisión (%)',
-
-              data: [
-
-                72,
-                65,
-                58,
-                45
-
-              ]
-
-            }
-
-          ]
-
-        },
-
-        options: {
-
-          responsive: true,
-
-          maintainAspectRatio: false
-
-        }
-
-      }
-
-    );
-
-  }
 
   ngOnInit(): void {
 
-  if (
+    if(
 
-    isPlatformBrowser(
-      this.platformId
-    )
+        isPlatformBrowser(
 
-  ) {
+            this.platformId
 
-    this.nombreProfesor =
+        )
 
-      localStorage.getItem(
-        'nombre_profesor'
-      ) || 'Profesor';
+    ){
+
+        this.nombreProfesor=
+
+        localStorage.getItem(
+
+            'nombre_profesor'
+
+        ) || 'Profesor';
+
+        this.idProfesor = Number(
+
+            localStorage.getItem(
+
+                'id_profesor'
+
+            )
+
+        );
+
+        this.cargarResumen();
+
+        this.cargarGraficoCompetencias();
+
+        this.cargarPreguntasError();
+
+    }
 
   }
-
-}
 
   irPreguntas(): void {
 
@@ -147,5 +150,228 @@ implements OnInit, AfterViewInit {
     ]);
 
   }
+
+  toggleMenu(){
+
+    this.menuAbierto=
+
+    !this.menuAbierto;
+
+  }
+
+  cargarResumen():void{
+
+    this.dashboardProfesorService
+
+        .obtenerResumen(
+
+            this.idProfesor
+
+        )
+
+        .subscribe({
+
+            next:(data)=>{
+
+                this.totalEstudiantes=
+
+                data.estudiantes_activos;
+
+                this.totalEvaluaciones=
+
+                data.evaluaciones;
+
+                this.precisionPromedio=
+
+                data.precision_promedio + '%';
+
+                this.competenciaCritica=
+
+                data.competencia_critica;
+
+                this.refrescarVista();
+
+            },
+
+            error:(err)=>{
+
+                console.error(err);
+
+            }
+
+        });
+
+  }
+
+  private refrescarVista():void{
+
+    this.cdr.detectChanges();
+
+  }
+
+  cargarGraficoCompetencias():void{
+
+    this.dashboardProfesorService
+
+        .obtenerCompetencias(
+
+            this.idProfesor
+
+        )
+
+        .subscribe({
+
+            next:(data)=>{
+
+                this.datosCompetencias=data;
+
+                this.crearGraficoCompetencias();
+
+                this.refrescarVista();
+
+            },
+
+            error:(err)=>{
+
+                console.error(err);
+
+            }
+
+        });
+
+  }
+
+  crearGraficoCompetencias():void{
+
+    if(
+
+        this.graficoCompetencias
+
+    ){
+
+        this.graficoCompetencias.destroy();
+
+    }
+
+    this.graficoCompetencias = new Chart(
+
+        "graficoCompetencias",
+
+        {
+
+            type:"bar",
+
+            data:{
+
+                labels:
+
+                    this.datosCompetencias.map(
+
+                        x=>x.competencia
+
+                    ),
+
+                datasets:[
+
+                    {
+
+                        label:"Precisión (%)",
+
+                        data:
+
+                            this.datosCompetencias.map(
+
+                                x=>x.promedio
+
+                            ),
+
+                        borderRadius:10,
+
+                        backgroundColor:[
+
+                            "#8b5cf6",
+
+                            "#22c55e",
+
+                            "#f59e0b",
+
+                            "#3b82f6"
+
+                        ]
+
+                    }
+
+                ]
+
+            },
+
+            options:{
+
+                responsive:true,
+
+                maintainAspectRatio:false,
+
+                plugins:{
+
+                    legend:{
+
+                        display:false
+
+                    }
+
+                },
+
+                scales:{
+
+                    y:{
+
+                        beginAtZero:true,
+
+                        max:100
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    );
+
+  }
+
+
+  cargarPreguntasError():void{
+
+    this.dashboardProfesorService
+
+        .obtenerPreguntasError(
+
+            this.idProfesor
+
+        )
+
+        .subscribe({
+
+            next:(data)=>{
+
+                this.preguntasError=data;
+
+                this.refrescarVista();
+
+            },
+
+            error:(err)=>{
+
+                console.error(err);
+
+            }
+
+        });
+
+  }
+
+  
 
 }

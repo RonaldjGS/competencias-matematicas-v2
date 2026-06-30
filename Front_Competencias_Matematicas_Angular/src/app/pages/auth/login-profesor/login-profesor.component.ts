@@ -127,6 +127,14 @@ loginProfesor(): void {
 
         localStorage.setItem(
 
+          'id_profesor',
+
+          response.usuario.id_profesor.toString()
+
+        );
+
+        localStorage.setItem(
+
           'nombre_profesor',
 
           response.usuario.nombre_profesor

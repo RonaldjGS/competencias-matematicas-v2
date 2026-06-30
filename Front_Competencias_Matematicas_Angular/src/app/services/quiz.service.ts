@@ -167,4 +167,18 @@ export class QuizService {
 
   }
 
+  finalizarSubmodulo(
+    datos: any
+  ){
+
+      return this.http.post(
+
+          this.apiUrl + '/quiz/finalizar-submodulo',
+
+          datos
+
+      );
+
+  }
+
 }

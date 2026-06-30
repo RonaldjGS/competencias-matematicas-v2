@@ -14,6 +14,10 @@ import {
   Router
 } from '@angular/router';
 
+import { TopbarEstudianteComponent } from '../../../components/topbar-estudiante/topbar-estudiante.component';
+
+import { SidebarEstudianteComponent } from '../../../components/sidebar-estudiante/sidebar-estudiante.component';
+
 import {
   QuizConfigService
 } from '../../../services/quiz-config.service';
@@ -25,7 +29,11 @@ import {
   standalone: true,
 
   imports: [
-    CommonModule
+    CommonModule,
+
+    TopbarEstudianteComponent,
+  
+    SidebarEstudianteComponent
   ],
 
   templateUrl:

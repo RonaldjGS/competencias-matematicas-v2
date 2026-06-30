@@ -4,123 +4,17 @@
   <!-- HEADER -->
   <!-- ===================================== -->
 
-  <header class="topbar">
-
-    <div class="logo">
-
-      Entrena Tus Competencias
-      <br>
-      Matemáticas
-
-    </div>
-
-    <div class="usuario">
-
-      Bienvenido,
-      {{ nombreEstudiante }}
-
-      👨‍🎓
-
-    </div>
-
-  </header>
+  <app-topbar-estudiante
+    [nombreEstudiante]="nombreEstudiante">
+  </app-topbar-estudiante>
 
   <!-- ===================================== -->
   <!-- SIDEBAR -->
   <!-- ===================================== -->
 
-  <aside
-    class="sidebar"
-    [class.abierto]="menuAbierto"
-  >
-
-    <button
-      class="btn-menu"
-      (click)="toggleMenu()"
-    >
-      ☰
-    </button>
-
-    <ul>
-
-      <li>
-
-        <span class="icono-menu">
-          🏠
-        </span>
-
-        <span
-          class="texto-menu"
-          *ngIf="menuAbierto"
-        >
-          Inicio
-        </span>
-
-      </li>
-
-      <li>
-
-        <span class="icono-menu">
-          📈
-        </span>
-
-        <span
-          class="texto-menu"
-          *ngIf="menuAbierto"
-        >
-          Mi progreso
-        </span>
-
-      </li>
-
-      <li>
-
-        <span class="icono-menu">
-          📊
-        </span>
-
-        <span
-          class="texto-menu"
-          *ngIf="menuAbierto"
-        >
-          Estadísticas
-        </span>
-
-      </li>
-
-      <li>
-
-        <span class="icono-menu">
-          👤
-        </span>
-
-        <span
-          class="texto-menu"
-          *ngIf="menuAbierto"
-        >
-          Perfil
-        </span>
-
-      </li>
-
-      <li>
-
-        <span class="icono-menu">
-          ⚙️
-        </span>
-
-        <span
-          class="texto-menu"
-          *ngIf="menuAbierto"
-        >
-          Configuración
-        </span>
-
-      </li>
-
-    </ul>
-
-  </aside>
+  <app-sidebar-estudiante
+    [(menuAbierto)]="menuAbierto">
+  </app-sidebar-estudiante>
 
   <!-- ===================================== -->
   <!-- CONTENIDO -->
@@ -170,7 +64,7 @@
       <div class="resumen-item">
 
         <div class="resumen-icono">
-          📖
+          <i class="bi bi-book"></i>
         </div>
 
         <div>
@@ -192,7 +86,7 @@
       <div class="resumen-item">
 
         <div class="resumen-icono">
-          📋
+          <i class="bi bi-clipboard-check"></i>
         </div>
 
         <div>
@@ -214,7 +108,7 @@
       <div class="resumen-item">
 
         <div class="resumen-icono">
-          🧮
+          <i class="bi bi-calculator"></i>
         </div>
 
         <div>
@@ -241,7 +135,7 @@
 
       <h2>
 
-        📊 Tus estadísticas
+        <i class="bi bi-bar-chart"></i> Tus estadísticas
         en este módulo
 
       </h2>
@@ -251,7 +145,7 @@
         <div class="stat-card">
 
           <div class="stat-icono">
-            🎯
+            <i class="bi bi-bullseye"></i>
           </div>
 
           <div>
@@ -271,7 +165,7 @@
         <div class="stat-card">
 
           <div class="stat-icono">
-            📚
+            <i class="bi bi-journal-bookmark"></i>
           </div>
 
           <div>
@@ -291,7 +185,7 @@
         <div class="stat-card">
 
           <div class="stat-icono">
-            🕒
+            <i class="bi bi-clock-history"></i>
           </div>
 
           <div>
@@ -318,7 +212,8 @@
 
     <div class="niveles-titulo">
 
-      📈 Niveles de Dificultad
+      <i class="bi bi-bar-chart-line"></i> 
+      Niveles de Dificultad
 
     </div>
 
@@ -342,28 +237,45 @@
 
       >
 
-        <h2>🟢 Básico</h2>
+        <h2 class="titulo-dificultad">
+
+            <span class="circulo verde"></span>
+
+            Básico
+
+        </h2>
 
         <p>
 
-          Conceptos fundamentales
-          y ejercicios introductorios
+          Aplicación de conceptos
+          en problemas básicos
 
         </p>
 
         <hr>
 
         <p>
-          📋 10 preguntas
+
+          <i class="bi bi-clipboard2-check"></i>
+
+          10 preguntas
+
         </p>
 
         <p>
-          🕒 Tiempo estimado: 10 min
+
+          <i class="bi bi-clock-history"></i>
+
+          Tiempo estimado: 10 min
+
         </p>
 
         <p>
-          ⭐ Nivel recomendado
-          para iniciar
+
+          <i class="bi bi-star-fill"></i>
+
+          Nivel recomendado para iniciar
+
         </p>
 
       </div>
@@ -386,7 +298,13 @@
 
       >
 
-        <h2>🟠 Intermedio</h2>
+        <h2 class="titulo-dificultad">
+
+            <span class="circulo naranja"></span>
+
+            Intermedio
+
+        </h2>
 
         <p>
 
@@ -398,15 +316,18 @@
         <hr>
 
         <p>
-          📋 10 preguntas
+          <i class="bi bi-clipboard2-check"></i> 
+          10 preguntas
         </p>
 
         <p>
-          🕒 Tiempo estimado: 15 min
+          <i class="bi bi-clock-history"></i> 
+          Tiempo estimado: 15 min
         </p>
 
         <p>
-          ⭐ Ideal para reforzar
+          <i class="bi bi-star-fill"></i> 
+          Ideal para reforzar
           conocimientos
         </p>
 
@@ -430,7 +351,13 @@
 
       >
 
-        <h2>🔴 Avanzado</h2>
+        <h2 class="titulo-dificultad">
+
+            <span class="circulo rojo"></span>
+
+            Avanzado
+
+        </h2>
 
         <p>
 
@@ -442,15 +369,18 @@
         <hr>
 
         <p>
-          📋 10 preguntas
+          <i class="bi bi-clipboard2-check"></i> 
+          10 preguntas
         </p>
 
         <p>
-          🕒 Tiempo estimado: 20 min
+          <i class="bi bi-clock-history"></i> 
+          Tiempo estimado: 20 min
         </p>
 
         <p>
-          ⭐ Recomendado para
+          <i class="bi bi-star-fill"></i> 
+          Recomendado para
           nivel avanzado
         </p>
 
@@ -462,32 +392,36 @@
     <!-- INFO -->
     <!-- ===================================== -->
 
-    <div class="info-quiz">
+    <div class="footer-quiz">
 
-      ℹ️ Todos los niveles contienen
-      10 preguntas con opción múltiple.
+      <div class="info-quiz">
+
+          <i class="bi bi-info-circle-fill"></i>
+
+          <span>
+
+              Todos los niveles contienen
+              10 preguntas con opción múltiple.
+
+          </span>
+
+      </div>
+
+      <button
+
+          class="btn-comenzar"
+
+          [disabled]="!dificultadSeleccionada"
+
+          (click)="continuar()"
+
+      >
+
+          Comenzar
+
+      </button>
 
     </div>
-
-    <!-- ===================================== -->
-    <!-- BOTON -->
-    <!-- ===================================== -->
-
-    <button
-
-      class="btn-continuar"
-
-      [disabled]="
-        !dificultadSeleccionada
-      "
-
-      (click)="continuar()"
-
-    >
-
-      Continuar →
-
-    </button>
 
   </main>
 

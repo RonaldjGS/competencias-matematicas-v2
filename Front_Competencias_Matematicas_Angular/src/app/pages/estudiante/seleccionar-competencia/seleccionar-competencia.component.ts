@@ -202,6 +202,8 @@ implements OnInit {
                       data.evaluaciones_realizadas
                       ?? '--';
 
+                  this.refrescarVista();
+
               },
 
               error: (error) => {
@@ -321,5 +323,38 @@ implements OnInit {
       return `${restoSegundos} s`;
 
   }
+
+  obtenerClaseCompetencia(
+    nombre: string
+  ): string {
+
+      const texto = nombre
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g,'');
+
+      if (texto.includes('razonamiento')) {
+
+          return 'competencia-morada';
+
+      }
+
+      if (texto.includes('comunicacion')) {
+
+          return 'competencia-verde';
+
+      }
+
+      if (texto.includes('conexiones')) {
+
+          return 'competencia-naranja';
+
+      }
+
+      return 'competencia-azul';
+
+  }
+
+  
 
 }

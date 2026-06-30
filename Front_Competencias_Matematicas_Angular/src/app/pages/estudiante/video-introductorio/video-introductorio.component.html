@@ -4,108 +4,17 @@
   <!-- HEADER -->
   <!-- ===================================== -->
 
-  <header class="topbar">
-
-    <div class="logo">
-
-      Entrena Tus Competencias
-      <br>
-      Matemáticas
-
-    </div>
-
-    <div class="usuario">
-
-      Bienvenido,
-      {{ nombreEstudiante }}
-
-      👨‍🎓
-
-    </div>
-
-  </header>
+  <app-topbar-estudiante
+        [nombreEstudiante]="nombreEstudiante">
+    </app-topbar-estudiante>
 
   <!-- ===================================== -->
   <!-- SIDEBAR -->
   <!-- ===================================== -->
 
-  <aside
-    class="sidebar"
-    [class.abierto]="menuAbierto"
-  >
-
-    <button
-      class="btn-menu"
-      (click)="toggleMenu()"
-    >
-      ☰
-    </button>
-
-    <ul>
-
-      <li>
-
-        <span class="icono-menu">
-          🏠
-        </span>
-
-        <span
-          class="texto-menu"
-          *ngIf="menuAbierto"
-        >
-          Inicio
-        </span>
-
-      </li>
-
-      <li>
-
-        <span class="icono-menu">
-          📈
-        </span>
-
-        <span
-          class="texto-menu"
-          *ngIf="menuAbierto"
-        >
-          Mi progreso
-        </span>
-
-      </li>
-
-      <li>
-
-        <span class="icono-menu">
-          👤
-        </span>
-
-        <span
-          class="texto-menu"
-          *ngIf="menuAbierto"
-        >
-          Perfil
-        </span>
-
-      </li>
-
-      <li>
-
-        <span class="icono-menu">
-          ⚙️
-        </span>
-
-        <span
-          class="texto-menu"
-          *ngIf="menuAbierto"
-        >
-          Configuración
-        </span>
-
-      </li>
-
-    </ul>
-
-  </aside>
+   <app-sidebar-estudiante
+        [(menuAbierto)]="menuAbierto">
+    </app-sidebar-estudiante>
 
   <!-- ===================================== -->
   <!-- CONTENIDO -->

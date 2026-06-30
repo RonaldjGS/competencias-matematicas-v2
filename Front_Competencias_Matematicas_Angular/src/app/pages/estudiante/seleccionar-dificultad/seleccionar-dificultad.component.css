@@ -6,6 +6,8 @@
 
   min-height:100vh;
 
+  margin-top:100px;
+
   background:#f4efff;
 
 }
@@ -467,17 +469,23 @@
 
 .info-quiz{
 
-  background:white;
+    display:flex;
 
-  border-left:6px solid #8a00ff;
+    align-items:center;
 
-  border-radius:15px;
+    gap:14px;
 
-  padding:20px;
+    background:#eef2ff;
 
-  margin-bottom:30px;
+    border-left:6px solid #6b7cff;
 
-  color:#555;
+    border-radius:16px;
+
+    padding:18px 22px;
+
+    color:#444;
+
+    flex:1;
 
 }
 
@@ -487,28 +495,27 @@
 
 .btn-comenzar{
 
-  width:100%;
+    width:250px;
 
-  height:65px;
+    height:56px;
 
-  border:none;
+    border:none;
 
-  border-radius:18px;
+    border-radius:14px;
 
-  background:
-  linear-gradient(
-    90deg,
-    #c000ff,
-    #8a00ff
-  );
+    color:white;
 
-  color:white;
+    font-size:22px;
 
-  font-size:22px;
+    font-weight:700;
 
-  cursor:pointer;
+    background:linear-gradient(
+        90deg,
+        #6f2cff,
+        #4f18d8
+    );
 
-  transition:.2s;
+    transition:.25s;
 
 }
 
@@ -527,11 +534,67 @@
 
 }
 
+.titulo-dificultad{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    margin-bottom:18px;
+
+}
+
+.circulo{
+
+    width:28px;
+
+    height:28px;
+
+    border-radius:50%;
+
+    border:3px solid #111;
+
+    flex-shrink:0;
+
+}
+
+.verde{
+
+    background:#17e400;
+
+}
+
+.naranja{
+
+    background:#ff7300;
+
+}
+
+.rojo{
+
+    background:#ff0000;
+
+}
+
+.footer-quiz{
+
+    display:flex;
+
+    gap:24px;
+
+    align-items:center;
+
+    margin-top:30px;
+
+}
+
 /* ===================================== */
 /* RESPONSIVE */
 /* ===================================== */
 
-@media (max-width:1100px){
+@media (max-width:900px){
 
   .niveles-grid{
 
@@ -556,6 +619,18 @@
   .separador{
 
     display:none;
+
+  }
+
+  .footer-quiz{
+
+    flex-direction:column;
+
+  }
+
+  .btn-comenzar{
+
+    width:100%;
 
   }
 

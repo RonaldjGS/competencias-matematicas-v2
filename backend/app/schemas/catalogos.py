@@ -85,6 +85,22 @@ class TemaOut(BaseModel):
     model_config = ConfigDict(
         from_attributes=True
     )
+    
+class TemaDisponibleOut(BaseModel):
+
+    id_tema: int
+
+    nombre_tema: str
+
+    descripcion_tema: str
+
+    ultimo_resultado: float | None = None
+
+    fecha: str | None = None
+    
+    model_config = ConfigDict(
+    from_attributes=True
+    )
 
 class ProvinciaOut(BaseModel):
 

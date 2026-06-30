@@ -522,11 +522,11 @@ implements OnInit, OnDestroy {
     // =====================================
 
     clearInterval(
-      this.intervalo
+        this.intervalo
     );
 
     this.temporizadorActivo =
-      false;
+        false;
 
     // =====================================
     // TIEMPO UTILIZADO
@@ -539,51 +539,121 @@ implements OnInit, OnDestroy {
         this.tiempoRestante;
 
     // =====================================
-    // DATOS
+    // DATOS DEL QUIZ
     // =====================================
 
     const datos = {
 
         id_intento:
-
             this.idIntento,
 
         tiempo_total:
-
             tiempoUtilizado
 
     };
 
     this.quizService
-      .finalizarQuiz(datos)
-      .subscribe({
+    .finalizarQuiz(datos)
+    .subscribe({
 
-          next: (resp: any) => {
+        next: (resp: any) => {
 
-              console.log(
-                  "RESULTADO",
-                  resp
-              );
+            console.log(
+                "RESULTADO",
+                resp
+            );
 
-              this.router.navigate([
-                  '/resultado-quiz',
-                  resp.id_resultado
-              ]);
+            // ===============================
+            // DATOS DEL SUBMÓDULO
+            // ===============================
 
-          },
+            const datosSubmodulo = {
 
-          error: (err) => {
+                id_estudiante: Number(
 
-              console.error(err);
+                    localStorage.getItem(
+                        'id_estudiante'
+                    )
 
-          }
+                ),
 
-      });
+                id_competencia: Number(
+
+                    localStorage.getItem(
+                        'id_competencia'
+                    )
+
+                ),
+
+                id_submodulo: Number(
+
+                    localStorage.getItem(
+                        'id_submodulo'
+                    )
+
+                )
+
+            };
+
+            // ===============================
+            // REGISTRAR SUBMÓDULO COMPLETADO
+            // ===============================
+
+            this.quizService
+            .finalizarSubmodulo(
+                datosSubmodulo
+            )
+            .subscribe({
+
+                next: () => {
+
+                    this.router.navigate([
+
+                        '/resultado-quiz',
+
+                        resp.id_resultado
+
+                    ]);
+
+                },
+
+                error: (err) => {
+
+                    console.error(
+                        err
+                    );
+
+                    // Aunque falle el registro
+                    // del submódulo, el resultado
+                    // del quiz ya fue guardado.
+
+                    this.router.navigate([
+
+                        '/resultado-quiz',
+
+                        resp.id_resultado
+
+                    ]);
+
+                }
+
+            });
+
+        },
+
+        error: (err) => {
+
+            console.error(
+                err
+            );
+
+        }
+
+    });
 
     this.refrescarVista();
 
-  }
-
+}
   // =====================================
   // MODAL
   // =====================================

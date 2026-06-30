@@ -208,10 +208,13 @@
 
         class="competencia-card"
 
-        [class.bloqueado]="
-          submodulo.estado
-          === 'bloqueado'
-        "
+        [class.card-diagnostico]="submodulo.id_submodulo === 1"
+
+        [class.card-refuerzo]="submodulo.id_submodulo === 2"
+
+        [class.card-fortalecimiento]="submodulo.id_submodulo === 3"
+
+        [class.bloqueado]="submodulo.estado === 'bloqueado'"
 
       >
 
@@ -296,6 +299,11 @@
             submodulo.estado
             === 'bloqueado'
           "
+          [class.btn-diagnostico]="submodulo.id_submodulo === 1"
+
+          [class.btn-refuerzo]="submodulo.id_submodulo === 2"
+
+          [class.btn-fortalecimiento]="submodulo.id_submodulo === 3"
 
           (click)="
             seleccionarSubmodulo(

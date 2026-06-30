@@ -66,6 +66,26 @@ export class SidebarEstudianteComponent{
 
   }
 
+  irInicio(): void {
+
+    this.router.navigate([
+
+        '/dashboard-estudiante'
+
+    ]);
+
+  }
+
+  irProgreso(): void {
+
+    this.router.navigate([
+
+        '/progreso-estudiante'
+
+    ]);
+
+  }
+
   cerrarSesion(){
 
     localStorage.clear();

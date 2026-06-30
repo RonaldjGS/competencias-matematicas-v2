@@ -210,13 +210,26 @@
           of competencias
         "
 
+        [ngClass]="
+          obtenerClaseCompetencia(
+              competencia.nombre_competencia
+          )
+        "
+
       >
 
         <div class="card-body">
 
-          <div class="icono">
+          <div class="icono"
+          [ngClass]="
+          obtenerClaseCompetencia(
+          competencia.nombre_competencia
+          )
 
-            <i class="bi bi-clipboard-check"></i>
+          "
+          >
+
+            <i class="bi bi-clipboard2-data"></i>
 
           </div>
 
@@ -245,6 +258,13 @@
         <button
 
           class="btn-comenzar"
+
+          [ngClass]="
+            obtenerClaseCompetencia(
+            competencia.nombre_competencia
+            )
+
+          "
 
           (click)="
             seleccionarCompetencia(

@@ -60,6 +60,10 @@ import {
   ResultadoQuizComponent
 } from './pages/estudiante/resultado-quiz/resultado-quiz.component';
 
+import {
+  ProgresoEstudianteComponent
+} from './pages/estudiante/progreso-estudiante/progreso-estudiante.component';
+
 export const routes: Routes = [
 
   {
@@ -141,7 +145,11 @@ export const routes: Routes = [
   {
     path: 'resultado-quiz/:id',
     component: ResultadoQuizComponent
-}
+  },
 
+  {
+    path: 'progreso-estudiante',
+    component: ProgresoEstudianteComponent
+  }
 
 ];

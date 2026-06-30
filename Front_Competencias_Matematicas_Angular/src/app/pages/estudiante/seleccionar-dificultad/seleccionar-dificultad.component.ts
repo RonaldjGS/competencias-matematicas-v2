@@ -15,8 +15,24 @@ import {
 } from '@angular/router';
 
 import {
+  TopbarEstudianteComponent
+} from '../../../components/topbar-estudiante/topbar-estudiante.component';
+
+import {
+  SidebarEstudianteComponent
+} from '../../../components/sidebar-estudiante/sidebar-estudiante.component';
+
+import {
   QuizConfigService
 } from '../../../services/quiz-config.service';
+
+import {
+  EstadisticasTemaService
+} from '../../../services/estadisticas-tema.service';
+
+import {
+  ChangeDetectorRef
+} from '@angular/core';
 
 @Component({
   selector:
@@ -25,7 +41,11 @@ import {
   standalone: true,
 
   imports: [
-    CommonModule
+    CommonModule,
+
+    TopbarEstudianteComponent,
+    
+    SidebarEstudianteComponent
   ],
 
   templateUrl:
@@ -124,8 +144,13 @@ implements OnInit {
     private quizConfigService:
     QuizConfigService,
 
+    private cdr: ChangeDetectorRef,
+
     @Inject(PLATFORM_ID)
-    private platformId: Object
+    private platformId: Object,
+
+    private estadisticasTemaService:
+    EstadisticasTemaService,
 
   ) {}
 
@@ -165,6 +190,12 @@ implements OnInit {
 
     }
 
+    
+
+    this.cargarEstadisticas();
+
+    this.refrescarVista();
+
   }
 
   seleccionarDificultad(
@@ -173,6 +204,8 @@ implements OnInit {
 
     this.dificultadSeleccionada =
       dificultad;
+
+    this.refrescarVista();
 
   }
 
@@ -249,6 +282,110 @@ implements OnInit {
       '/seleccionar-tema'
 
     ]);
+
+  }
+
+  private refrescarVista(): void {
+
+    this.cdr.detectChanges();
+
+  }
+
+  cargarEstadisticas(): void {
+
+      const idEstudiante = Number(
+
+          localStorage.getItem(
+              'id_estudiante'
+          )
+
+      );
+
+      const idCompetencia = Number(
+
+          localStorage.getItem(
+              'id_competencia'
+          )
+
+      );
+
+      const idSubmodulo = Number(
+
+          localStorage.getItem(
+              'id_submodulo'
+          )
+
+      );
+
+      const idTema = Number(
+
+          localStorage.getItem(
+              'id_tema'
+          )
+
+      );
+
+      this.estadisticasTemaService
+
+          .obtenerEstadisticas(
+
+              idEstudiante,
+
+              idCompetencia,
+
+              idSubmodulo,
+
+              idTema
+
+          )
+
+          .subscribe({
+
+              next:(data)=>{
+
+                  this.precisionPromedio =
+
+                      data.precision_promedio != null
+
+                      ? data.precision_promedio + '%'
+
+                      : '--';
+
+                  this.intentosRealizados =
+
+                      data.intentos_realizados;
+
+                  this.tiempoPromedio =
+
+                      data.tiempo_promedio != null
+
+                      ? this.formatearTiempo(
+                          data.tiempo_promedio
+                      )
+
+                      : '--';
+
+                  this.refrescarVista();
+
+              }
+
+          });
+
+  }
+
+  formatearTiempo(
+      segundos:number
+  ):string{
+
+      const min =
+
+          Math.floor(segundos/60);
+
+      const seg =
+
+          segundos%60;
+
+      return `${min}:${seg.toString().padStart(2,'0')}`;
 
   }
 

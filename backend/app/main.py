@@ -28,6 +28,12 @@ from app.routers.resultados import (
     router as resultados_router
 )
 
+from app.routers.dashboard_estudiante import router as dashboard_estudiante_router
+
+from app.routers.progreso_estudiante import router as progreso_estudiante_router
+
+from app.routers.dashboard_profesor import router as dashboardProfesorRouter
+
 app = FastAPI()
 
 app.add_middleware(
@@ -70,4 +76,22 @@ app.include_router(
 
 app.include_router(
     resultados_router
+)
+
+app.include_router(
+
+    dashboard_estudiante_router
+
+)
+
+app.include_router(
+
+    progreso_estudiante_router
+
+)
+
+app.include_router(
+
+    dashboardProfesorRouter
+
 )

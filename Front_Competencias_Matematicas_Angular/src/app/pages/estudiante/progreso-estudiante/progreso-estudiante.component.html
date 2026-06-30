@@ -1,0 +1,503 @@
+<div class="pagina">
+
+    <app-topbar-estudiante
+        [nombreEstudiante]="nombreEstudiante">
+    </app-topbar-estudiante>
+
+    <app-sidebar-estudiante
+        [(menuAbierto)]="menuAbierto">
+    </app-sidebar-estudiante>
+
+    <main
+        class="contenido"
+        [class.contenido-expandido]="menuAbierto">
+
+        <div class="cabecera">
+
+            <h1>
+
+                Mi progreso
+
+            </h1>
+
+            <p>
+
+                Aquí podrás consultar tu evolución
+                y rendimiento general.
+
+            </p>
+
+        </div>
+
+        <!-- KPI -->
+
+        <div class="kpi-grid">
+
+            <div class="kpi-card">
+
+                <div class="kpi-icono morado">
+
+                    <i class="bi bi-graph-up-arrow"></i>
+
+                </div>
+
+                <div>
+
+                    <small>
+
+                        Promedio general
+
+                    </small>
+
+                    <h2>
+
+                        {{ promedioGeneral }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="kpi-card">
+
+                <div class="kpi-icono azul">
+
+                    <i class="bi bi-journal-check"></i>
+
+                </div>
+
+                <div>
+
+                    <small>
+
+                        Test realizados
+
+                    </small>
+
+                    <h2>
+
+                        {{ testRealizados }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="kpi-card">
+
+                <div class="kpi-icono verde">
+
+                    <i class="bi bi-check-circle"></i>
+
+                </div>
+
+                <div>
+
+                    <small>
+
+                        Precisión promedio
+
+                    </small>
+
+                    <h2>
+
+                        {{ precisionPromedio }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="kpi-card">
+
+                <div class="kpi-icono violeta">
+
+                    <i class="bi bi-clock-history"></i>
+
+                </div>
+
+                <div>
+
+                    <small>
+
+                        Tiempo promedio
+
+                    </small>
+
+                    <h2>
+
+                        {{ tiempoPromedio }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===================================== -->
+        <!-- FILA 1 -->
+        <!-- ===================================== -->
+
+        <div class="graficos-grid">
+
+            <section class="contenedor">
+
+                <h2>
+
+                    <i class="bi bi-bar-chart-fill"></i>
+
+                    Rendimiento por temas
+
+                </h2>
+
+                <div class="grafico-placeholder">
+
+                    <canvas id="graficoTemas"></canvas>
+
+                </div>
+
+            </section>
+
+            <section class="contenedor">
+
+                <div class="titulo-filtro">
+
+                    <h2>
+
+                        <i class="bi bi-graph-up-arrow"></i>
+
+                        Evolución del rendimiento
+
+                    </h2>
+
+                    <select
+                        [(ngModel)]="filtroEvolucion"
+
+                        (change)="cambiarFiltro()"
+                    >
+
+                        <option value="7">
+
+                            Últimos 7 días
+
+                        </option>
+
+                        <option value="30">
+
+                            Últimos 30 días
+
+                        </option>
+
+                        <option value="90">
+
+                            Últimos 3 meses
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="grafico-placeholder">
+
+                    <canvas id="graficoEvolucion"></canvas>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- ===================================== -->
+        <!-- FILA 2 -->
+        <!-- ===================================== -->
+
+        <div class="graficos-grid">
+
+            <section class="contenedor">
+
+                <h2>
+
+                    <i class="bi bi-pie-chart-fill"></i>
+
+                    Rendimiento por competencia
+
+                </h2>
+
+                <div class="grafico-placeholder">
+
+                    <canvas id="graficoCompetencias"></canvas>
+
+                </div>
+
+            </section>
+
+            <section class="contenedor">
+
+                <h2>
+
+                    <i class="bi bi-bar-chart-line-fill"></i>
+
+                    Rendimiento por submódulo
+
+                </h2>
+
+                <div class="grafico-placeholder">
+
+                    <canvas id="graficoSubmodulos"></canvas> 
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- ===================================== -->
+        <!-- DIFICULTAD -->
+        <!-- ===================================== -->
+
+        <section class="contenedor">
+
+            <h2>
+
+                <i class="bi bi-sliders"></i>
+
+                Rendimiento por nivel de dificultad
+
+            </h2>
+
+             <!-- ============================= -->
+            <!-- FILTROS -->
+            <!-- ============================= -->
+
+            <div class="filtros-radar">
+
+                <!-- Competencia -->
+
+                <select
+
+                    [(ngModel)]="competenciaSeleccionada"
+
+                    (change)="actualizarRadar()"
+
+                >
+
+                    <option [ngValue]="null">
+
+                        Todas las competencias
+
+                    </option>
+
+                    <option
+
+                        *ngFor="let competencia of competencias"
+
+                        [ngValue]="competencia.id_competencia"
+
+                    >
+
+                        {{ competencia.nombre_competencia }}
+
+                    </option>
+
+                </select>
+
+                <!-- Submódulo -->
+
+                <select
+
+                    [(ngModel)]="submoduloSeleccionado"
+
+                    (change)="actualizarRadar()"
+
+                >
+
+                    <option [ngValue]="null">
+
+                        Todos los submódulos
+
+                    </option>
+
+                    <option
+
+                        *ngFor="let sub of submodulos"
+
+                        [ngValue]="sub.id_submodulo"
+
+                    >
+
+                        {{ sub.nombre_submodulo }}
+
+                    </option>
+
+                </select>
+
+                <!-- Tema -->
+
+                <select
+
+                    [(ngModel)]="temaSeleccionado"
+
+                    (change)="actualizarRadar()"
+
+                >
+
+                    <option [ngValue]="null">
+
+                        Todos los temas
+
+                    </option>
+
+                    <option
+
+                        *ngFor="let tema of temas"
+
+                        [ngValue]="tema.id_tema"
+
+                    >
+
+                        {{ tema.nombre_tema }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="grafico-placeholder grande">
+
+                <canvas id="graficoDificultad"></canvas>
+
+            </div>
+
+
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- HISTORIAL -->
+        <!-- ===================================== -->
+
+        <section class="contenedor">
+
+            <h2>
+
+                <i class="bi bi-clock-history"></i>
+
+                Historial reciente
+
+            </h2>
+
+            <div class="historial-lista">
+
+                <div
+
+                    class="historial-item"
+
+                    *ngFor="let item of historial"
+
+                >
+
+                    <!-- Información principal -->
+
+                    <div class="historial-info">
+
+                        <h3>
+
+                            {{ item.tema }}
+
+                        </h3>
+
+                        <small>
+
+                            {{ item.competencia }}
+
+                            •
+                            {{ item.submodulo }}
+
+                        </small>
+
+                    </div>
+
+                    <!-- Resultado -->
+
+                    <div class="historial-resultado">
+
+                        <span class="puntaje">
+
+                            {{ item.correctas }}/{{ item.total }}
+
+                        </span>
+
+                        <small>
+
+                            {{ item.porcentaje }} %
+
+                        </small>
+
+                    </div>
+
+                    <!-- Nivel -->
+
+                    <div
+
+                        class="historial-nivel"
+
+                        [ngClass]="{
+
+                            'excelente': item.nivel=='Excelente',
+
+                            'competente': item.nivel=='Competente',
+
+                            'proceso': item.nivel=='En proceso',
+
+                            'desarrollo': item.nivel=='En desarrollo'
+
+                        }"
+
+                    >
+
+                        {{ item.nivel }}
+
+                    </div>
+
+                    <!-- Dificultad -->
+
+                    <div class="historial-dificultad">
+
+                        {{ item.dificultad }}
+
+                    </div>
+
+                    <!-- Tiempo -->
+
+                    <div class="historial-tiempo">
+
+                        <strong>
+
+                            {{ item.tiempoTexto }}
+
+                        </strong>
+
+                        <small>
+
+                            {{ item.hace }}
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
