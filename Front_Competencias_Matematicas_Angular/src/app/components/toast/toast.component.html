@@ -1,0 +1,27 @@
+<div
+
+class="toast"
+
+[class.success]="tipo=='success'"
+
+[class.error]="tipo=='error'"
+
+>
+
+<i
+
+class="bi"
+
+[class.bi-check-circle-fill]="tipo=='success'"
+
+[class.bi-x-circle-fill]="tipo=='error'"
+
+></i>
+
+<span>
+
+{{ mensaje }}
+
+</span>
+
+</div>

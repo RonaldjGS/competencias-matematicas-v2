@@ -104,4 +104,28 @@ obtenerTemasPorNivel(
 
 }
 
+obtenerSubmodulosPorCompetencia(
+
+  idCompetencia:number
+
+){
+
+  return this.http.get(
+
+    `${this.apiUrl}/submodulos/competencia/${idCompetencia}`
+
+  );
+
+}
+
+obtenerTemasProfesor() {
+
+  return this.http.get(
+
+    `${this.apiUrl}/temas-profesor`
+
+  );
+
+}
+
 }

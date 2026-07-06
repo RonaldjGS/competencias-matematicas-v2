@@ -256,7 +256,10 @@ def login_profesor(
             profesor.nombre_profesor,
 
             "correo":
-            profesor.correo
+            profesor.correo,
+            
+            "id_nivel":
+            profesor.id_nivel
         }
     }
     

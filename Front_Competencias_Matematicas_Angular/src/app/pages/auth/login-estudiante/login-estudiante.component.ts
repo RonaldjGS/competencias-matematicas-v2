@@ -171,4 +171,14 @@ export class LoginEstudianteComponent {
 
   }
 
+  irLoginAdmin(): void {
+
+      this.router.navigate([
+
+          '/login-admin'
+
+      ]);
+
+  }
+
 }

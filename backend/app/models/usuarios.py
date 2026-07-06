@@ -149,6 +149,14 @@ class Estudiante(Base):
     nivel = relationship(
         "NivelEducativo"
     )
+    
+    videos_estudiante = relationship(
+
+        "VideoEstudiante",
+
+        back_populates="estudiante"
+
+    )
 
 # ==========================================
 # profesor

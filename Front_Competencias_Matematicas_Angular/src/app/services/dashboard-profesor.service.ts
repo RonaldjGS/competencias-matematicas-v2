@@ -67,5 +67,61 @@ export class DashboardProfesorService{
     }
 
     
+    obtenerPrecisionDificultad(
+
+        idProfesor:number
+
+    ){
+
+        return this.http.get<any[]>(
+
+            `${this.apiUrl}/precision-dificultad/${idProfesor}`
+
+        );
+
+    }
+
+
+    obtenerSubmodulos(
+
+        idProfesor:number
+
+    ){
+
+        return this.http.get<any[]>(
+
+            `${this.apiUrl}/rendimiento-submodulos/${idProfesor}`
+
+        );
+
+    }
+
+    obtenerTemas(
+
+        idProfesor:number
+
+    ){
+
+        return this.http.get<any[]>(
+
+            `${this.apiUrl}/rendimiento-temas/${idProfesor}`
+
+        );
+
+    }
+
+    obtenerActividadReciente(
+
+        idProfesor:number
+
+    ){
+
+        return this.http.get<any[]>(
+
+            `${this.apiUrl}/actividad-reciente/${idProfesor}`
+
+        );
+
+    }
 
 }

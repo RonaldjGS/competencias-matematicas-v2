@@ -6,168 +6,442 @@ from fastapi import (
 
 from sqlalchemy.orm import Session
 
-from app.database.database import get_db
-
-from app.models.usuarios import Profesor
-
-from app.models.academico import (
-    Competencia,
-    Tema,
-    Submodulo,
+from app.database.database import (
+    get_db
 )
 
-from app.models.academico import Video
+from app.services.videos_service import (
+    obtener_resumen_videos,
+    obtener_videos,
+    crear_video,
+    obtener_video,
+    actualizar_estado_video,
+    eliminar_video,
+    actualizar_video,
+    obtener_video_intro
+)
 
 from app.schemas.videos import (
+
     VideoCreate,
-    VideoOut
+
+    VideoEdit,
+    
+    VideoUpdate,
+    
+    VideoVisualizado,
+
+    VideoOmitido
+
 )
 
-from app.core.auth import (
-    get_current_profesor
+from app.services.video_estudiante_service import (
+
+    registrar_video_visto,
+
+    registrar_video_omitido
+
 )
+
 
 router = APIRouter(
+
     prefix="/videos",
+
     tags=["Videos"]
+
 )
+
+# ==========================================
+# RESUMEN VIDEOS
+# ==========================================
+
+@router.get(
+
+    "/resumen"
+
+)
+
+def resumen_videos(
+
+    db: Session = Depends(
+
+        get_db
+
+    )
+
+):
+
+    return obtener_resumen_videos(
+
+        db
+
+    )
+    
+
+# ==========================================
+# LISTA VIDEOS
+# ==========================================
+
+@router.get(
+
+    "/lista"
+
+)
+
+def lista_videos(
+
+    db: Session = Depends(
+
+        get_db
+
+    )
+
+):
+
+    return obtener_videos(
+
+        db
+
+    )
+    
+# ==========================================
+# CREAR VIDEO
+# ==========================================
 
 @router.post(
-    "",
-    response_model=VideoOut
+
+    "/crear"
+
 )
-def crear_video(
-    data: VideoCreate,
-    profesor: Profesor = Depends(
-        get_current_profesor
-    ),
-    db: Session = Depends(get_db)
+
+def registrar_video(
+
+    datos: VideoCreate,
+
+    db: Session = Depends(
+
+        get_db
+
+    )
+
 ):
-    
-    competencia = (
-        db.query(Competencia)
-        .filter(
-        Competencia.id_competencia ==
-        data.id_competencia
-        )
-        .first()
+
+    respuesta = crear_video(
+
+        db,
+
+        datos
+
     )
 
-    if not competencia:
+    if "error" in respuesta:
 
         raise HTTPException(
-            status_code=404,
-            detail="Competencia no encontrada"
+
+            status_code=400,
+
+            detail=respuesta["error"]
+
         )
-        
-        
-    tema = (
-        db.query(Tema)
-        .filter(
-            Tema.id_tema ==
-            data.id_tema
-        )
-        .first()
+
+    return respuesta
+
+# ==========================================
+# VIDEO INTRODUCTORIO
+# ==========================================
+
+@router.get("/intro")
+
+def obtener_video_introductorio(
+
+    id_competencia: int,
+
+    id_submodulo: int,
+
+    id_tema: int,
+
+    db: Session = Depends(get_db)
+
+):
+
+    respuesta = obtener_video_intro(
+
+        db,
+
+        id_competencia,
+
+        id_submodulo,
+
+        id_tema
+
     )
 
-    if not tema:
+    if respuesta is None:
 
         raise HTTPException(
+
             status_code=404,
-            detail="Tema no encontrado"
+
+            detail="No existe un video para esta configuración"
+
         )
-    
-    submodulo = (
-        db.query(Submodulo)
-        .filter(
-            Submodulo.id_submodulo ==
-            data.id_submodulo
-        )
-        .first()
+
+    return respuesta
+
+# ==========================================
+# OBTENER VIDEO
+# ==========================================
+
+@router.get(
+
+    "/{id_video}"
+
+)
+
+def detalle_video(
+
+    id_video: int,
+
+    db: Session = Depends(
+
+        get_db
+
     )
-    if not submodulo:
+
+):
+
+    video = obtener_video(
+
+        db,
+
+        id_video
+
+    )
+
+    if video is None:
 
         raise HTTPException(
+
             status_code=404,
-            detail="Submódulo no encontrado"
+
+            detail="Video no encontrado"
+
         )
-    
-    
-    video = Video(
-
-        id_nivel=profesor.id_nivel,
-
-        id_competencia=data.id_competencia,
-
-        id_submodulo=data.id_submodulo,
-
-        id_tema=data.id_tema,
-
-        tema_codigo=tema.codigo,
-
-        tema_nombre=tema.nombre_tema,
-
-        video_url=data.video_url,
-
-        actualizado_por=
-        profesor.id_profesor
-    )
-
-    db.add(video)
-
-    db.commit()
-
-    db.refresh(video)
 
     return video
 
-@router.get(
-    "/buscar",
-    response_model=list[VideoOut]
+# ==========================================
+# ACTUALIZAR ESTADO VIDEO
+# ==========================================
+
+@router.patch(
+
+    "/estado/{id_video}"
+
 )
-def buscar_videos(
-    id_competencia: int,
-    id_submodulo: int,
-    id_tema: int,
-    profesor: Profesor = Depends(
-        get_current_profesor
-    ),
-    db: Session = Depends(get_db)
-):
-    return (
-    db.query(Video)
-    .filter(
-        Video.actualizado_por ==
-        profesor.id_profesor,
 
-        Video.id_competencia ==
-        id_competencia,
+def cambiar_estado_video(
 
-        Video.id_submodulo ==
-        id_submodulo,
+    id_video: int,
 
-        Video.id_tema ==
-        id_tema
+    db: Session = Depends(
+
+        get_db
+
     )
-    .all()
-)
-    
-@router.get(
-    "/mis-videos",
-    response_model=list[VideoOut]
-)
-def mis_videos(
-    profesor: Profesor = Depends(
-        get_current_profesor
-    ),
-    db: Session = Depends(get_db)
+
 ):
 
-    return (
-        db.query(Video)
-        .filter(
-            Video.actualizado_por ==
-            profesor.id_profesor
+    respuesta = actualizar_estado_video(
+
+        db,
+
+        id_video
+
+    )
+
+    if respuesta is None:
+
+        raise HTTPException(
+
+            status_code=404,
+
+            detail="Video no encontrado"
+
         )
-        .all()
+
+    return respuesta
+
+# ==========================================
+# ELIMINAR VIDEO
+# ==========================================
+
+@router.delete(
+
+    "/eliminar/{id_video}"
+
+)
+
+def eliminar_video_router(
+
+    id_video: int,
+
+    db: Session = Depends(
+
+        get_db
+
     )
+
+):
+
+    respuesta = eliminar_video(
+
+        db,
+
+        id_video
+
+    )
+
+    if respuesta is None:
+
+        raise HTTPException(
+
+            status_code=404,
+
+            detail="Video no encontrado"
+
+        )
+
+    return respuesta
+
+
+# ==========================================
+# ACTUALIZAR VIDEO
+# ==========================================
+
+@router.put(
+
+    "/actualizar/{id_video}"
+
+)
+
+def actualizar(
+
+    id_video: int,
+
+    datos: VideoUpdate,
+
+    db: Session = Depends(get_db)
+
+):
+
+    respuesta = actualizar_video(
+
+        db,
+
+        id_video,
+
+        datos
+
+    )
+
+    if "error" in respuesta:
+
+        raise HTTPException(
+
+            status_code=400,
+
+            detail=respuesta["error"]
+
+        )
+
+    return respuesta
+
+# ==========================================
+# REGISTRAR VIDEO VISTO
+# ==========================================
+
+@router.post(
+
+    "/visualizado"
+
+)
+
+def registrar_visualizacion(
+
+    datos: VideoVisualizado,
+
+    db: Session = Depends(
+
+        get_db
+
+    )
+
+):
+
+    respuesta = registrar_video_visto(
+
+        db,
+
+        datos.id_estudiante,
+
+        datos.id_video
+
+    )
+
+    if "error" in respuesta:
+
+        raise HTTPException(
+
+            status_code=400,
+
+            detail=respuesta["error"]
+
+        )
+
+    return respuesta
+
+# ==========================================
+# REGISTRAR VIDEO OMITIDO
+# ==========================================
+
+@router.post(
+
+    "/omitido"
+
+)
+
+def registrar_omision(
+
+    datos: VideoOmitido,
+
+    db: Session = Depends(
+
+        get_db
+
+    )
+
+):
+
+    respuesta = registrar_video_omitido(
+
+        db,
+
+        datos.id_estudiante,
+
+        datos.id_video
+
+    )
+
+    if "error" in respuesta:
+
+        raise HTTPException(
+
+            status_code=400,
+
+            detail=respuesta["error"]
+
+        )
+
+    return respuesta

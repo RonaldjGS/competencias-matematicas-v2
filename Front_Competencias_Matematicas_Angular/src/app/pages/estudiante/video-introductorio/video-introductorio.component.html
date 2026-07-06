@@ -40,9 +40,11 @@
 
         <h1>
 
-          🎬 Material Introductorio
+          <i class="bi bi-play-circle-fill"></i>
 
-        </h1>
+          Material Introductorio
+
+      </h1>
 
         <p>
 
@@ -66,7 +68,7 @@
 
         <span class="resumen-icono">
 
-          📖
+          <i class="bi bi-book-half"></i>
 
         </span>
 
@@ -96,7 +98,7 @@
 
         <span class="resumen-icono">
 
-          📋
+          <i class="bi bi-diagram-3-fill"></i>
 
         </span>
 
@@ -126,7 +128,7 @@
 
         <span class="resumen-icono">
 
-          🎯
+          <i class="bi bi-bullseye"></i>
 
         </span>
 
@@ -158,55 +160,122 @@
 
     <div class="video-container">
 
+      <!-- =============================== -->
+      <!-- INFORMACIÓN -->
+      <!-- =============================== -->
+
       <div class="aprendizaje-card">
 
-        <h3>
+          <h3>
 
-          🏅 ¿Qué aprenderás?
+              <i class="bi bi-lightbulb-fill"></i>
 
-        </h3>
+              Información del recurso
 
-        <ul>
+          </h3>
 
-          <li>
+          <div *ngIf="videoIntro">
 
-            Variables e incógnitas
+              <p>
 
-          </li>
+                  <strong>Título</strong>
 
-          <li>
+              </p>
 
-            Expresiones algebraicas
+              <p>
 
-          </li>
+                  {{ videoIntro.titulo }}
 
-          <li>
+              </p>
 
-            Ecuaciones básicas
+              <hr>
 
-          </li>
+              <p>
 
-          <li>
+                  <strong>Descripción</strong>
 
-            Resolución de problemas
+              </p>
 
-          </li>
+              <p>
 
-        </ul>
+                  {{ videoIntro.descripcion }}
+
+              </p>
+
+              <hr>
+
+              <p>
+
+                  <strong>Tema</strong>
+
+              </p>
+
+              <p>
+
+                  {{ videoIntro.tema }}
+
+              </p>
+
+          </div>
+
+          <div *ngIf="videoNoDisponible">
+
+              <p>
+
+                  No existe un recurso para esta configuración.
+
+              </p>
+
+          </div>
 
       </div>
+
+      <!-- =============================== -->
+      <!-- VIDEO -->
+      <!-- =============================== -->
 
       <div class="video-card">
 
-        <div class="video-placeholder">
+          <div
+              class="video-placeholder"
+              *ngIf="cargandoVideo"
+          >
 
-          VIDEO
+              <i class="bi bi-arrow-repeat spinner"></i>
 
-        </div>
+          </div>
+
+          <!-- ===================================== -->
+          <!-- REPRODUCTOR YOUTUBE -->
+          <!-- ===================================== -->
+
+          <div
+
+              *ngIf="videoIntro"
+
+              id="youtube-player"
+
+              class="youtube-player"
+
+          >
+
+          </div>
+
+          <div
+
+              class="video-placeholder"
+
+              *ngIf="videoNoDisponible"
+
+          >
+
+              <i class="bi bi-camera-video-off-fill"></i>
+
+          </div>
 
       </div>
 
-    </div>
+  </div>
 
     <!-- ===================================== -->
     <!-- BOTONES -->
@@ -215,20 +284,30 @@
     <div class="acciones">
 
       <button
-        class="btn-comenzar"
-        (click)="iniciarQuiz()"
+
+          class="btn-comenzar"
+
+          [disabled]="!videoFinalizado"
+
+          (click)="comenzarQuiz()"
+
       >
 
-        Comenzar
+          <i class="bi bi-play-circle-fill"></i>
+
+          Comenzar
 
       </button>
 
       <button
-        class="btn-saltar"
-        (click)="iniciarQuiz()"
+
+          class="btn-saltar"
+
+          (click)="omitirRecurso()"
+
       >
 
-        Omitir recurso
+          Omitir recurso
 
       </button>
 

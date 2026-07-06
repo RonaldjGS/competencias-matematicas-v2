@@ -31,137 +31,155 @@ export class LoginProfesorComponent {
 
     password = '';
 
-mostrarPassword = false;
+  mostrarPassword = false;
 
-constructor(
-  private authService:
-    AuthProfesorService,
-  
-    private router: Router
-) {}
+  constructor(
+    private authService:
+      AuthProfesorService,
+    
+      private router: Router
+  ) {}
 
-  irLoginEstudiante(): void {
+    irLoginEstudiante(): void {
+
+      this.router.navigate([
+        '/login-estudiante'
+      ]);
+
+    }
+
+
+    irLoginProfesor(): void {
+
+      this.router.navigate([
+        '/login-profesor'
+      ]);
+
+    }
+
+  togglePassword(): void {
+
+
+  this.mostrarPassword =
+    !this.mostrarPassword;
+
+
+  }
+
+
+
+  irRegistroProfesor(): void {
 
     this.router.navigate([
-      '/login-estudiante'
+      '/registro-profesor'
     ]);
 
-  }
-
-
-  irLoginProfesor(): void {
-
-    this.router.navigate([
-      '/login-profesor'
-    ]);
 
   }
 
-togglePassword(): void {
 
+  loginProfesor(): void {
 
-this.mostrarPassword =
-  !this.mostrarPassword;
+    if (
 
+      !this.correo ||
 
-}
+      !this.password
 
+    ) {
 
+      alert(
+        'Debe ingresar correo y contraseña'
+      );
 
-irRegistroProfesor(): void {
+      return;
 
-  this.router.navigate([
-    '/registro-profesor'
-  ]);
+    }
 
+    const datos = {
 
-}
+      correo:
+        this.correo,
 
+      password:
+        this.password
 
-loginProfesor(): void {
+    };
 
-  if (
+    this.authService
+      .login(datos)
+      .subscribe({
 
-    !this.correo ||
+        next: (response: any) => {
 
-    !this.password
+          console.log(
+            'Login correcto',
+            response
+          );
 
-  ) {
+          localStorage.setItem(
 
-    alert(
-      'Debe ingresar correo y contraseña'
-    );
+            'token_profesor',
 
-    return;
+            response.access_token
+
+          );
+
+          localStorage.setItem(
+
+            'id_profesor',
+
+            response.usuario.id_profesor.toString()
+
+          );
+
+          localStorage.setItem(
+
+            'id_nivel',
+
+            response.usuario.id_nivel.toString()
+
+          );
+
+          localStorage.setItem(
+
+            'nombre_profesor',
+
+            response.usuario.nombre_profesor
+
+          );
+
+          this.router.navigate([
+
+            '/dashboard-profesor'
+
+          ]);
+
+        },
+
+        error: (error) => {
+
+          console.error(error);
+
+          alert(
+            'Correo o contraseña incorrectos'
+          );
+
+        }
+
+      });
 
   }
 
-  const datos = {
+  irLoginAdmin(): void {
 
-    correo:
-      this.correo,
+      this.router.navigate([
 
-    password:
-      this.password
+          '/login-admin'
 
-  };
+      ]);
 
-  this.authService
-    .login(datos)
-    .subscribe({
-
-      next: (response: any) => {
-
-        console.log(
-          'Login correcto',
-          response
-        );
-
-        localStorage.setItem(
-
-          'token_profesor',
-
-          response.access_token
-
-        );
-
-        localStorage.setItem(
-
-          'id_profesor',
-
-          response.usuario.id_profesor.toString()
-
-        );
-
-        localStorage.setItem(
-
-          'nombre_profesor',
-
-          response.usuario.nombre_profesor
-
-        );
-
-        this.router.navigate([
-
-          '/dashboard-profesor'
-
-        ]);
-
-      },
-
-      error: (error) => {
-
-        console.error(error);
-
-        alert(
-          'Correo o contraseña incorrectos'
-        );
-
-      }
-
-    });
-
-}
+  }
 
 
 }

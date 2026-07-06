@@ -169,18 +169,28 @@
   flex: 1;
 }
 
-.eye-btn {
+.eye-btn{
 
-  border: none;
+    width:55px;
 
-  background: white;
+    border:none;
 
-  padding: 0 15px;
+    background:white;
 
-  cursor: pointer;
+    cursor:pointer;
 
-  font-size: 18px;
+    font-size:20px;
+
+    color:#6b7280;
+
 }
+
+.eye-btn:hover{
+
+    color:#7c3aed;
+
+}
+
 
 .login-btn {
 
@@ -219,6 +229,92 @@
   color: #666;
 
   cursor: pointer;
+}
+
+/*======================================
+SELECTOR DE ROLES
+======================================*/
+
+.selector-roles{
+
+    position:fixed;
+
+    left:25px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    z-index:1000;
+
+}
+
+/*======================================
+BOTÓN
+======================================*/
+
+.rol-btn{
+
+    width:68px;
+
+    height:68px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:0 6px 16px rgba(0,0,0,.18);
+
+}
+
+.rol-btn i{
+
+    font-size:30px;
+
+    color:#5b21b6;
+
+}
+
+.rol-btn:hover{
+
+    transform:scale(1.08);
+
+    background:#f3e8ff;
+
+}
+
+/*======================================
+BOTÓN ACTIVO
+======================================*/
+
+.rol-btn.activo{
+
+    background:#7c3aed;
+
+}
+
+.rol-btn.activo i{
+
+    color:white;
+
 }
 
 /* RESPONSIVE */

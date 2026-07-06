@@ -1,0 +1,137 @@
+/* ==========================================
+SIDEBAR
+========================================== */
+
+.sidebar{
+
+    position:fixed;
+
+    top:100px;
+
+    left:0;
+
+    width:240px;
+
+    height:calc(100vh - 100px);
+
+    background:#ffffff;
+
+    border-right:1px solid #ececec;
+
+    display:flex;
+
+    flex-direction:column;
+
+    transition:.3s;
+
+    z-index:999;
+
+    overflow:hidden;
+
+}
+
+.sidebar.collapsed{
+
+    width:85px;
+
+}
+
+/*======================================*/
+
+.menu-btn{
+
+    width:52px;
+
+    height:52px;
+
+    margin:18px auto;
+
+    border:none;
+
+    background:transparent;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+}
+
+.menu-btn:hover{
+
+    background:#f3e8ff;
+
+}
+
+/*======================================*/
+
+.sidebar ul{
+
+    list-style:none;
+
+    display:flex;
+
+    flex-direction:column;
+
+    flex:1;
+
+    margin:0;
+
+    padding:15px 0;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+}
+
+.sidebar li{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    padding:18px 25px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    font-size:18px;
+
+}
+
+.sidebar li:hover{
+
+    background:#f3e8ff;
+
+    color:#6d28d9;
+
+}
+
+.sidebar li i{
+
+    font-size:26px;
+
+    min-width:30px;
+
+}
+
+.cerrar-sesion{
+
+    margin-top:auto;
+
+    border-top:1px solid #ececec;
+
+    color:#dc2626;
+
+}
+
+.cerrar-sesion:hover{
+
+    background:#fef2f2;
+
+    color:#dc2626;
+
+}

@@ -38,6 +38,12 @@ from app.schemas.catalogos import (
     ProvinciaOut
 )
 
+from app.services.catalogos_service import (
+
+    obtener_evolucion_rendimiento
+
+)
+
 
 router = APIRouter(
     prefix="/catalogos",
@@ -293,3 +299,24 @@ def listar_ciudades_por_provincia(
         )
         .all()
     )
+
+
+@router.get(
+    "/profesor/estudiante/{id_estudiante}/evolucion"
+)
+def listar_evolucion(
+
+    id_estudiante:int,
+
+    db:Session=Depends(get_db)
+
+):
+
+    return obtener_evolucion_rendimiento(
+
+        db,
+
+        id_estudiante
+
+    )
+    

@@ -100,3 +100,25 @@ class ChangePasswordRequest(BaseModel):
         max_length=100
     )
 
+
+
+class EstudianteProfesorCreate(
+    BaseModel
+):
+
+    nombre_estudiante: str
+
+    institucion_edu: str
+    
+    id_tipo_institucion: int | None = None
+
+    id_carrera: int | None = None
+    
+    id_ciudad: int
+
+    correo_estudiante: EmailStr
+
+    password: str
+
+    estado: bool
+    

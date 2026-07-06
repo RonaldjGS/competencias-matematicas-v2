@@ -91,6 +91,20 @@ implements OnInit{
 
   preguntasError:any[]=[];
 
+  graficoDificultad!: Chart;
+
+  datosDificultad:any[]=[];
+
+  graficoSubmodulos!: Chart;
+
+  datosSubmodulos:any[]=[];
+
+  graficoTemas!: Chart;
+
+  datosTemas:any[]=[];
+
+  actividades:any[]=[];
+
   constructor(
     private router: Router,
 
@@ -136,6 +150,14 @@ implements OnInit{
         this.cargarGraficoCompetencias();
 
         this.cargarPreguntasError();
+
+        this.cargarGraficoDificultad();
+
+        this.cargarGraficoSubmodulos();
+
+        this.cargarGraficoTemas();
+
+        this.cargarActividadReciente();
 
     }
 
@@ -372,6 +394,492 @@ implements OnInit{
 
   }
 
-  
+    cargarGraficoDificultad():void{
+
+        this.dashboardProfesorService
+
+        .obtenerPrecisionDificultad(
+
+            this.idProfesor
+
+        )
+
+        .subscribe({
+
+            next:(data)=>{
+
+                console.log(
+
+                    "Precisión por dificultad",
+
+                    data
+
+                );
+
+                this.datosDificultad=data;
+
+                this.crearGraficoDificultad();
+
+                this.refrescarVista();
+
+            },
+
+            error:(err)=>{
+
+                console.error(err);
+
+            }
+
+        });
+
+    }
+
+    crearGraficoDificultad():void{
+
+            if(this.graficoDificultad){
+
+                this.graficoDificultad.destroy();
+
+            }
+
+            this.graficoDificultad = new Chart(
+
+                "graficoDificultad",
+
+                {
+
+                    type:"bar",
+
+                    data:{
+
+                        labels:
+
+                            this.datosDificultad.map(
+
+                                x=>x.dificultad
+
+                            ),
+
+                        datasets:[
+
+                            {
+
+                                label:
+
+                                "Precisión (%)",
+
+                                data:
+
+                                    this.datosDificultad.map(
+
+                                        x=>x.promedio
+
+                                    ),
+
+                                backgroundColor:[
+
+                                    "#22c55e",
+
+                                    "#f59e0b",
+
+                                    "#ef4444"
+
+                                ],
+
+                                borderRadius:10,
+
+                                borderSkipped:false
+
+                            }
+
+                        ]
+
+                    },
+
+                    options:{
+
+                        responsive:true,
+
+                        maintainAspectRatio:false,
+
+                        plugins:{
+
+                            legend:{
+
+                                display:false
+
+                            }
+
+                        },
+
+                        scales:{
+
+                            y:{
+
+                                beginAtZero:true,
+
+                                max:100
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+        }
+
+        cargarGraficoSubmodulos():void{
+
+            this.dashboardProfesorService
+
+                .obtenerSubmodulos(
+
+                    this.idProfesor
+
+                )
+
+                .subscribe({
+
+                    next:(data)=>{
+
+                        console.log(
+
+                            "Submódulos",
+
+                            data
+
+                        );
+
+                        this.datosSubmodulos=data;
+
+                        this.crearGraficoSubmodulos();
+
+                        this.refrescarVista();
+
+                    },
+
+                    error:(err)=>{
+
+                        console.error(err);
+
+                    }
+
+                });
+
+        }
+
+        crearGraficoSubmodulos():void{
+
+            if(this.graficoSubmodulos){
+
+                this.graficoSubmodulos.destroy();
+
+            }
+
+            this.graficoSubmodulos = new Chart(
+
+                "graficoSubmodulos",
+
+                {
+
+                    type:"pie",
+
+                    data:{
+
+                        labels:
+
+                            this.datosSubmodulos.map(
+
+                                x=>x.submodulo
+
+                            ),
+
+                        datasets:[
+
+                            {
+
+                                data:
+
+                                    this.datosSubmodulos.map(
+
+                                        x=>x.promedio
+
+                                    ),
+
+                                backgroundColor:[
+
+                                    "#7c3aed",
+
+                                    "#3b82f6",
+
+                                    "#22c55e",
+
+                                    "#f59e0b",
+
+                                    "#ef4444",
+
+                                    "#14b8a6",
+
+                                    "#8b5cf6",
+
+                                    "#ec4899"
+
+                                ],
+
+                                borderWidth:2,
+
+                                borderColor:"#ffffff"
+
+                            }
+
+                        ]
+
+                    },
+
+                    options:{
+
+                        responsive:true,
+
+                        maintainAspectRatio:false,
+
+                        plugins:{
+
+                            legend:{
+
+                                position:"bottom"
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+        }
+
+
+        cargarGraficoTemas():void{
+
+            this.dashboardProfesorService
+
+                .obtenerTemas(
+
+                    this.idProfesor
+
+                )
+
+                .subscribe({
+
+                    next:(data)=>{
+
+                        console.log(
+
+                            "Temas",
+
+                            data
+
+                        );
+
+                        this.datosTemas=data;
+
+                        this.crearGraficoTemas();
+
+                        this.refrescarVista();
+
+                    },
+
+                    error:(err)=>{
+
+                        console.error(err);
+
+                    }
+
+                });
+
+        }
+
+        crearGraficoTemas():void{
+
+        if(this.graficoTemas){
+
+            this.graficoTemas.destroy();
+
+        }
+
+        this.graficoTemas = new Chart(
+
+            "graficoTemas",
+
+            {
+
+                type:"bar",
+
+                data:{
+
+                    labels:
+
+                        this.datosTemas.map(
+
+                            x=>x.tema
+
+                        ),
+
+                    datasets:[
+
+                        {
+
+                            label:
+
+                            "Promedio (%)",
+
+                            data:
+
+                            this.datosTemas.map(
+
+                                x=>x.promedio
+
+                            ),
+
+                            backgroundColor:[
+
+                                "#8b5cf6",
+
+                                "#22c55e",
+
+                                "#f59e0b",
+
+                                "#3b82f6",
+
+                                "#ef4444",
+
+                                "#06b6d4",
+
+                                "#14b8a6",
+
+                                "#ec4899",
+
+                                "#f97316",
+
+                                "#84cc16"
+
+                            ],
+
+                            borderRadius:8
+
+                        }
+
+                    ]
+
+                },
+
+                options:{
+
+                    responsive:true,
+
+                    maintainAspectRatio:false,
+
+                    indexAxis:"y",
+
+                    plugins:{
+
+                        legend:{
+
+                            display:false
+
+                        }
+
+                    },
+
+                    scales:{
+
+                        x:{
+
+                            beginAtZero:true,
+
+                            max:100
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+    }
+
+
+    cargarActividadReciente():void{
+
+        this.dashboardProfesorService
+
+            .obtenerActividadReciente(
+
+                this.idProfesor
+
+            )
+
+            .subscribe({
+
+                next:(data)=>{
+
+                    this.actividades=data;
+
+                    this.refrescarVista();
+
+                },
+
+                error:(err)=>{
+
+                    console.error(err);
+
+                }
+
+            });
+
+    }
+
+    haceCuanto(fecha:string):string{
+
+        const ahora=new Date();
+
+        const f=new Date(fecha);
+
+        const segundos=(
+
+            ahora.getTime()-f.getTime()
+
+        )/1000;
+
+        if(segundos<60){
+
+            return "Hace unos segundos";
+
+        }
+
+        if(segundos<3600){
+
+            return `Hace ${Math.floor(segundos/60)} min`;
+
+        }
+
+        if(segundos<86400){
+
+            return `Hace ${Math.floor(segundos/3600)} h`;
+
+        }
+
+        return `Hace ${Math.floor(segundos/86400)} días`;
+
+    }
 
 }

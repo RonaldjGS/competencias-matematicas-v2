@@ -28,11 +28,24 @@ from app.routers.resultados import (
     router as resultados_router
 )
 
+from app.routers.auth_admin import (
+
+    router as auth_admin_router
+
+)
+
+from app.routers.admin import(
+    
+    router as admin_router
+)
+
 from app.routers.dashboard_estudiante import router as dashboard_estudiante_router
 
 from app.routers.progreso_estudiante import router as progreso_estudiante_router
 
 from app.routers.dashboard_profesor import router as dashboardProfesorRouter
+
+from app.routers.estudiantes_profesor import router as estudiantes_profesor
 
 app = FastAPI()
 
@@ -94,4 +107,20 @@ app.include_router(
 
     dashboardProfesorRouter
 
+)
+
+app.include_router(
+
+    estudiantes_profesor
+
+)
+
+app.include_router(
+
+    auth_admin_router
+
+)
+
+app.include_router(
+    admin_router
 )

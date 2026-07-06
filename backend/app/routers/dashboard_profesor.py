@@ -18,7 +18,15 @@ from app.services.dashboard_profesor_service import (
     
     obtener_rendimiento_competencias,
     
-    obtener_preguntas_error
+    obtener_preguntas_error,
+    
+    obtener_precision_dificultad,
+    
+    obtener_rendimiento_submodulos,
+    
+    obtener_rendimiento_temas,
+    
+    obtener_actividad_reciente
 
 )
 
@@ -102,6 +110,99 @@ def preguntas_error(
 ):
 
     return obtener_preguntas_error(
+
+        db,
+
+        id_profesor
+
+    )
+ 
+# ==========================================
+# RENDIMIENTO POR Dificultad
+# ==========================================    
+
+@router.get(
+    "/precision-dificultad/{id_profesor}"
+)
+def precision_dificultad(
+
+    id_profesor:int,
+
+    db:Session=Depends(get_db)
+
+):
+
+    return obtener_precision_dificultad(
+
+        db,
+
+        id_profesor
+
+    )
+    
+# ==========================================
+# RENDIMIENTO POR SUBMÓDULO
+# ==========================================
+
+@router.get(
+    "/rendimiento-submodulos/{id_profesor}"
+)
+def rendimiento_submodulos(
+
+    id_profesor:int,
+
+    db:Session=Depends(get_db)
+
+):
+
+    return obtener_rendimiento_submodulos(
+
+        db,
+
+        id_profesor
+
+    )
+    
+# ==========================================
+# RENDIMIENTO POR TEMAS
+# ==========================================
+
+@router.get(
+    "/rendimiento-temas/{id_profesor}"
+)
+def rendimiento_temas(
+
+    id_profesor:int,
+
+    db:Session=Depends(get_db)
+
+):
+
+    return obtener_rendimiento_temas(
+
+        db,
+
+        id_profesor
+
+    )
+    
+
+# ==========================================
+# ACTIVIDAD RECIENTE
+# ==========================================
+
+@router.get(
+    "/actividad-reciente/{id_profesor}"
+)
+def actividad_reciente(
+
+    id_profesor:int,
+
+    db:Session=Depends(get_db)
+
+):
+
+    return obtener_actividad_reciente(
 
         db,
 

@@ -6,7 +6,65 @@ from pydantic import (
     ConfigDict
 )
 
-class VideoCreate(BaseModel):
+from typing import Optional, Literal
+
+# ===========================
+# Base
+# ===========================
+
+class VideoBase(BaseModel):
+    titulo: str
+    descripcion: Optional[str] = None
+
+    id_competencia: int
+    id_submodulo: int
+    id_tema: int
+
+    youtube_url: str
+
+    tipo: Literal["DIAGNOSTICO", "REFUERZO"] = "REFUERZO"
+
+    estado: bool = True
+
+
+# ===========================
+# Crear
+# ===========================
+
+class VideoCreate(VideoBase):
+    actualizado_por: int
+
+
+# ===========================
+# Editar
+# ===========================
+
+class VideoEdit(VideoBase):
+
+    actualizado_por: int
+
+# ===========================
+# Respuesta
+# ===========================
+
+class VideoResponse(VideoBase):
+    id_video: int
+    actualizado_por: int
+
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    model_config = ConfigDict(from_attributes=True)
+    
+# ==========================================
+# ACTUALIZAR VIDEO
+# ==========================================
+
+class VideoUpdate(BaseModel):
+
+    titulo: str
+
+    descripcion: str | None = None
 
     id_competencia: int
 
@@ -14,25 +72,29 @@ class VideoCreate(BaseModel):
 
     id_tema: int
 
-    video_url: HttpUrl
+    youtube_url: str
+
+    tipo: str
+
+    actualizado_por: int
     
-class VideoOut(BaseModel):
+# ==========================================
+# VIDEO VISTO COMPLETO
+# ==========================================
+
+class VideoVisualizado(BaseModel):
+
+    id_estudiante: int
 
     id_video: int
 
-    id_nivel: int
 
-    id_competencia: int
+# ==========================================
+# VIDEO OMITIDO
+# ==========================================
 
-    id_submodulo: int
+class VideoOmitido(BaseModel):
 
-    id_tema: int
+    id_estudiante: int
 
-    video_url: str
-
-    updated_at: datetime
-
-    model_config = ConfigDict(
-        from_attributes=True
-    )
-    
+    id_video: int

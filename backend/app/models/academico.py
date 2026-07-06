@@ -5,10 +5,17 @@ from sqlalchemy import (
     Text,
     Boolean,
     DateTime,
-    ForeignKey
+    ForeignKey,
+    Enum
 )
 
 from sqlalchemy.sql import func
+
+from sqlalchemy.orm import (
+
+    relationship
+
+)
 
 from app.database.base import Base
 
@@ -157,7 +164,6 @@ class Tema(Base):
     )
     
 class Video(Base):
-
     __tablename__ = "videos"
 
     id_video = Column(
@@ -166,12 +172,17 @@ class Video(Base):
         index=True
     )
 
-    id_nivel = Column(
-        Integer,
+    titulo = Column(
+        String(200),
         nullable=False
     )
 
-    id_tema = Column(
+    descripcion = Column(
+        Text,
+        nullable=True
+    )
+
+    id_competencia = Column(
         Integer,
         nullable=False
     )
@@ -181,24 +192,26 @@ class Video(Base):
         nullable=False
     )
 
-    id_competencia = Column(
+    id_tema = Column(
         Integer,
         nullable=False
     )
 
-    tema_codigo = Column(
+    youtube_id = Column(
         String(50),
-        nullable=True
-    )
-
-    tema_nombre = Column(
-        String(150),
-        nullable=True
-    )
-
-    video_url = Column(
-        String(500),
         nullable=False
+    )
+
+    tipo = Column(
+        Enum("DIAGNOSTICO", "REFUERZO", name="tipo_video"),
+        nullable=False,
+        server_default="REFUERZO"
+    )
+
+    estado = Column(
+        Boolean,
+        nullable=False,
+        default=True
     )
 
     actualizado_por = Column(
@@ -206,7 +219,114 @@ class Video(Base):
         nullable=False
     )
 
-    updated_at = Column(
+    created_at = Column(
         DateTime(timezone=True),
         server_default=func.now()
+    )
+
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now()
+    )
+    
+    videos_estudiante = relationship(
+
+        "VideoEstudiante",
+
+        back_populates="video"
+
+    )
+    
+
+class VideoEstudiante(Base):
+
+    __tablename__ = "videos_estudiantes"
+
+    id_video_estudiante = Column(
+
+        Integer,
+
+        primary_key=True,
+
+        index=True
+
+    )
+
+    id_estudiante = Column(
+
+        Integer,
+
+        ForeignKey(
+
+            "estudiantes.id_estudiante"
+
+        ),
+
+        nullable=False
+
+    )
+
+    id_video = Column(
+
+        Integer,
+
+        ForeignKey(
+
+            "videos.id_video"
+
+        ),
+
+        nullable=False
+
+    )
+
+    visto_completo = Column(
+
+        Boolean,
+
+        default=False,
+
+        nullable=False
+
+    )
+
+    omitido = Column(
+
+        Boolean,
+
+        default=False,
+
+        nullable=False
+
+    )
+
+    fecha_visualizacion = Column(
+
+        DateTime,
+
+        server_default=func.now(),
+
+        nullable=False
+
+    )
+
+    # ==========================
+    # RELACIONES
+    # ==========================
+
+    estudiante = relationship(
+
+        "Estudiante",
+
+        back_populates="videos_estudiante"
+
+    )
+
+    video = relationship(
+
+        "Video",
+
+        back_populates="videos_estudiante"
+
     )

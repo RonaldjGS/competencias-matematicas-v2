@@ -1,25 +1,49 @@
 <div class="login-container">
   <div class="selector-roles">
 
-  <button
-    (click)="irLoginEstudiante()"
-  >
-    👨‍🎓
-  </button>
+      <button
 
-  <button
-    (click)="irLoginProfesor()"
-  >
-    👨‍🏫
-  </button>
+          class="rol-btn activo"
 
-  <button
-    //(click)="irLoginAdmin()"
-  >
-    ⚙️
-  </button>
+          title="Estudiante"
 
-</div>
+          (click)="irLoginEstudiante()"
+
+      >
+
+          <i class="bi bi-mortarboard-fill"></i>
+
+      </button>
+
+      <button
+
+          class="rol-btn"
+
+          title="Profesor"
+
+          (click)="irLoginProfesor()"
+
+      >
+
+          <i class="bi bi-person-video3"></i>
+
+      </button>
+
+      <button
+
+          class="rol-btn"
+
+          title="Administrador"
+
+          (click)="irLoginAdmin()"
+
+      >
+
+          <i class="bi bi-shield-lock-fill"></i>
+
+      </button>
+
+  </div>
 
   <div class="login-card">
 
@@ -109,7 +133,15 @@
             class="eye-btn"
             (click)="togglePassword()"
           >
-            👁
+            <i
+
+              class="bi"
+
+              [class.bi-eye]="!mostrarPassword"
+
+              [class.bi-eye-slash]="mostrarPassword"
+
+            ></i>
           </button>
 
         </div>

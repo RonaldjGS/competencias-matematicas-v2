@@ -1,0 +1,1046 @@
+<div class="perfil-container">
+
+    <app-topbar-profesor
+
+        [nombreProfesor]="nombreProfesor">
+
+    </app-topbar-profesor>
+
+    <app-sidebar-profesor
+
+        [(menuAbierto)]="menuAbierto">
+
+    </app-sidebar-profesor>
+
+    <main
+
+        class="contenido"
+
+        [class.menu-cerrado]="!menuAbierto"
+
+    >
+
+        <!-- ================================= -->
+
+        <!-- CABECERA -->
+
+        <!-- ================================= -->
+
+        <section class="cabecera">
+
+            <button
+
+                class="btn-volver"
+
+                (click)="irEstudiantes()"
+
+            >
+
+                <i class="bi bi-arrow-left"></i>
+
+            </button>
+
+            <div>
+
+                <h1>
+
+                    Perfil del estudiante
+
+                </h1>
+
+                <p>
+
+                    Verifica el rendimiento y progreso detallado del estudiante.
+
+                </p>
+
+            </div>
+
+            <div class="acciones-cabecera">
+
+                <button
+
+                    class="btn-exportar"
+
+                    (click)="mostrarMenuExportar=!mostrarMenuExportar">
+
+                    <i class="bi bi-download"></i>
+
+                    Exportar
+
+                    <i class="bi bi-chevron-down"></i>
+
+                </button>
+
+                <div
+
+                    class="menu-exportar"
+
+                    *ngIf="mostrarMenuExportar">
+
+                    <button
+
+                        (click)="exportarPDF()">
+
+                        <i class="bi bi-file-earmark-pdf-fill"></i>
+
+                        Exportar PDF
+
+                    </button>
+
+                    <button
+
+                        (click)="exportarExcel()">
+
+                        <i class="bi bi-file-earmark-excel-fill"></i>
+
+                        Exportar Excel
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================================= -->
+
+        <!-- TARJETA -->
+
+        <!-- ================================= -->
+
+        <section class="contenedor tarjeta-estudiante">
+
+            <!-- INFORMACIÓN -->
+
+            <div class="info-estudiante">
+
+                <div class="avatar">
+
+                    <i class="bi bi-person-circle"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>
+
+                        {{ perfil.nombre }}
+
+                    </h2>
+
+                    <p>
+
+                        {{ perfil.correo }}
+
+                    </p>
+
+                    <span
+
+                        class="estado"
+
+                        [ngClass]="{
+
+                        'activo':
+
+                        perfil.estado=='Activo',
+
+                        'inactivo':
+
+                        perfil.estado=='Inactivo'
+
+                        }"
+
+                    >
+
+                        {{ perfil.estado }}
+
+                    </span>
+
+                    <p>
+
+                        Registrado:
+
+                        {{ perfil.fecha_registro }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- MÉTRICAS -->
+
+            <div class="metricas">
+
+                <div class="metrica">
+
+                    <i class="bi bi-clipboard-check"></i>
+
+                    <div>
+
+                        <span>
+
+                            Test realizados
+
+                        </span>
+
+                        <h3>
+
+                            {{ perfil.tests_realizados }}
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div class="metrica">
+
+                    <i class="bi bi-graph-up-arrow"></i>
+
+                    <div>
+
+                        <span>
+
+                            Promedio general
+
+                        </span>
+
+                        <h3>
+
+                            {{ perfil.promedio_general }}%
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div class="metrica">
+
+                    <i class="bi bi-bullseye"></i>
+
+                    <div>
+
+                        <span>
+
+                            Mejor puntuación
+
+                        </span>
+
+                        <h3>
+
+                            {{ perfil.mejor_puntaje }}%
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div class="metrica">
+
+                    <i class="bi bi-clock-history"></i>
+
+                    <div>
+
+                        <span>
+
+                            Tiempo promedio
+
+                        </span>
+
+                        <h3>
+
+                            {{ perfil.tiempo_promedio }}
+
+                            min
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================================= -->
+
+        <!-- MENÚ -->
+
+        <!-- ================================= -->
+
+        <section class="contenedor">
+
+            <div class="menu-perfil">
+
+                <button
+
+                    [class.activo]="pestana=='perfil'"
+
+                    (click)="mostrarPerfil()"
+
+                >
+
+                    Perfil
+
+                </button>
+
+                <button
+
+                    [class.activo]="pestana=='historial'"
+
+                    (click)="mostrarHistorial()"
+
+                >
+
+                    Historial
+
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- PERFIL -->
+        <!-- ===================================== -->
+
+        <div *ngIf="pestana=='perfil'">
+
+            <!-- FILA 1 -->
+
+            <section class="fila-superior">
+
+                <div class="contenedor grafico">
+
+                    <h3>
+
+                        Rendimiento por competencia
+
+                    </h3>
+
+                    <canvas
+                        id="graficoCompetenciasPerfil"
+                        class="canvas-grafico">
+                    </canvas>
+
+                </div>
+
+                <div class="contenedor grafico">
+
+                    <div class="cabecera-grafico">
+
+                        <h3>
+
+                            Rendimiento por submódulo
+
+                        </h3>
+
+                        <select
+                            [(ngModel)]="competenciaSubmodulo"
+                            (change)="cargarSubmodulos()">
+
+                            <option
+                                *ngFor="let competencia of competencias"
+                                [ngValue]="competencia.id_competencia">
+
+                                {{ competencia.nombre_competencia }}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <canvas
+                        id="graficoSubmodulos"
+                        class="canvas-grafico">
+                    </canvas>
+
+                </div>
+
+            </section>
+
+            <!-- FILA 2 -->
+
+            <section class="contenedor grafico-tema">
+
+                <div class="cabecera-grafico">
+
+                    <h3>
+
+                        Rendimiento por tema
+
+                    </h3>
+
+                </div>
+
+                <div class="filtros-tema">
+
+                    <select
+                        [(ngModel)]="competenciaTema"
+                        (change)="cargarFiltroSubmodulos()">
+
+                        <option
+                            *ngFor="let competencia of competencias"
+                            [ngValue]="competencia.id_competencia">
+
+                            {{ competencia.nombre_competencia }}
+
+                        </option>
+
+                    </select>
+
+                    <select
+                        [(ngModel)]="submoduloTema"
+                        (change)="cargarTemas()">
+
+                        <option
+                            *ngFor="let sub of submodulos"
+                            [ngValue]="sub.id_submodulo">
+
+                            {{ sub.nombre_submodulo }}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="contenedor-canvas-horizontal">
+
+                    <canvas id="graficoTemas">
+
+                    </canvas>
+
+                </div>
+
+            </section>
+
+
+            <!-- FILA 3 -->
+
+            <section class="fila-inferior">
+
+                <div class="contenedor comparacion-curso">
+
+                    <h3>
+
+                        Comparación con el curso
+
+                    </h3>
+
+                    <div class="comparacion-resumen">
+
+                        <div>
+
+                            <span>Tu promedio</span>
+
+                            <h2>
+
+                                {{comparacionCurso.promedio_estudiante}}%
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <span>Promedio del curso</span>
+
+                            <h2>
+
+                                {{comparacionCurso.promedio_curso}}%
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <span>Diferencia</span>
+
+                            <h2
+                                [class.positivo]="comparacionCurso.diferencia>=0"
+                                [class.negativo]="comparacionCurso.diferencia<0">
+
+                                {{comparacionCurso.diferencia}}%
+
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                    <div class="barra-comparacion">
+
+                        <div
+                            class="barra-progreso"
+                            [style.width.%]="comparacionCurso.promedio_estudiante">
+
+                        </div>
+
+                    </div>
+
+                    <div class="mensaje-comparacion">
+
+                        <i
+                            class="bi bi-check-circle-fill"
+                            *ngIf="comparacionCurso.diferencia>=0">
+
+                        </i>
+
+                        <i
+                            class="bi bi-exclamation-circle-fill"
+                            *ngIf="comparacionCurso.diferencia<0">
+
+                        </i>
+
+                        {{comparacionCurso.mensaje}}
+
+                    </div>
+
+                    <div class="recomendaciones">
+
+                        <h4>
+
+                            Recomendaciones personalizadas
+
+                        </h4>
+
+                        <div
+                            class="recomendacion"
+                            *ngFor="let recomendacion of recomendaciones">
+
+                            <div class="icono-recomendacion">
+
+                                <i
+                                    class="bi"
+                                    [ngClass]="recomendacion.icono">
+
+                                </i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+
+                                    {{recomendacion.titulo}}
+
+                                </strong>
+
+                                <p>
+
+                                    {{recomendacion.descripcion}}
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="columna-derecha">
+
+                    <div class="contenedor grafico">
+
+                        <h3>
+
+                            Evolución del rendimiento
+
+                        </h3>
+
+                        <canvas
+
+                            id="graficoEvolucion"
+
+                            class="canvas-grafico">
+
+                        </canvas>
+
+                    </div>
+
+                    <div class="contenedor grafico">
+
+                        <h3>
+
+                            Precisión por dificultad
+
+                        </h3>
+
+                        <canvas
+
+                            id="graficoDificultad"
+
+                            class="canvas-grafico"
+
+                        >
+
+                        </canvas>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- ===================================== -->
+        <!-- HISTORIAL -->
+        <!-- ===================================== -->
+
+        <div *ngIf="pestana=='historial'">
+
+            <section class="contenedor">
+
+                <h3>
+
+                    Historial de evaluaciones
+
+                </h3>
+
+                <div class="historial-scroll">
+
+                    <div
+
+                        class="card-historial"
+
+                        *ngFor="let intento of historialEvaluaciones">
+
+                        <!-- CABECERA -->
+
+                        <div
+
+                            class="cabecera-intento"
+
+                            (click)="verDetalle(intento)">
+
+                            <div>
+
+                                <h4>
+
+                                    {{intento.competencia}}
+
+                                </h4>
+
+                                <span>
+
+                                    {{intento.submodulo}}
+
+                                </span>
+
+                                <span>
+
+                                    • {{intento.tema}}
+
+                                </span>
+
+                            </div>
+
+                            <div class="lado-derecho">
+
+                                <span class="porcentaje">
+
+                                    {{intento.porcentaje}}%
+
+                                </span>
+
+                                <span>
+
+                                    {{intento.dificultad}}
+
+                                </span>
+
+                                <i
+
+                                    class="bi"
+
+                                    [ngClass]="
+
+                                    evaluacionSeleccionada==intento.id_resultado
+
+                                    ?
+
+                                    'bi-chevron-up'
+
+                                    :
+
+                                    'bi-chevron-down'
+
+                                    ">
+
+                                </i>
+
+                            </div>
+
+                        </div>
+
+                        <!-- DETALLE -->
+
+                        <div
+
+                            class="detalle-intento"
+
+                            *ngIf="evaluacionSeleccionada==intento.id_resultado">
+
+                            <div class="lista-preguntas">
+
+                                <div
+
+                                    class="pregunta-card"
+
+                                    *ngFor="let pregunta of detalleHistorial">
+
+                                    <div class="cabecera-pregunta">
+
+                                        <strong>
+
+                                            Pregunta {{pregunta.numero_pregunta}}
+
+                                        </strong>
+
+                                        <span>
+
+                                            {{pregunta.tiempo_respuesta}} s
+
+                                        </span>
+
+                                    </div>
+
+                                    <p class="texto-pregunta">
+
+                                        {{pregunta.pregunta}}
+
+                                    </p>
+
+                                    <div class="opciones">
+
+                                        <div
+
+                                            class="opcion"
+
+                                            [ngClass]="{
+
+                                                correcta:pregunta.respuesta_correcta=='A',
+
+                                                incorrecta:pregunta.respuesta_estudiante=='A' && !pregunta.es_correcta
+
+                                            }">
+
+                                            <div class="contenido-opcion">
+
+                                                <div>
+
+                                                    <strong>A.</strong>
+
+                                                    {{pregunta.opcion_a}}
+
+                                                </div>
+
+                                                <div class="badges">
+
+                                                    <span
+
+                                                        class="badge-correcta"
+
+                                                        *ngIf="pregunta.respuesta_correcta=='A'">
+
+                                                        <i class="bi bi-check-circle-fill"></i>
+
+                                                        Correcta
+
+                                                    </span>
+
+                                                    <span
+
+                                                        class="badge-estudiante"
+
+                                                        *ngIf="pregunta.respuesta_estudiante=='A'">
+
+                                                        <i class="bi bi-person-fill"></i>
+
+                                                        Tu respuesta
+
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <!-- b -->
+
+                                        <div
+
+                                            class="opcion"
+
+                                            [ngClass]="{
+
+                                                correcta:pregunta.respuesta_correcta=='B',
+
+                                                incorrecta:pregunta.respuesta_estudiante=='B' && !pregunta.es_correcta
+
+                                            }">
+
+                                            <div class="contenido-opcion">
+
+                                                <div>
+
+                                                    <strong>B.</strong>
+
+                                                    {{pregunta.opcion_b}}
+
+                                                </div>
+
+                                                <div class="badges">
+
+                                                    <span
+
+                                                        class="badge-correcta"
+
+                                                        *ngIf="pregunta.respuesta_correcta=='B'">
+
+                                                        <i class="bi bi-check-circle-fill"></i>
+
+                                                        Correcta
+
+                                                    </span>
+
+                                                    <span
+
+                                                        class="badge-estudiante"
+
+                                                        *ngIf="pregunta.respuesta_estudiante=='B'">
+
+                                                        <i class="bi bi-person-fill"></i>
+
+                                                        Tu respuesta
+
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <!-- c -->
+
+                                        <div
+
+                                            class="opcion"
+
+                                            [ngClass]="{
+
+                                                correcta:pregunta.respuesta_correcta=='C',
+
+                                                incorrecta:pregunta.respuesta_estudiante=='C' && !pregunta.es_correcta
+
+                                            }">
+
+                                            <div class="contenido-opcion">
+
+                                                <div>
+
+                                                    <strong>C.</strong>
+
+                                                    {{pregunta.opcion_c}}
+
+                                                </div>
+
+                                                <div class="badges">
+
+                                                    <span
+
+                                                        class="badge-correcta"
+
+                                                        *ngIf="pregunta.respuesta_correcta=='C'">
+
+                                                        <i class="bi bi-check-circle-fill"></i>
+
+                                                        Correcta
+
+                                                    </span>
+
+                                                    <span
+
+                                                        class="badge-estudiante"
+
+                                                        *ngIf="pregunta.respuesta_estudiante=='C'">
+
+                                                        <i class="bi bi-person-fill"></i>
+
+                                                        Tu respuesta
+
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <!-- d -->
+
+                                         <div
+
+                                            class="opcion"
+
+                                            [ngClass]="{
+
+                                                correcta:pregunta.respuesta_correcta=='D',
+
+                                                incorrecta:pregunta.respuesta_estudiante=='D' && !pregunta.es_correcta
+
+                                            }">
+
+                                            <div class="contenido-opcion">
+
+                                                <div>
+
+                                                    <strong>C.</strong>
+
+                                                    {{pregunta.opcion_d}}
+
+                                                </div>
+
+                                                <div class="badges">
+
+                                                    <span
+
+                                                        class="badge-correcta"
+
+                                                        *ngIf="pregunta.respuesta_correcta=='D'">
+
+                                                        <i class="bi bi-check-circle-fill"></i>
+
+                                                        Correcta
+
+                                                    </span>
+
+                                                    <span
+
+                                                        class="badge-estudiante"
+
+                                                        *ngIf="pregunta.respuesta_estudiante=='D'">
+
+                                                        <i class="bi bi-person-fill"></i>
+
+                                                        Tu respuesta
+
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div
+
+                                        class="resultado-pregunta"
+
+                                        [ngClass]="{
+
+                                            acierto:pregunta.es_correcta,
+
+                                            error:!pregunta.es_correcta
+
+                                        }">
+
+                                        <i
+
+                                            class="bi"
+
+                                            [ngClass]="
+
+                                                pregunta.es_correcta
+
+                                                ?
+
+                                                'bi-check-circle-fill'
+
+                                                :
+
+                                                'bi-x-circle-fill'
+
+                                            ">
+
+                                        </i>
+
+                                        {{pregunta.es_correcta?'Respuesta correcta':'Respuesta incorrecta'}}
+
+                                    </div>
+
+                                    <div
+
+                                        class="justificacion"
+
+                                        *ngIf="!pregunta.es_correcta">
+
+                                        <strong>
+
+                                            Justificación
+
+                                        </strong>
+
+                                        <p>
+
+                                            {{pregunta.justificacion}}
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <button
+
+                                class="btn-ocultar"
+
+                                (click)="cerrarDetalle()">
+
+                                <i class="bi bi-chevron-up"></i>
+
+                                Ocultar respuestas
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <canvas
+
+        id="graficoComparacionCurso"
+
+        style="display:none"
+
+    >
+
+    </canvas>
+
+</div>

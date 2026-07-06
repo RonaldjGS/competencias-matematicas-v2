@@ -203,15 +203,19 @@
 
             <h2>
 
-                <i class="bi bi-pie-chart-fill"></i>
+                <i class="bi bi-bar-chart-fill"></i>
 
                 Precisión por dificultad
 
             </h2>
 
-            <div class="grafico-placeholder pequeno">
+            <div class="grafico-placeholder">
 
-                Radar
+                <canvas
+
+                    id="graficoDificultad"
+
+                ></canvas>
 
             </div>
 
@@ -227,19 +231,23 @@
 
       <section class="contenedor">
 
-          <h2>
+            <h2>
 
-              <i class="bi bi-bar-chart-line-fill"></i>
+                <i class="bi bi-pie-chart-fill"></i>
 
-              Rendimiento por submódulo
+                Rendimiento por submódulo
 
-          </h2>
+            </h2>
 
-          <div class="grafico-placeholder grande">
+            <div class="grafico-placeholder">
 
-              Barras
+                <canvas
 
-          </div>
+                    id="graficoSubmodulos"
+
+                ></canvas>
+
+            </div>
 
       </section>
 
@@ -253,19 +261,23 @@
 
       <section class="contenedor">
 
-          <h2>
+            <h2>
 
-              <i class="bi bi-diagram-3-fill"></i>
+                <i class="bi bi-bar-chart-line-fill"></i>
 
-              Rendimiento por tema
+                Rendimiento por temas
 
-          </h2>
+            </h2>
 
-          <div class="grafico-placeholder grande">
+            <div class="grafico-placeholder">
 
-              Barras
+                <canvas
 
-          </div>
+                    id="graficoTemas"
+
+                ></canvas>
+
+            </div>
 
       </section>
 
@@ -279,19 +291,111 @@
 
       <section class="contenedor">
 
-          <h2>
+            <h2>
 
-              <i class="bi bi-clock-history"></i>
+                <i class="bi bi-clock-history"></i>
 
-              Actividad reciente
+                Actividad reciente
 
-          </h2>
+            </h2>
 
-          <div class="grafico-placeholder grande">
+            <div class="actividad-profesor">
 
-              Tabla
+                <div
 
-          </div>
+                    class="actividad-card"
+
+                    *ngFor="let actividad of actividades"
+
+                >
+
+                    <div class="actividad-header">
+
+                        <div>
+
+                            <strong>
+
+                                {{ actividad.estudiante }}
+
+                            </strong>
+
+                            <small>
+
+                                {{ haceCuanto(actividad.fecha) }}
+
+                            </small>
+
+                        </div>
+
+                        <span class="badge">
+
+                            {{ actividad.porcentaje }}%
+
+                        </span>
+
+                    </div>
+
+                    <div class="actividad-info">
+
+                        <div>
+
+                            <i class="bi bi-award"></i>
+
+                            {{ actividad.competencia }}
+
+                        </div>
+
+                        <div>
+
+                            <i class="bi bi-grid"></i>
+
+                            {{ actividad.submodulo }}
+
+                        </div>
+
+                        <div>
+
+                            <i class="bi bi-book"></i>
+
+                            {{ actividad.tema }}
+
+                        </div>
+
+                    </div>
+
+                    <div
+
+                        class="nivel"
+
+                        [ngClass]="{
+
+                            'excelente':
+
+                            actividad.nivel=='Excelente',
+
+                            'competente':
+
+                            actividad.nivel=='Competente',
+
+                            'proceso':
+
+                            actividad.nivel=='En proceso',
+
+                            'desarrollo':
+
+                            actividad.nivel=='En desarrollo'
+
+                        }"
+
+                    >
+
+                        {{ actividad.nivel }}
+
+                    </div>
+
+                </div>
+
+            </div>
 
       </section>
 

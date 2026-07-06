@@ -1,0 +1,95 @@
+<aside
+
+    class="sidebar"
+
+    [class.collapsed]="!menuAbierto"
+
+>
+
+    <!-- ===================================== -->
+    <!-- BOTÓN MENÚ -->
+    <!-- ===================================== -->
+
+    <button
+
+        class="menu-btn"
+
+        (click)="toggleMenu()"
+
+    >
+
+        <i class="bi bi-list"></i>
+
+    </button>
+
+    <ul>
+
+        <li (click)="irDashboard()">
+
+            <i class="bi bi-people-fill"></i>
+
+            <span *ngIf="menuAbierto">
+
+                Dashboard
+
+            </span>
+
+        </li>
+
+        <li (click)="irPreguntas()">
+
+            <i class="bi bi-patch-question"></i>
+
+            <span *ngIf="menuAbierto">
+
+                Preguntas
+
+            </span>
+
+        </li>
+
+        <li (click)="irVideos()">
+
+            <i class="bi bi-camera-video"></i>
+
+            <span *ngIf="menuAbierto">
+
+                Videos
+
+            </span>
+
+        </li>
+
+        <li (click)="irEstadisticas()">
+
+            <i class="bi bi-bar-chart"></i>
+
+            <span *ngIf="menuAbierto">
+
+                Estadísticas
+
+            </span>
+
+        </li>
+
+        <li
+
+            class="cerrar-sesion"
+
+            (click)="cerrarSesion()"
+
+        >
+
+            <i class="bi bi-box-arrow-right"></i>
+
+            <span *ngIf="menuAbierto">
+
+                Cerrar sesión
+
+            </span>
+
+        </li>
+
+    </ul>
+
+</aside>

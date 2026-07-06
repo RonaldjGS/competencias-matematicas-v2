@@ -1,0 +1,1178 @@
+<div class="videos-container">
+
+    <app-sidebar-profesor
+        [(menuAbierto)]="menuAbierto">
+    </app-sidebar-profesor>
+
+    <app-topbar-profesor></app-topbar-profesor>
+
+    <div
+        class="contenido"
+        [class.menu-cerrado]="!menuAbierto">
+
+        <!-- Cabecera -->
+
+        <div class="cabecera">
+
+            <div>
+
+                <h1>
+
+                    Gestión de Videos Tutoriales
+
+                </h1>
+
+                <p>
+
+                    Administra los videos de YouTube
+                    asociados a cada tema.
+
+                </p>
+
+            </div>
+
+            <button
+
+                class="btn-nuevo"
+
+                (click)="abrirModal()"
+
+            >
+
+                <i class="fa-solid fa-plus"></i>
+
+                Nuevo video
+
+            </button>
+
+        </div>
+
+        <!-- ===================================== -->
+        <!-- TARJETAS -->
+        <!-- ===================================== -->
+
+        <section class="tarjetas">
+
+            <div class="tarjeta">
+
+                <div class="titulo">
+
+                    <i class="bi bi-collection-play-fill"></i>
+
+                    Videos registrados
+
+                </div>
+
+                <h2>
+
+                    {{ resumen.total_videos }}
+
+                </h2>
+
+            </div>
+
+            <div class="tarjeta">
+
+                <div class="titulo">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                    Videos activos
+
+                </div>
+
+                <h2>
+
+                    {{ resumen.videos_activos }}
+
+                </h2>
+
+            </div>
+
+            <div class="tarjeta">
+
+                <div class="titulo">
+
+                    <i class="bi bi-bookmark-check-fill"></i>
+
+                    Competencias cubiertas
+
+                </div>
+
+                <h2>
+
+                    {{ resumen.competencias }}
+
+                </h2>
+
+            </div>
+
+            <div class="tarjeta">
+
+                <div class="titulo">
+
+                    <i class="bi bi-calendar-event-fill"></i>
+
+                    Última actualización
+
+                </div>
+
+                <h2>
+
+                    {{ resumen.ultima_actualizacion | date:'dd/MM/yyyy' }}
+
+                </h2>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- FILTROS -->
+        <!-- ===================================== -->
+
+        <section class="contenedor">
+
+            <h2>
+
+                <i class="bi bi-funnel-fill"></i>
+
+                Filtrar videos
+
+            </h2>
+
+            <div class="filtros">
+
+                <!-- Competencia -->
+
+                <div class="grupo-filtro">
+
+                    <label>
+
+                        Competencia
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="competenciaSeleccionada"
+                        (change)="aplicarFiltros()">
+
+                        <option [ngValue]="null">
+
+                            Todas las competencias
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let competencia of competencias"
+
+                            [ngValue]="competencia.id_competencia">
+
+                            {{ competencia.nombre_competencia }}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- Submódulo -->
+
+                <div class="grupo-filtro">
+
+                    <label>
+
+                        Submódulo
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="submoduloSeleccionado"
+                        
+                        (change)="aplicarFiltros()">
+
+                        <option [ngValue]="null">
+
+                            Todos los submódulos
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let submodulo of submodulos"
+
+                            [ngValue]="submodulo.id_submodulo">
+
+                            {{ submodulo.nombre_submodulo }}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- Tema -->
+
+                <div class="grupo-filtro">
+
+                    <label>
+
+                        Tema
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="temaSeleccionado"
+                        
+                        (change)="aplicarFiltros()">
+
+                        <option [ngValue]="null">
+
+                            Todos los temas
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let tema of temas"
+
+                            [ngValue]="tema.id_tema">
+
+                            {{ tema.nombre_tema }}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- Tipo -->
+
+                <div class="grupo-filtro">
+
+                    <label>
+
+                        Tipo
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="tipoSeleccionado"
+
+                        (change)="aplicarFiltros()"
+                    >
+
+                        <option>
+
+                            Todos
+
+                        </option>
+
+                        <option>
+
+                            DIAGNOSTICO
+
+                        </option>
+
+                        <option>
+
+                            REFUERZO
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- Estado -->
+
+                <div class="grupo-filtro">
+
+                    <label>
+
+                        Estado
+
+                    </label>
+
+                    <select
+                    
+                        [(ngModel)]="estadoSeleccionado"
+                        (change)="aplicarFiltros()"
+
+                    >
+
+                        <option>
+
+                            Todos
+
+                        </option>
+
+                        <option>
+
+                            Activo
+
+                        </option>
+
+                        <option>
+
+                            Inactivo
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- BIBLIOTECA -->
+        <!-- ===================================== -->
+
+        <section class="contenedor">
+
+            <div
+                class="zona-videos"
+                [class.con-panel]="videoSeleccionado">
+
+                <!-- ========================= -->
+                <!-- BIBLIOTECA -->
+                <!-- ========================= -->
+
+                <div class="biblioteca">
+
+                    <div class="cabecera-lista">
+
+                        <h2>
+
+                            <i class="bi bi-collection-play-fill"></i>
+
+                            Biblioteca de Videos
+
+                        </h2>
+
+                    </div>
+
+                    <div class="grid-videos">
+
+                        <div
+                            class="card-video"
+                            *ngFor="let video of videosFiltrados">
+
+                            <div class="thumbnail">
+
+                                <img
+                                    [src]="'https://img.youtube.com/vi/' + video.youtube_id + '/hqdefault.jpg'"
+                                    [alt]="video.titulo">
+
+                            </div>
+
+                            <div class="contenido-video">
+
+                                <h3>
+
+                                    {{ video.titulo }}
+
+                                </h3>
+
+                                <p>
+
+                                    <strong>Competencia:</strong>
+
+                                    {{ video.competencia }}
+
+                                </p>
+
+                                <p>
+
+                                    <strong>Submódulo:</strong>
+
+                                    {{ video.submodulo }}
+
+                                </p>
+
+                                <p>
+
+                                    <strong>Tema:</strong>
+
+                                    {{ video.tema }}
+
+                                </p>
+
+                            </div>
+
+                            <div class="footer-video">
+
+                                <span
+                                    class="badge"
+                                    [class.badge-activo]="video.estado=='Activo'"
+                                    [class.badge-inactivo]="video.estado=='Inactivo'">
+
+                                    {{ video.estado }}
+
+                                </span>
+
+                                <span class="tipo">
+
+                                    {{ video.tipo }}
+
+                                </span>
+
+                            </div>
+
+                            <div class="acciones">
+
+                                <button
+                                    class="btn-detalle"
+                                    (click)="seleccionarVideo(video.id_video)">
+
+                                    <i class="bi bi-eye-fill"></i>
+
+                                    Ver detalle
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ========================= -->
+                <!-- PANEL -->
+                <!-- ========================= -->
+
+                <aside
+                    class="panel-video"
+                    *ngIf="videoSeleccionado">
+
+                    <div class="panel-header">
+
+                        <h2>
+
+                            Detalle del Video
+
+                        </h2>
+
+                        <button
+
+                            class="cerrar"
+
+                            (click)="videoSeleccionado=null"
+
+                        >
+
+                            <i class="bi bi-x-lg"></i>
+
+                        </button>
+
+                    </div>
+
+                    <div class="preview-video">
+
+                        <img
+
+                            [src]="'https://img.youtube.com/vi/' + videoSeleccionado.youtube_id + '/hqdefault.jpg'"
+
+                            [alt]="videoSeleccionado.titulo"
+
+                        >
+
+                    </div>
+
+                    <div class="detalle-video">
+
+                        <div class="campo">
+
+                            <label>
+
+                                Descripción
+
+                            </label>
+
+                            <ng-container *ngIf="!modoEdicion; else editarDescripcion">
+
+                                <p>
+
+                                    {{ videoSeleccionado.descripcion }}
+
+                                </p>
+
+                            </ng-container>
+
+                            <ng-template #editarDescripcion>
+
+                                <textarea
+
+                                    rows="4"
+
+                                    [(ngModel)]="videoSeleccionado.descripcion"
+
+                                >
+
+                                </textarea>
+
+                            </ng-template>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label>
+
+                                Título
+
+                            </label>
+
+                            <ng-container *ngIf="!modoEdicion; else editarTitulo">
+
+                                <ng-container *ngIf="!modoEdicion; else editarCompetencia">
+
+                                    <p>
+
+                                        {{ videoSeleccionado.competencia }}
+
+                                    </p>
+
+                                </ng-container>
+
+                                <ng-template #editarCompetencia>
+
+                                    <select
+
+                                        [(ngModel)]="videoSeleccionado.id_competencia"
+
+                                    >
+
+                                        <option
+
+                                            *ngFor="let competencia of competencias"
+
+                                            [ngValue]="competencia.id_competencia"
+
+                                        >
+
+                                            {{ competencia.nombre_competencia }}
+
+                                        </option>
+
+                                    </select>
+
+                                </ng-template>
+
+                            </ng-container>
+
+                            <ng-template #editarTitulo>
+
+                                <input
+
+                                    type="text"
+
+                                    [(ngModel)]="videoSeleccionado.titulo"
+
+                                >
+
+                            </ng-template>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label>
+
+                                Competencia
+
+                            </label>
+
+                            <p>
+
+                                {{ videoSeleccionado.competencia }}
+
+                            </p>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label>
+
+                                Submódulo
+
+                            </label>
+
+                            <ng-container *ngIf="!modoEdicion; else editarSubmodulo">
+
+                                <p>
+
+                                    {{ videoSeleccionado.submodulo }}
+
+                                </p>
+
+                            </ng-container>
+
+                            <ng-template #editarSubmodulo>
+
+                                <select
+
+                                    [(ngModel)]="videoSeleccionado.id_submodulo"
+
+                                >
+
+                                    <option
+
+                                        *ngFor="let submodulo of submodulos"
+
+                                        [ngValue]="submodulo.id_submodulo"
+
+                                    >
+
+                                        {{ submodulo.nombre_submodulo }}
+
+                                    </option>
+
+                                </select>
+
+                            </ng-template>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label>
+
+                                Tema
+
+                            </label>
+
+                            <ng-container *ngIf="!modoEdicion; else editarTema">
+
+                                <p>
+
+                                    {{ videoSeleccionado.tema }}
+
+                                </p>
+
+                            </ng-container>
+
+                            <ng-template #editarTema>
+
+                                <select
+
+                                    [(ngModel)]="videoSeleccionado.id_tema"
+
+                                >
+
+                                    <option
+
+                                        *ngFor="let tema of temas"
+
+                                        [ngValue]="tema.id_tema"
+
+                                    >
+
+                                        {{ tema.nombre_tema }}
+
+                                    </option>
+
+                                </select>
+
+                            </ng-template>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label>
+
+                                Tipo
+
+                            </label>
+
+                            <ng-container *ngIf="!modoEdicion; else editarTipo">
+
+                                <span class="badge-tipo">
+
+                                    {{ videoSeleccionado.tipo }}
+
+                                </span>
+
+                            </ng-container>
+
+                            <ng-template #editarTipo>
+
+                                <select
+
+                                    [(ngModel)]="videoSeleccionado.tipo"
+
+                                >
+
+                                    <option value="DIAGNOSTICO">
+
+                                        DIAGNOSTICO
+
+                                    </option>
+
+                                    <option value="REFUERZO">
+
+                                        REFUERZO
+
+                                    </option>
+
+                                </select>
+
+                            </ng-template>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label>
+
+                                Estado
+
+                            </label>
+
+                            <span
+
+                                class="badge"
+
+                                [class.badge-activo]="videoSeleccionado.estado=='Activo'"
+
+                                [class.badge-inactivo]="videoSeleccionado.estado=='Inactivo'"
+
+                            >
+
+                                {{ videoSeleccionado.estado }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="panel-footer">
+
+                        <button
+
+                            *ngIf="!modoEdicion"
+
+                            class="btn-editar"
+
+                            (click)="modoEdicion=true"
+
+                        >
+
+                            <i class="bi bi-pencil-fill"></i>
+
+                            Editar
+
+                        </button>
+
+                        <ng-container *ngIf="modoEdicion">
+
+                            <button
+
+                                class="btn-cancelar"
+
+                                (click)="
+
+                                    modoEdicion=false;
+
+                                    seleccionarVideo(videoSeleccionado.id_video)
+
+                                "
+
+                            >
+
+                                Cancelar
+
+                            </button>
+
+                            <button
+
+                                class="btn-guardar"
+
+                                (click)="guardarCambios()"
+
+                            >
+
+                                <i class="bi bi-check-circle-fill"></i>
+
+                                Guardar cambios
+
+                            </button>
+
+                        </ng-container>
+
+                        <button
+
+                            class="btn-estado"
+
+                            [class.btn-activar]="videoSeleccionado.estado==='Inactivo'"
+
+                            (click)="cambiarEstadoVideo()"
+
+                        >
+
+                            <i
+
+                                class="bi"
+
+                                [class.bi-eye-slash-fill]="videoSeleccionado.estado==='Activo'"
+
+                                [class.bi-arrow-clockwise]="videoSeleccionado.estado==='Inactivo'"
+
+                            ></i>
+
+                            {{
+
+                                videoSeleccionado.estado==='Activo'
+
+                                ? 'Desactivar'
+
+                                : 'Activar'
+
+                            }}
+
+                        </button>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- ===================================== -->
+<!-- MODAL NUEVO VIDEO -->
+<!-- ===================================== -->
+
+<div
+
+    class="modal-overlay"
+
+    *ngIf="mostrarModal"
+
+>
+
+    <div class="modal-video">
+
+        <!-- Header -->
+
+        <div class="modal-header">
+
+            <h2>
+
+                <i class="bi bi-youtube"></i>
+
+                Agregar Video
+
+            </h2>
+
+            <button
+
+                class="cerrar"
+
+                (click)="cerrarModal()"
+
+            >
+
+                <i class="bi bi-x-lg"></i>
+
+            </button>
+
+        </div>
+
+        <!-- Body -->
+
+        <div class="modal-body">
+
+                    <!-- Título -->
+
+                    <div class="grupo">
+
+                        <label>
+
+                            Título
+
+                        </label>
+
+                        <input
+
+                            type="text"
+
+                            [(ngModel)]="nuevoVideo.titulo"
+
+                        >
+
+                    </div>
+
+                    <!-- Competencia -->
+
+                    <div class="grupo">
+
+                        <label>
+
+                            Competencia
+
+                        </label>
+
+                        <select
+
+                            [(ngModel)]="nuevoVideo.id_competencia"
+
+                        >
+
+                            <option
+
+                                [ngValue]="null"
+
+                            >
+
+                                Seleccione
+
+                            </option>
+
+                            <option
+
+                                *ngFor="let competencia of competencias"
+
+                                [ngValue]="competencia.id_competencia"
+
+                            >
+
+                                {{ competencia.nombre_competencia }}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Submódulo -->
+
+                    <div class="grupo">
+
+                        <label>
+
+                            Submódulo
+
+                        </label>
+
+                        <select
+
+                            [(ngModel)]="nuevoVideo.id_submodulo"
+
+                        >
+
+                            <option
+
+                                [ngValue]="null"
+
+                            >
+
+                                Seleccione
+
+                            </option>
+
+                            <option
+
+                                *ngFor="let submodulo of submodulos"
+
+                                [ngValue]="submodulo.id_submodulo"
+
+                            >
+
+                                {{ submodulo.nombre_submodulo }}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Tema -->
+
+                    <div class="grupo">
+
+                        <label>
+
+                            Tema
+
+                        </label>
+
+                        <select
+
+                            [(ngModel)]="nuevoVideo.id_tema"
+
+                        >
+
+                            <option
+
+                                [ngValue]="null"
+
+                            >
+
+                                Seleccione
+
+                            </option>
+
+                            <option
+
+                                *ngFor="let tema of temas"
+
+                                [ngValue]="tema.id_tema"
+
+                            >
+
+                                {{ tema.nombre_tema }}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Tipo -->
+
+                    <div class="grupo">
+
+                        <label>
+
+                            Tipo
+
+                        </label>
+
+                        <select
+
+                            [(ngModel)]="nuevoVideo.tipo"
+
+                        >
+
+                            <option value="DIAGNOSTICO">
+
+                                Diagnóstico
+
+                            </option>
+
+                            <option value="REFUERZO">
+
+                                Refuerzo
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- URL -->
+
+                    <div class="grupo">
+
+                        <label>
+
+                            Enlace de YouTube
+
+                        </label>
+
+                        <input
+
+                            type="text"
+
+                            [(ngModel)]="nuevoVideo.youtube_url"
+
+                            (input)="actualizarPreview()"
+
+                        >
+
+                    </div>
+
+                    <!-- Descripción -->
+
+                    <div class="grupo grupo-completo">
+
+                        <label>
+
+                            Descripción
+
+                        </label>
+
+                        <textarea
+
+                            rows="4"
+
+                            [(ngModel)]="nuevoVideo.descripcion"
+
+                        >
+
+                        </textarea>
+
+                    </div>
+
+                    <!-- Vista previa -->
+
+                    <div
+
+                        class="preview"
+
+                        *ngIf="thumbnailPreview"
+
+                    >
+
+                        <img
+
+                            [src]="thumbnailPreview"
+
+                        >
+
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+
+                <div class="modal-footer">
+
+                    <button
+
+                        class="btn-cancelar"
+
+                        (click)="cerrarModal()"
+
+                    >
+
+                        Cancelar
+
+                    </button>
+
+                    <button
+
+                        class="btn-guardar"
+
+                        (click)="guardarVideo()"
+
+                    >
+
+                        Guardar
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+</div>

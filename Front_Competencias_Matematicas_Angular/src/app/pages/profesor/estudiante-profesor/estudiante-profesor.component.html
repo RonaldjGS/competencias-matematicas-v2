@@ -1,0 +1,645 @@
+<div class="estudiantes-container">
+
+    <app-topbar-profesor
+        [nombreProfesor]="nombreProfesor">
+    </app-topbar-profesor>
+
+    <app-sidebar-profesor
+        [(menuAbierto)]="menuAbierto">
+    </app-sidebar-profesor>
+
+    <main
+        class="contenido"
+        [class.menu-cerrado]="!menuAbierto">
+
+        <!-- CABECERA -->
+
+        <section class="cabecera">
+
+            <div>
+
+                <h1>
+
+                    Gestión de estudiantes
+
+                </h1>
+
+                <p>
+
+                    Visualiza y administra el rendimiento de tus estudiantes.
+
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- TARJETAS -->
+
+        <section class="tarjetas">
+
+            <div class="tarjeta">
+
+                <div class="titulo">
+
+                    <i class="bi bi-mortarboard-fill"></i>
+
+                    Total estudiantes
+
+                </div>
+
+                <h2>{{ totalEstudiantes }}</h2>
+
+            </div>
+
+            <div class="tarjeta">
+
+                <div class="titulo">
+
+                    <i class="bi bi-graph-up-arrow"></i>
+
+                    Promedio general
+
+                </div>
+
+                <h2>{{ promedioGeneral }}</h2>
+
+            </div>
+
+            <div class="tarjeta">
+
+                <div class="titulo">
+
+                    <i class="bi bi-clipboard-check"></i>
+
+                    Test realizados
+
+                </div>
+
+                <h2>{{ testRealizados }}</h2>
+
+            </div>
+
+            <div class="tarjeta">
+
+                <div class="titulo">
+
+                    <i class="bi bi-bullseye"></i>
+
+                    Mejor puntuación
+
+                </div>
+
+                <h2>{{ mejorPuntaje }}</h2>
+
+            </div>
+
+        </section>
+
+        <!-- BUSCADOR -->
+
+        <section class="contenedor">
+
+            <h2>
+
+                <i class="bi bi-search"></i>
+
+                Buscar estudiante
+
+            </h2>
+
+            <div class="busqueda">
+
+                <input
+
+                    type="text"
+
+                    placeholder="Buscar estudiante..."
+
+                    [(ngModel)]="textoBusqueda"
+
+                    (input)="buscarEstudiante()"
+
+                >
+
+            </div>
+
+        </section>
+
+        <!-- TABLA -->
+
+        <section class="contenedor">
+
+                <div class="cabecera-lista">
+
+                    <h2>
+
+                        <i class="bi bi-people-fill"></i>
+
+                        Lista de estudiantes
+
+                    </h2>
+
+                    <button
+
+                        class="btn-agregar"
+
+                        (click)="abrirModal()"
+
+                    >
+
+                        <i class="bi bi-person-plus-fill"></i>
+
+                        Añadir estudiante
+
+                    </button>
+
+                </div> 
+
+            <div class="tabla-estudiantes">
+
+                <table>
+
+                <thead>
+
+                <tr>
+
+                <th>Nombre</th>
+
+                <th>Correo</th>
+
+                <th>Promedio</th>
+
+                <th>Tests</th>
+
+                <th>Mejor</th>
+
+                <th>Estado</th>
+
+                <th></th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr
+
+                *ngFor="let estudiante of estudiantesFiltrados"
+
+                >
+
+                <td>
+
+                {{ estudiante.nombre }}
+
+                </td>
+
+                <td>
+
+                {{ estudiante.correo }}
+
+                </td>
+
+                <td>
+
+                {{ estudiante.promedio }}%
+
+                </td>
+
+                <td>
+
+                {{ estudiante.evaluaciones }}
+
+                </td>
+
+                <td>
+
+                {{ estudiante.mejor_puntaje }}%
+
+                </td>
+
+                <td>
+
+                <span
+
+                class="estado"
+
+                [ngClass]="{
+
+                'activo':
+
+                estudiante.estado=='Activo',
+
+                'inactivo':
+
+                estudiante.estado=='Inactivo'
+
+                }"
+
+                >
+
+                {{ estudiante.estado }}
+
+                </span>
+
+                </td>
+
+                <td>
+
+                <button
+
+                class="btn-perfil"
+
+                (click)="verPerfil(estudiante.id_estudiante)"
+
+                >
+
+                Ver perfil
+
+                </button>
+
+                </td>
+
+                </tr>
+
+                </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ===================================== -->
+    <!-- MODAL NUEVO ESTUDIANTE -->
+    <!-- ===================================== -->
+
+    <div
+
+        class="modal-overlay"
+
+        *ngIf="mostrarModal"
+
+    >
+
+        <div class="modal-estudiante">
+
+            <div class="modal-header">
+
+                <h2>
+
+                    Registrar estudiante
+
+                </h2>
+
+                <button
+
+                    class="cerrar"
+
+                    (click)="cerrarModal()"
+
+                >
+
+                    <i class="bi bi-x-lg"></i>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="grupo">
+
+                    <label>
+
+                        Nombre
+
+                    </label>
+
+                    <input
+
+                        name="nombre_estudiante"
+
+                        [(ngModel)]="nuevoEstudiante.nombre_estudiante"
+
+                    >
+
+                </div>
+
+                <div class="grupo">
+
+                    <label>
+
+                        Institución
+
+                    </label>
+
+                    <input
+
+                        name="institucion_edu"
+
+                        [(ngModel)]="nuevoEstudiante.institucion_edu"
+
+                    >
+
+                </div>
+
+                <!-- ===================================== -->
+                <!-- TIPO DE INSTITUCIÓN (SOLO BACHILLERATO) -->
+                <!-- ===================================== -->
+
+                <div
+
+                    class="grupo"
+
+                    *ngIf="esBachillerato"
+
+                >
+
+                    <label>
+
+                        Tipo de institución
+
+                    </label>
+
+                    <select
+
+                        name="id_tipo_institucion"
+
+                        [(ngModel)]="nuevoEstudiante.id_tipo_institucion"
+
+                    >
+
+                        <option
+
+                            [ngValue]="null"
+
+                        >
+
+                            Seleccione
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let tipo of tiposInstitucion"
+
+                            [ngValue]="tipo.id_tipo"
+
+                        >
+
+                            {{ tipo.nombre_tipo }}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- ===================================== -->
+                <!-- CARRERA (NIVELACIÓN Y PRIMER SEMESTRE) -->
+                <!-- ===================================== -->
+
+                <div
+
+                    class="grupo"
+
+                    *ngIf="!esBachillerato"
+
+                >
+
+                    <label>
+
+                        Carrera
+
+                    </label>
+
+                    <select
+
+                        name="id_carrera"
+
+                        [(ngModel)]="nuevoEstudiante.id_carrera"
+
+                    >
+
+                        <option
+
+                            [ngValue]="null"
+
+                        >
+
+                            Seleccione
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let carrera of carreras"
+
+                            [ngValue]="carrera.id_carrera"
+
+                        >
+
+                            {{ carrera.nombre_carrera }}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="grupo">
+
+                    <label>
+
+                        Provincia
+
+                    </label>
+
+                    <select
+
+                        name="id_provincia"
+
+                        [(ngModel)]="nuevoEstudiante.id_provincia"
+
+                        (change)="cargarCiudades()"
+
+                    >
+
+                        <option
+
+                            [ngValue]="null"
+
+                        >
+
+                            Seleccione
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let provincia of provincias"
+
+                            [ngValue]="provincia.id_provincia"
+
+                        >
+
+                            {{ provincia.nombre_provincia }}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="grupo">
+
+                    <label>
+
+                        Ciudad
+
+                    </label>
+
+                    <select
+
+                        name="id_ciudad"
+
+                        [(ngModel)]="nuevoEstudiante.id_ciudad"
+
+                    >
+
+                        <option
+
+                            [ngValue]="null"
+
+                        >
+
+                            Seleccione
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let ciudad of ciudades"
+
+                            [ngValue]="ciudad.id_ciudad"
+
+                        >
+
+                            {{ ciudad.nombre_ciudad }}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="grupo">
+
+                    <label>
+
+                        Correo
+
+                    </label>
+
+                    <input
+
+                        name="correo_estudiante"
+
+                        [(ngModel)]="nuevoEstudiante.correo_estudiante"
+
+                    >
+
+                </div>
+
+                <div class="grupo">
+
+                    <label>
+
+                        Contraseña
+
+                    </label>
+
+                    <input
+
+                        name="password"
+
+                        type="password"
+
+                        [(ngModel)]="nuevoEstudiante.password"
+
+                    >
+
+                </div>
+
+                <div class="grupo">
+
+                    <label>
+
+                        Confirmar contraseña
+
+                    </label>
+
+                    <input
+
+                        name="confirmarPassword"
+
+                        type="password"
+
+                        [(ngModel)]="nuevoEstudiante.confirmarPassword"
+
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+
+                    class="btn-cancelar"
+
+                    (click)="cerrarModal()"
+
+                >
+
+                    Cancelar
+
+                </button>
+
+                <button
+
+                    class="btn-guardar"
+
+                    (click)="guardarEstudiante()"
+
+                >
+
+                    Guardar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <app-toast
+
+        *ngIf="mostrarToast"
+
+        [mensaje]="mensajeToast"
+
+        [tipo]="tipoToast"
+
+        >
+
+    </app-toast>
+
+</div>

@@ -90,7 +90,7 @@ export class SidebarProfesorComponent{
 
         this.router.navigate([
 
-            '/videos'
+            '/video-profesor'
 
         ]);
 
@@ -100,11 +100,12 @@ export class SidebarProfesorComponent{
 
         this.router.navigate([
 
-            '/estudiantes'
+            '/estudiante-profesor'
 
         ]);
 
     }
+    
 
     cerrarSesion(){
 

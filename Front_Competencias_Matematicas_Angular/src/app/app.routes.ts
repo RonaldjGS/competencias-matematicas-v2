@@ -13,6 +13,14 @@ import {
 } from './pages/auth/login-profesor/login-profesor.component';
 
 import {
+  LoginAdminComponent
+} from './pages/auth/login-admin/login-admin.component';
+
+import {
+  DashboardAdminComponent
+} from './pages/administrador/dashboard-admin/dashboard-admin.component';
+
+import {
   RegistroProfesorComponent
 } from './pages/auth/registro-profesor/registro-profesor.component';
 
@@ -64,6 +72,18 @@ import {
   ProgresoEstudianteComponent
 } from './pages/estudiante/progreso-estudiante/progreso-estudiante.component';
 
+import {
+  EstudianteProfesorComponent
+} from './pages/profesor/estudiante-profesor/estudiante-profesor.component';
+
+import {
+  PerfilEstudianteProfesorComponent
+} from './pages/profesor/perfil-estudiante-profesor/perfil-estudiante-profesor.component';
+
+import {
+  VideoProfesorComponent
+} from './pages/profesor/video-profesor/video-profesor.component';
+
 export const routes: Routes = [
 
   {
@@ -92,10 +112,10 @@ export const routes: Routes = [
     component: RegistroProfesorComponent
   },
 
-  //{
-    //path: 'login-admin',
-    //component: LoginAdminComponent
-  //}
+  {
+    path: 'login-admin',
+    component: LoginAdminComponent
+  },
 
   {
     path: 'dashboard-profesor',
@@ -150,6 +170,26 @@ export const routes: Routes = [
   {
     path: 'progreso-estudiante',
     component: ProgresoEstudianteComponent
+  },
+
+  {
+    path: 'estudiante-profesor',
+    component: EstudianteProfesorComponent
+  },
+
+  {
+    path: 'perfil-estudiante-profesor/:id',
+    component: PerfilEstudianteProfesorComponent
+  },
+
+  {
+    path: 'video-profesor',
+    component: VideoProfesorComponent
+  },
+
+  {
+    path: 'dashboard-admin',
+    component: DashboardAdminComponent
   }
 
 ];

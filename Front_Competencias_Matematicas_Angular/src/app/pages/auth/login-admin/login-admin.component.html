@@ -1,0 +1,223 @@
+<div class="login-container">
+
+    <!-- ===================================== -->
+    <!-- SELECTOR DE ROLES -->
+    <!-- ===================================== -->
+
+    <div class="selector-roles">
+
+        <button
+
+            class="rol-btn"
+
+            title="Estudiante"
+
+            (click)="irLoginEstudiante()"
+
+        >
+
+            <i class="bi bi-mortarboard-fill"></i>
+
+        </button>
+
+        <button
+
+            class="rol-btn"
+
+            title="Profesor"
+
+            (click)="irLoginProfesor()"
+
+        >
+
+            <i class="bi bi-person-video3"></i>
+
+        </button>
+
+        <button
+
+            class="rol-btn activo"
+
+            title="Administrador"
+
+            (click)="irLoginAdmin()"
+
+        >
+
+            <i class="bi bi-shield-lock-fill"></i>
+
+        </button>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- TARJETA LOGIN -->
+    <!-- ===================================== -->
+
+    <div class="login-card">
+
+        <!-- PANEL IZQUIERDO -->
+
+        <div class="left-panel">
+
+            <h1>
+
+                Competencias
+
+                <br>
+
+                Matemáticas
+
+            </h1>
+
+            <div class="university-info">
+
+                <p>
+
+                    Facultad de Ciencias Matemáticas y Físicas
+
+                </p>
+
+                <p>
+
+                    Universidad de Guayaquil
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- PANEL DERECHO -->
+
+        <div class="right-panel">
+
+            <div class="tabs">
+
+                <button
+
+                    class="tab active"
+
+                >
+
+                    Iniciar sesión
+
+                </button>
+
+            </div>
+
+            <h2>
+
+                Bienvenido Administrador
+
+            </h2>
+
+            <p class="subtitle">
+
+                Acceda con sus credenciales para administrar el sistema.
+
+            </p>
+
+            <!-- CORREO -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Correo electrónico
+
+                </label>
+
+                <input
+
+                    type="email"
+
+                    class="input-control"
+
+                    placeholder="Ingrese su correo"
+
+                    [(ngModel)]="correo"
+
+                />
+
+            </div>
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Contraseña
+
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+
+                        [type]="mostrarPassword ? 'text' : 'password'"
+
+                        class="input-control"
+
+                        placeholder="Ingrese su contraseña"
+
+                        [(ngModel)]="password"
+
+                    />
+
+                    <button
+
+                        type="button"
+
+                        class="eye-btn"
+
+                        (click)="togglePassword()"
+
+                    >
+
+                        <i
+
+                            class="bi"
+
+                            [class.bi-eye]="!mostrarPassword"
+
+                            [class.bi-eye-slash]="mostrarPassword"
+
+                        ></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- BOTÓN LOGIN -->
+
+            <button
+
+                class="login-btn"
+
+                (click)="loginAdmin()"
+
+            >
+
+                Iniciar Sesión
+
+            </button>
+
+            <a
+
+                class="forgot-password"
+
+            >
+
+                Acceso exclusivo para administradores
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
