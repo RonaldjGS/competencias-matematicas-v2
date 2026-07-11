@@ -6,8 +6,13 @@ from sqlalchemy import (
     Boolean,
     DateTime,
     ForeignKey,
-    Float
+    Float,
+    text,
+    TIMESTAMP,
+    UniqueConstraint
 )
+
+from sqlalchemy.orm import relationship
 
 from sqlalchemy.sql import func
 
@@ -370,6 +375,34 @@ class IntentoDetalle(Base):
         DateTime(timezone=True),
         server_default=func.now()
     )
+    
+    respuesta_correcta_quiz = Column(
+
+        String(1),
+
+        nullable=True
+
+    )
+    
+    opcion_a_quiz = Column(
+        Text,
+        nullable=True
+    )
+
+    opcion_b_quiz = Column(
+        Text,
+        nullable=True
+    )
+
+    opcion_c_quiz = Column(
+        Text,
+        nullable=True
+    )
+
+    opcion_d_quiz = Column(
+        Text,
+        nullable=True
+    )
 
 # ==========================================
 # INTENTOS
@@ -454,6 +487,129 @@ class IntentoQuiz(Base):
         server_default=func.now(),
         onupdate=func.now()
     )
+    
+    max_intentos = Column(
+
+        Integer,
+
+        nullable=False,
+
+        default=3
+
+    )
+
+# ==========================================
+# CONFIGURACION QUIZ
+# ==========================================
+
+class ConfiguracionQuiz(Base):
+
+    __tablename__ = "configuracion_quiz"
+    __table_args__ = (
+        UniqueConstraint(
+            "id_profesor",
+            "id_competencia",
+            "id_submodulo",
+            "id_tema",
+            "dificultad",
+            name="uq_configuracion_quiz"
+        ),
+    )
+
+    id_configuracion = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    id_profesor = Column(
+        Integer,
+        ForeignKey("profesores.id_profesor"),
+        nullable=False
+    )
+
+    id_competencia = Column(
+        Integer,
+        ForeignKey("competencias.id_competencia"),
+        nullable=False
+    )
+
+    id_submodulo = Column(
+        Integer,
+        ForeignKey("submodulos.id_submodulo"),
+        nullable=False
+    )
+
+    id_tema = Column(
+        Integer,
+        ForeignKey("temas.id_tema"),
+        nullable=False
+    )
+
+    dificultad = Column(
+        String(20),
+        nullable=False
+    )
+
+    cantidad_preguntas = Column(
+        Integer,
+        nullable=False
+    )
+
+    tiempo_minutos = Column(
+        Integer,
+        nullable=False
+    )
+
+    intentos = Column(
+        Integer,
+        nullable=False
+    )
+
+    mezclar_preguntas = Column(
+        Boolean,
+        nullable=False,
+        default=True
+    )
+
+    mezclar_opciones = Column(
+        Boolean,
+        nullable=False,
+        default=True
+    )
+
+    mostrar_resultado = Column(
+        Boolean,
+        nullable=False,
+        default=True
+    )
+
+    estado = Column(
+        Boolean,
+        nullable=False,
+        default=True
+    )
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
+
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now()
+    )
+
+    # Relaciones
+
+    profesor = relationship("Profesor")
+
+    competencia = relationship("Competencia")
+
+    submodulo = relationship("Submodulo")
+
+    tema = relationship("Tema")
 
 # ==========================================
 # RECUPERACION DE CONTRASEÑA

@@ -1,0 +1,644 @@
+<section class="contenedor-configuracion">
+
+    <!--======================================
+    FILTROS
+    ======================================-->
+
+    <div class="card filtros">
+
+        <h2>
+
+            <i class="bi bi-sliders"></i>
+
+            Configuración del Quiz
+
+        </h2>
+
+        <p class="descripcion">
+
+            Seleccione la competencia, submódulo, tema y dificultad para configurar el cuestionario que utilizarán los estudiantes.
+
+        </p>
+
+        <div class="grid-filtros">
+
+            <!-- Competencia -->
+
+            <div class="campo">
+
+                <label>
+
+                    Competencia
+
+                </label>
+
+                <select
+
+                    [(ngModel)]="competenciaSeleccionada"
+                    (change)="verificarConfiguracion()"
+
+                >
+
+                    <option [ngValue]="null">
+
+                        Seleccione...
+
+                    </option>
+
+                    @for(
+
+                        competencia of competencias;
+
+                        track competencia.id_competencia
+
+                    ){
+
+                        <option
+
+                            [ngValue]="competencia.id_competencia"
+
+                        >
+
+                            {{ competencia.nombre_competencia }}
+
+                        </option>
+
+                    }
+
+                </select>
+
+            </div>
+
+            <!-- Submódulo -->
+
+            <div class="campo">
+
+                <label>
+
+                    Submódulo
+
+                </label>
+
+                <select
+
+                    [(ngModel)]="submoduloSeleccionado"
+                    (change)="verificarConfiguracion()"
+
+                >
+
+                    <option [ngValue]="null">
+
+                        Seleccione...
+
+                    </option>
+
+                    @for(
+
+                        submodulo of submodulos;
+
+                        track submodulo.id_submodulo
+
+                    ){
+
+                        <option
+
+                            [ngValue]="submodulo.id_submodulo"
+
+                        >
+
+                            {{ submodulo.nombre_submodulo }}
+
+                        </option>
+
+                    }
+
+                </select>
+
+            </div>
+
+            <!-- Tema -->
+
+            <div class="campo">
+
+                <label>
+
+                    Tema
+
+                </label>
+
+                <select
+
+                    [(ngModel)]="temaSeleccionado"
+                    (change)="verificarConfiguracion()"
+
+                >
+
+                    <option [ngValue]="null">
+
+                        Seleccione...
+
+                    </option>
+
+                    @for(
+
+                        tema of temas;
+
+                        track tema.id_tema
+
+                    ){
+
+                        <option
+
+                            [ngValue]="tema.id_tema"
+
+                        >
+
+                            {{ tema.nombre_tema }}
+
+                        </option>
+
+                    }
+
+                </select>
+
+            </div>
+
+            <!-- Dificultad -->
+
+            <div class="campo">
+
+                <label>
+
+                    Dificultad
+
+                </label>
+
+                <select
+
+                    [(ngModel)]="dificultadSeleccionada"
+                    (change)="verificarConfiguracion()"
+
+                >
+
+                    <option [ngValue]="null">
+
+                        Seleccione...
+
+                    </option>
+
+                    @for(
+
+                        dificultad of dificultades;
+
+                        track dificultad
+
+                    ){
+
+                        <option
+
+                            [value]="dificultad"
+
+                        >
+
+                            {{ dificultad }}
+
+                        </option>
+
+                    }
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    @if(mostrarConfiguracion){
+
+        <div class="card resumen-configuracion">
+
+            <div class="item-resumen">
+
+                <i class="bi bi-bullseye"></i>
+
+                <div>
+
+                    <small>Competencia</small>
+
+                    <strong>
+
+                        {{ obtenerNombreCompetencia() }}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div class="item-resumen">
+
+                <i class="bi bi-journal-bookmark-fill"></i>
+
+                <div>
+
+                    <small>Submódulo</small>
+
+                    <strong>
+
+                        {{ obtenerNombreSubmodulo() }}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div class="item-resumen">
+
+                <i class="bi bi-book-fill"></i>
+
+                <div>
+
+                    <small>Tema</small>
+
+                    <strong>
+
+                        {{ obtenerNombreTema() }}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div class="item-resumen">
+
+                <i class="bi bi-bar-chart-fill"></i>
+
+                <div>
+
+                    <small>Dificultad</small>
+
+                    <strong>
+
+                        {{ obtenerNombreDificultad() }}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card configuracion">
+
+            <div class="estado-configuracion">
+
+                @if(esNuevaConfiguracion){
+
+                    <span class="badge nuevo">
+
+                        <i class="bi bi-plus-circle-fill"></i>
+
+                        Nueva configuración
+
+                    </span>
+
+                }@else{
+
+                    <span class="badge existente">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Configuración existente
+
+                    </span>
+
+                }
+                
+            </div>
+
+            <h2>
+
+                <i class="bi bi-gear-fill"></i>
+
+                Parámetros del Quiz
+
+            </h2>
+
+            <p class="descripcion">
+
+                Configure los parámetros que utilizarán los estudiantes para realizar las evaluaciones correspondientes a la selección realizada.
+
+            </p>
+
+            <div class="grid-configuracion">
+
+                <!-- Cantidad -->
+
+                <div class="parametro-card">
+
+                    <span class="titulo-parametro">
+
+                        Cantidad de preguntas
+
+                    </span>
+
+                    <div class="stepper">
+
+                        <button
+
+                            type="button"
+
+                            (click)="disminuirCantidadPreguntas()"
+
+                        >
+
+                            −
+
+                        </button>
+
+                        <span>
+
+                            {{ configuracion.cantidad_preguntas }}
+
+                        </span>
+
+                        <button
+
+                            type="button"
+
+                            (click)="aumentarCantidadPreguntas()"
+
+                        >
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Tiempo -->
+
+                <div class="parametro-card">
+
+                    <span class="titulo-parametro">
+
+                        Tiempo (minutos)
+
+                    </span>
+
+                    <div class="stepper">
+
+                        <button
+
+                            type="button"
+
+                            (click)="disminuirTiempo()"
+
+                        >
+
+                            −
+
+                        </button>
+
+                        <span>
+
+                            {{ configuracion.tiempo_minutos }}
+
+                        </span>
+
+                        <button
+
+                            type="button"
+
+                            (click)="aumentarTiempo()"
+
+                        >
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Intentos -->
+
+                <div class="parametro-card">
+
+                    <span class="titulo-parametro">
+
+                        Intentos
+
+                    </span>
+
+                    <div class="stepper">
+
+                        <button
+
+                            type="button"
+
+                            (click)="disminuirIntentos()"
+
+                        >
+
+                            −
+
+                        </button>
+
+                        <span>
+
+                            {{ configuracion.intentos }}
+
+                        </span>
+
+                        <button
+
+                            type="button"
+
+                            (click)="aumentarIntentos()"
+
+                        >
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- CHECKBOXES -->
+
+            <div class="grid-opciones">
+
+                <!-- Mezclar preguntas -->
+
+                <div class="opcion-card">
+
+                    <div class="opcion-header">
+
+                        <input
+                            type="checkbox"
+                            [(ngModel)]="configuracion.mezclar_preguntas"
+                        >
+
+                        <span>
+
+                            Mezclar preguntas
+
+                        </span>
+
+                    </div>
+
+                    <p>
+
+                        Presenta las preguntas en un orden diferente para cada intento.
+
+                    </p>
+
+                </div>
+
+                <!-- Mezclar opciones -->
+
+                <div class="opcion-card">
+
+                    <div class="opcion-header">
+
+                        <input
+                            type="checkbox"
+                            [(ngModel)]="configuracion.mezclar_opciones"
+                        >
+
+                        <span>
+
+                            Mezclar opciones
+
+                        </span>
+
+                    </div>
+
+                    <p>
+
+                        Cambia automáticamente la posición de las respuestas de cada pregunta.
+
+                    </p>
+
+                </div>
+
+                <!-- Mostrar resultados -->
+
+                <div class="opcion-card">
+
+                    <div class="opcion-header">
+
+                        <input
+                            type="checkbox"
+                            [(ngModel)]="configuracion.mostrar_resultado"
+                        >
+
+                        <span>
+
+                            Mostrar resultados
+
+                        </span>
+
+                    </div>
+
+                    <p>
+
+                        Permite que el estudiante visualice su calificación al finalizar el cuestionario.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="acciones">
+
+                <button
+
+                    class="btn-guardar"
+
+                    (click)="abrirModalGuardar()"
+
+                >
+
+                    Guardar configuración
+
+                </button>
+
+            </div>
+
+        </div>
+
+    }
+
+    @if(mostrarModalGuardar){
+
+        <div class="modal-overlay">
+
+            <div class="modal-confirmacion">
+
+                <div class="modal-icono">
+
+                    <i class="bi bi-question-circle-fill"></i>
+
+                </div>
+
+                <h2>
+
+                    Guardar configuración
+
+                </h2>
+
+                <p>
+
+                    ¿Está seguro de guardar esta configuración del Quiz?
+
+                </p>
+
+                <div class="modal-botones">
+
+                    <button
+
+                        class="btn-cancelar-modal"
+
+                        (click)="cerrarModalGuardar()"
+
+                    >
+
+                        Cancelar
+
+                    </button>
+
+                    <button
+
+                        class="btn-confirmar-modal"
+
+                        (click)="guardarConfiguracion()"
+
+                    >
+
+                        Guardar
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    }
+
+</section>

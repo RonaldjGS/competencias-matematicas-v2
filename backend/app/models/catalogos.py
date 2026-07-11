@@ -5,10 +5,13 @@ from sqlalchemy import (
     Text,
     Boolean,
     DateTime,
+    Date,
     ForeignKey
 )
 
 from sqlalchemy.sql import func
+
+from sqlalchemy.orm import relationship
 
 from app.database.base import Base
 
@@ -90,6 +93,49 @@ class NivelEducativo(Base):
         onupdate=func.now()
     )
 
+
+class PeriodoAcademico(Base):
+
+    __tablename__ = "periodos_academicos"
+
+    id_periodo = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    id_nivel = Column(
+        Integer,
+        ForeignKey("niveles_educativos.id_nivel"),
+        nullable=False
+    )
+
+    nombre_periodo = Column(
+        String(80),
+        nullable=False
+    )
+
+    descripcion = Column(
+        String(200)
+    )
+
+    fecha_inicio = Column(Date)
+
+    fecha_fin = Column(Date)
+
+    estado = Column(
+        Boolean,
+        default=True
+    )
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
+
+    nivel = relationship(
+        "NivelEducativo"
+    )
 
 # ======================================
 # TIPOS DE INSTITUCION

@@ -1,0 +1,780 @@
+
+<div class="preguntas-container">
+
+        <!--======================================
+        CONTENIDO
+        ======================================-->
+
+        <div class="contenido-importacion">
+
+            <!--==================================
+            WIZARD
+            ==================================-->
+
+            <section class="wizard">
+
+                <!--==================================
+                BARRA DE PROGRESO
+                ==================================-->
+
+                <div class="barra-progreso">
+
+                    <div class="linea-progreso">
+
+                        <div
+
+                            class="linea-activa"
+
+                            [style.width.%]="(pasoActual - 1) * 25"
+
+                        ></div>
+
+                    </div>
+
+                    <div
+
+                        class="paso"
+
+                        *ngFor="let paso of pasosWizard"
+
+                    >
+
+                        <div
+
+                            class="circulo"
+
+                            [class.activo]="paso.numero <= pasoActual"
+
+                            [class.actual]="paso.numero === pasoActual"
+
+                            (click)="irPaso(paso.numero)"
+
+                        >
+
+                            <i
+
+                                *ngIf="paso.numero < pasoActual"
+
+                                class="bi bi-check-lg"
+
+                            ></i>
+
+                            <span
+
+                                *ngIf="paso.numero >= pasoActual"
+
+                            >
+
+                                {{ paso.numero }}
+
+                            </span>
+
+                        </div>
+
+                        <span
+
+                            class="titulo-paso"
+
+                            [class.activo]="paso.numero <= pasoActual"
+
+                        >
+
+                            {{ paso.nombre }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!--==================================
+                CABECERA DEL PASO
+                ==================================-->
+
+                <div class="cabecera-paso">
+
+                    <button
+
+                        *ngIf="pasoActual > 1"
+
+                        class="btn-volver"
+
+                        (click)="volverPaso()"
+
+                    >
+
+                        <i class="bi bi-arrow-left"></i>
+
+                        <span>
+
+                            Volver
+
+                        </span>
+
+                    </button>
+
+                    <div>
+
+                        <span class="contador-paso">
+
+                            Paso {{ pasoActual }}
+
+                            de
+
+                            {{ pasosWizard.length }}
+
+                        </span>
+
+                        <h2>
+
+                            {{ tituloPaso }}
+
+                        </h2>
+
+                        <p>
+
+                            {{ descripcionPaso }}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!--==================================
+                CONTENIDO DINÁMICO
+                ==================================-->
+
+                <div class="contenido-paso">
+
+                    <!--==================================
+                    PASO 1
+                    ===================================-->
+
+                    <div
+                        class="paso-contenido"
+                        *ngIf="pasoActual === 1"
+                    >
+
+                        <div class="grid-opciones">
+
+                            <div
+
+                                class="opcion-card"
+
+                                *ngFor="let competencia of competencias"
+
+                                [class.activa]="
+                                    competenciaSeleccionada === competencia.id_competencia
+                                "
+
+                                (click)="seleccionarCompetencia(
+                                    competencia.id_competencia
+                                )"
+
+                            >
+
+                                <div class="icono-opcion">
+
+                                    <i class="bi bi-calculator"></i>
+
+                                </div>
+
+                                <div class="contenido-opcion">
+
+                                    <h3>
+
+                                        {{ competencia.nombre_competencia }}
+
+                                    </h3>
+
+                                    <p>
+
+                                        Seleccionar competencia
+
+                                    </p>
+
+                                </div>
+
+                                <i
+                                    class="bi bi-arrow-right-circle-fill flecha"
+                                ></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!--==================================
+                    PASO 2
+                    ===================================-->
+
+                    <div
+
+                        class="paso-contenido"
+
+                        *ngIf="pasoActual === 2"
+
+                    >
+
+                        <div class="grid-opciones">
+
+                            <div
+
+                                class="opcion-card"
+
+                                *ngFor="let submodulo of submodulos"
+
+                                [class.activa]="
+                                submoduloSeleccionado===submodulo.id_submodulo
+                                "
+
+                                (click)="seleccionarSubmodulo(
+                                    submodulo.id_submodulo
+                                )"
+
+                            >
+
+                                <div class="icono-opcion">
+
+                                    <i class="bi bi-grid-3x3-gap-fill"></i>
+
+                                </div>
+
+                                <div class="contenido-opcion">
+
+                                    <h3>
+
+                                        {{ submodulo.nombre_submodulo }}
+
+                                    </h3>
+
+                                    <p>
+
+                                        Seleccionar submódulo
+
+                                    </p>
+
+                                </div>
+
+                                <i
+                                    class="bi bi-arrow-right-circle-fill flecha"
+                                ></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!--==================================
+                    PASO 3
+                    ===================================-->
+
+                    <div
+
+                        class="paso-contenido"
+
+                        *ngIf="pasoActual === 3"
+
+                    >
+
+                        <div class="grid-opciones">
+
+                            <div
+
+                                class="opcion-card"
+
+                                *ngFor="let tema of temas"
+
+                                [class.activa]="
+                                temaSeleccionado===tema.id_tema
+                                "
+
+                                (click)="seleccionarTema(
+                                    tema.id_tema
+                                )"
+
+                            >
+
+                                <div class="icono-opcion">
+
+                                    <i class="bi bi-journal-bookmark-fill"></i>
+
+                                </div>
+
+                                <div class="contenido-opcion">
+
+                                    <h3>
+
+                                        {{ tema.nombre_tema }}
+
+                                    </h3>
+
+                                    <p>
+
+                                        Seleccionar tema
+
+                                    </p>
+
+                                </div>
+
+                                <i
+                                    class="bi bi-arrow-right-circle-fill flecha"
+                                ></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!--==================================
+                    PASO 4
+                    ===================================-->
+
+                    <div
+                        class="paso-contenido"
+                        *ngIf="pasoActual === 4"
+                    >
+
+                        <!-- Zona de carga -->
+
+                        <div
+                            class="upload-area"
+                            [class.drag-active]="dragActivo"
+                            (click)="inputArchivo.click()"
+                            (dragover)="onDragOver($event)"
+                            (dragleave)="onDragLeave($event)"
+                            (drop)="onDrop($event)"
+                        >
+
+                            <input
+                                #inputArchivo
+                                hidden
+                                type="file"
+                                accept=".xlsx"
+                                (change)="onFileSelected($event)"
+                            >
+
+                            <ng-container *ngIf="!archivoExcel; else archivoCargado">
+
+                                <i class="bi bi-cloud-arrow-up-fill upload-icon"></i>
+
+                                <h3>
+                                    Arrastra tu archivo Excel aquí
+                                </h3>
+
+                                <p>
+                                    O haz clic en cualquier parte de esta área para seleccionarlo.
+                                </p>
+
+                                <small>
+                                    Formato permitido: <strong>.xlsx</strong>
+                                </small>
+
+                            </ng-container>
+
+                            <ng-template #archivoCargado>
+
+                                <i
+                                    class="bi bi-check-circle-fill upload-success"
+                                ></i>
+
+                                <h3>
+
+                                    Archivo seleccionado correctamente
+
+                                </h3>
+
+                                <p>
+
+                                    {{ archivoExcel?.name }}
+
+                                </p>
+
+                                <small>
+
+                                    Haz clic nuevamente para reemplazar el archivo.
+
+                                </small>
+
+                            </ng-template>
+
+                        </div>
+
+                        <!-- Archivo seleccionado -->
+
+                        <div
+
+                            *ngIf="archivoExcel"
+
+                            class="archivo-seleccionado"
+
+                        >
+
+                            <div class="archivo-info">
+
+                                <i class="bi bi-file-earmark-excel-fill"></i>
+
+                                <div>
+
+                                    <strong>
+
+                                        {{ archivoExcel.name }}
+
+                                    </strong>
+
+                                    <span>
+
+                                        Archivo listo para importar
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Botón importar -->
+
+                        <button
+
+                            class="btn-importar"
+
+                            [disabled]="!archivoExcel"
+
+                            (click)="importarPreguntas()"
+
+                        >
+
+                            <i class="bi bi-upload"></i>
+
+                            Importar preguntas
+
+                        </button>
+
+                    </div>
+
+                    <!--==================================
+                    PASO 5
+                    ===================================-->
+
+                    <div
+                        class="paso-contenido"
+                        *ngIf="pasoActual === 5"
+                    >
+
+                        <div class="resultado-importacion">
+
+                            <!--==================================
+                            ICONO
+                            ===================================-->
+
+                            <div
+                                class="resultado-icono"
+                                [ngClass]="estadoImportacion"
+                            >
+
+                                <i
+                                    *ngIf="estadoImportacion === 'exito'"
+                                    class="bi bi-check-circle-fill"
+                                ></i>
+
+                                <i
+                                    *ngIf="estadoImportacion === 'advertencia'"
+                                    class="bi bi-exclamation-triangle-fill"
+                                ></i>
+
+                                <i
+                                    *ngIf="estadoImportacion === 'error'"
+                                    class="bi bi-x-circle-fill"
+                                ></i>
+
+                            </div>
+
+                            <!--==================================
+                            TÍTULO
+                            ===================================-->
+
+                            <h2>
+
+                                {{ tituloResultado }}
+
+                            </h2>
+
+                            <!--==================================
+                            MENSAJE
+                            ===================================-->
+
+                            <p class="mensaje">
+
+                                {{ mensajeResultado }}
+
+                            </p>
+
+                            <!--==================================
+                            RESUMEN
+                            ===================================-->
+
+                            <div class="resultado-resumen">
+
+                                <div class="item-resumen">
+
+                                    <i class="bi bi-list-check"></i>
+
+                                    <div>
+
+                                        <span>
+
+                                            Total de preguntas
+
+                                        </span>
+
+                                        <strong>
+
+                                            {{ totalPreguntas }}
+
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="item-resumen">
+
+                                    <i class="bi bi-patch-check-fill"></i>
+
+                                    <div>
+
+                                        <span>
+
+                                            Importadas
+
+                                        </span>
+
+                                        <strong>
+
+                                            {{ preguntasImportadas }}
+
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="item-resumen">
+
+                                    <i class="bi bi-x-octagon-fill"></i>
+
+                                    <div>
+
+                                        <span>
+
+                                            Rechazadas
+
+                                        </span>
+
+                                        <strong>
+
+                                            {{ preguntasRechazadas }}
+
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!--==================================
+                            DETALLE DE ERRORES
+                            ===================================-->
+
+                            <div
+
+                                class="errores-importacion"
+
+                                *ngIf="erroresImportacion.length > 0"
+
+                            >
+
+                                <h3>
+
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+
+                                    Detalle de observaciones
+
+                                </h3>
+
+                                <div
+
+                                    class="error-item"
+
+                                    *ngFor="let error of erroresImportacion"
+
+                                >
+
+                                    <span class="fila">
+
+                                        Fila {{ error.fila }}
+
+                                    </span>
+
+                                    <span class="motivo">
+
+                                        {{ error.motivo }}
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <!--==================================
+                            ACCIONES
+                            ===================================-->
+
+                            <div class="acciones-finales">
+
+                                <button
+
+                                    class="btn-principal"
+
+                                    (click)="reiniciarImportacion()"
+
+                                >
+
+                                    <i class="bi bi-arrow-repeat"></i>
+
+                                    Importar otro archivo
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!--==================================
+            PANEL DERECHO
+            ==================================-->
+
+            <aside class="panel-ayuda"
+                *ngIf="
+                    competenciaSeleccionada &&
+                    submoduloSeleccionado &&
+                    temaSeleccionado
+                "
+            >
+
+                <h3>
+
+                    <i class="bi bi-file-earmark-excel-fill"></i>
+
+                    Plantilla de importación
+
+                </h3>
+
+                <button
+
+                    class="btn-descargar"
+                    (click)="descargarPlantilla()"
+
+                >
+
+                    <i class="bi bi-download"></i>
+
+                    Descargar plantilla Excel
+
+                </button>
+
+                <hr>
+
+                <h4>
+
+                    El archivo debe contener:
+
+                </h4>
+
+                <ul class="lista-formato">
+
+                    <li>
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Pregunta
+
+                    </li>
+
+                    <li>
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Opción A
+
+                    </li>
+
+                    <li>
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Opción B
+
+                    </li>
+
+                    <li>
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Opción C
+
+                    </li>
+
+                    <li>
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Opción D
+
+                    </li>
+
+                    <li>
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Respuesta correcta
+
+                    </li>
+
+                    <li>
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Dificultad
+
+                    </li>
+
+                    <li>
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Justificación
+
+                    </li>
+
+                </ul>
+
+            </aside>
+
+        </div>
+
+   
+</div>

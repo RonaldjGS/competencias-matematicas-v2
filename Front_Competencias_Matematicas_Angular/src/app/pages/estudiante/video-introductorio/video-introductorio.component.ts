@@ -188,6 +188,8 @@ implements OnInit {
       '/seleccionar-dificultad'
     ]);
 
+    this.refrescarVista();
+
   }
 
   // =====================================
@@ -349,6 +351,8 @@ implements OnInit {
           this.crearReproductor();
 
       };
+
+      this.refrescarVista();
 
   }
 

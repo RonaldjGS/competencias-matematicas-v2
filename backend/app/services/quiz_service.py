@@ -8,13 +8,10 @@ from app.models.evaluaciones import (
 
 from datetime import datetime
 
-from sqlalchemy import DateTime
+from app.services.configuracion_quiz_service import ConfiguracionQuizService
 
-# ==========================================
-# CONFIGURACIÓN
-# ==========================================
-
-MAX_INTENTOS = 3
+import random
+import copy
 
 
 # ==========================================
@@ -26,40 +23,43 @@ def obtener_intento(
     id_competencia: int,
     id_submodulo: int,
     id_tema: int,
-    dificultad:str,
+    dificultad: str,
     db: Session
 ):
 
     intento = (
+
         db.query(
             IntentoQuiz
         )
+
         .filter(
-            IntentoQuiz.id_estudiante ==
-            id_estudiante,
 
-            IntentoQuiz.id_competencia ==
-            id_competencia,
+            IntentoQuiz.id_estudiante == id_estudiante,
 
-            IntentoQuiz.id_submodulo ==
-            id_submodulo,
+            IntentoQuiz.id_competencia == id_competencia,
 
-            IntentoQuiz.id_tema ==
-            id_tema,
-            
+            IntentoQuiz.id_submodulo == id_submodulo,
+
+            IntentoQuiz.id_tema == id_tema,
+
             IntentoQuiz.dificultad == dificultad,
 
-            IntentoQuiz.completado ==
-            False
+            IntentoQuiz.completado == False
+
         )
+
         .order_by(
+
             IntentoQuiz.id_intento.desc()
+
         )
+
         .first()
+
     )
 
     return intento
-
 
 # ==========================================
 # CREAR INTENTO QUIZ
@@ -71,6 +71,7 @@ def crear_intento(
     id_submodulo: int,
     id_tema: int,
     dificultad:str,
+    max_intentos: int,
     db: Session
 ):
 
@@ -143,7 +144,9 @@ def crear_intento(
 
         completado=False,
 
-        abandonado=False
+        abandonado=False,
+        
+        max_intentos=max_intentos,
 
     )
 
@@ -188,14 +191,19 @@ def actualizar_intento(
 # ==========================================
 
 def obtener_intentos_restantes(
-    intentos_usados: int
+    intentos_usados: int,
+    max_intentos: int
 ):
 
     return max(
-        0,
-        MAX_INTENTOS - intentos_usados
-    )
 
+        0,
+
+        max_intentos -
+
+        intentos_usados
+
+    )
 
 # ==========================================
 # OPCIONES BLOQUEADAS
@@ -244,212 +252,158 @@ def obtener_opciones_bloqueadas(
         if opcion.opcion_fallida is not None
 
     ]
-
-
+    
 # ==========================================
-# EVALUAR RESPUESTA
+# CONSTRUIR PREGUNTAS DEL QUIZ
 # ==========================================
 
-def evaluar_respuesta(
+def construir_preguntas_quiz(
 
+    preguntas,
 
-    id_intento: int,
+    mezclar_opciones: bool
 
-    id_pregunta: int,
-
-    respuesta: str,
-
-    usar_intento: bool,
-
-    db: Session
 ):
 
-    pregunta = (
-        db.query(
-            PreguntaCompetencia
-        )
-        .filter(
-            PreguntaCompetencia.id_pregunta ==
-            id_pregunta
-        )
-        .first()
-    )
+    preguntas_quiz = []
 
-    if not pregunta:
+    for pregunta in preguntas:
 
-        return {
-            "mensaje":
-            "Pregunta no encontrada"
-        }
+        # ======================================
+        # COPIA DE LA PREGUNTA
+        # ======================================
 
-    respuesta = respuesta.upper()
+        pregunta_quiz = copy.copy(
 
-    if respuesta not in [
-        "A",
-        "B",
-        "C",
-        "D"
-    ]:
-
-        return {
-            "mensaje":
-            "Respuesta inválida"
-        }
-
-    intento = (
-
-        db.query(
-            IntentoQuiz
-        )
-
-        .filter(
-
-            IntentoQuiz.id_intento ==
-
-            id_intento
+            pregunta
 
         )
 
-        .first()
+        opciones = [
 
-    )
+            {
 
-    if not intento:
+                "texto": pregunta.opcion_a,
 
-        return {
+                "correcta":
 
-            "mensaje":
+                    pregunta.respuesta_correcta.upper() == "A"
 
-            "Intento no encontrado"
+            },
 
-        }
+            {
 
-    correcta = (
-        respuesta
-        ==
-        pregunta.respuesta_correcta.upper()
-    )
+                "texto": pregunta.opcion_b,
 
-    # ======================================
-    # RESPUESTA CORRECTA
-    # ======================================
+                "correcta":
 
-    if correcta:
+                    pregunta.respuesta_correcta.upper() == "B"
 
-        db.query(
-            IntentoDetalle
-        ).filter(
-            IntentoDetalle.id_intento ==
-            intento.id_intento,
+            },
 
-            IntentoDetalle.id_pregunta ==
-            pregunta.id_pregunta
-        ).delete()
+            {
 
-        db.commit()
+                "texto": pregunta.opcion_c,
 
-        return {
+                "correcta":
 
-            "correcta": True,
+                    pregunta.respuesta_correcta.upper() == "C"
 
-            "mostrar_solucion": True,
-            
-            "puede_reintentar": False,
+            },
 
-            "respuesta_correcta":
-            pregunta.respuesta_correcta,
+            {
 
-            "justificacion":
-            pregunta.justificacion,
+                "texto": pregunta.opcion_d,
 
-            "intentos_restantes":
-            obtener_intentos_restantes(
-                intento.intentos_usados
-            )
-        }
+                "correcta":
 
-    # ======================================
-    # RESPUESTA INCORRECTA
-    # ======================================
-
-    if usar_intento:
-
-        datos = consumir_intento(
-
-            intento,
-
-            pregunta,
-
-            respuesta,
-
-            db
-
-        )
-
-        if datos["intentos_restantes"] == 0:
-
-            return {
-
-                "correcta": False,
-
-                "mostrar_solucion": True,
-
-                "puede_reintentar": False,
-                
-                "ultimo_intento": True,
-
-                "respuesta_correcta":
-                pregunta.respuesta_correcta,
-
-                "justificacion":
-                pregunta.justificacion,
-
-                "intentos_restantes":
-                0,
-
-                "opciones_bloqueadas":
-                datos["opciones_bloqueadas"]
+                    pregunta.respuesta_correcta.upper() == "D"
 
             }
 
-        return {
+        ]
 
-            "correcta": False,
+        # ======================================
+        # MEZCLAR OPCIONES
+        # ======================================
 
-            "mostrar_solucion": False,
+        if mezclar_opciones:
 
-            "puede_reintentar": True,
-            
-            "ultimo_intento": False,
+            random.shuffle(
 
-            "intentos_restantes":
-            datos["intentos_restantes"],
+                opciones
 
-            "opciones_bloqueadas":
-            datos["opciones_bloqueadas"]
+            )
 
-        }
+        letras = [
 
-    return mostrar_solucion(
+            "A",
 
-        intento,
+            "B",
 
-        pregunta,
+            "C",
 
-        db
+            "D"
 
-    )
+        ]
 
+        nueva_respuesta = ""
+
+        # ======================================
+        # REASIGNAR OPCIONES
+        # ======================================
+
+        for i, opcion in enumerate(opciones):
+
+            if i == 0:
+
+                pregunta_quiz.opcion_a = opcion["texto"]
+
+            elif i == 1:
+
+                pregunta_quiz.opcion_b = opcion["texto"]
+
+            elif i == 2:
+
+                pregunta_quiz.opcion_c = opcion["texto"]
+
+            else:
+
+                pregunta_quiz.opcion_d = opcion["texto"]
+
+            if opcion["correcta"]:
+
+                nueva_respuesta = letras[i]
+
+        # ======================================
+        # NUEVA RESPUESTA CORRECTA
+        # ======================================
+
+        pregunta_quiz.respuesta_correcta_quiz = (
+
+            nueva_respuesta
+
+        )
+
+        preguntas_quiz.append(
+
+            pregunta_quiz
+
+        )
+
+    return preguntas_quiz
     
 # ==========================================
 # ESTADO DE INTENTOS
 # ==========================================
 
 def obtener_estado_intentos(
+
     id_estudiante: int,
     id_competencia: int,
     id_submodulo: int,
     id_tema: int,
+    dificultad: str,
     db: Session
 ):
 
@@ -458,35 +412,68 @@ def obtener_estado_intentos(
         id_competencia,
         id_submodulo,
         id_tema,
+        dificultad,
         db
     )
 
     if not intento:
 
+        configuracion = (
+
+            ConfiguracionQuizService
+
+            .obtener_configuracion_estudiante(
+
+                db=db,
+
+                id_competencia=id_competencia,
+
+                id_submodulo=id_submodulo,
+
+                id_tema=id_tema,
+
+                dificultad=dificultad
+
+            )
+
+        )
+
+        max_intentos = 3
+
+        if configuracion:
+
+            max_intentos = configuracion.intentos
+
         return {
 
-            "intentos_usados":
-            0,
+            "intentos_usados": 0,
 
-            "intentos_restantes":
-            MAX_INTENTOS,
+            "intentos_restantes": max_intentos,
 
-            "completado":
-            False
+            "completado": False
+
         }
 
     return {
 
         "intentos_usados":
-        intento.intentos_usados,
+
+            intento.intentos_usados,
 
         "intentos_restantes":
-        obtener_intentos_restantes(
-            intento.intentos_usados
-        ),
+
+            obtener_intentos_restantes(
+
+                intento.intentos_usados,
+
+                intento.max_intentos
+
+            ),
 
         "completado":
-        intento.completado
+
+            intento.completado
+
     }
     
 # ==========================================
@@ -494,19 +481,29 @@ def obtener_estado_intentos(
 # ==========================================
 
 def finalizar_intento_quiz(
+
     id_estudiante: int,
     id_competencia: int,
     id_submodulo: int,
     id_tema: int,
+    dificultad: str,
     db: Session
 ):
 
     intento = obtener_intento(
+
         id_estudiante,
+
         id_competencia,
+
         id_submodulo,
+
         id_tema,
+
+        dificultad,
+
         db
+
     )
 
     if intento:
@@ -625,65 +622,36 @@ def consumir_intento(
 
     )
 
-    # ==========================================
-    # CREAR DETALLE
-    # ==========================================
-
     if not detalle:
 
-        detalle = IntentoDetalle(
+        return {
 
-            id_intento=
-            intento.id_intento,
+            "mensaje":
 
-            id_pregunta=
-            pregunta.id_pregunta,
+            "Detalle del intento no encontrado"
 
-            numero_pregunta=
-            numero_pregunta,
-
-            respuesta_estudiante=
-            respuesta,
-
-            es_correcta=False,
-
-            tiempo_respuesta=
-            tiempo_respuesta,
-
-            opcion_fallida=
-            respuesta
-
-        )
-
-        db.add(
-            detalle
-        )
+        }
 
     # ==========================================
     # ACTUALIZAR DETALLE
     # ==========================================
 
-    else:
+    detalle.respuesta_estudiante = respuesta
 
-        detalle.respuesta_estudiante = \
-            respuesta
+    detalle.es_correcta = False
 
-        detalle.es_correcta = False
+    detalle.opcion_fallida = respuesta
 
-        detalle.opcion_fallida = \
-            respuesta
-            
-        detalle.tiempo_respuesta = tiempo_respuesta
-
-    db.commit()
+    detalle.tiempo_respuesta = tiempo_respuesta
     
-    db.refresh(
-        detalle
-    )
+    db.commit()
+
+    db.refresh(detalle)
 
     intentos_restantes = obtener_intentos_restantes(
 
-        intento.intentos_usados
+        intento.intentos_usados,
+        intento.max_intentos
 
     )
 
@@ -710,7 +678,8 @@ def consumir_intento(
             "puede_reintentar": False,
 
             "respuesta_correcta":
-            pregunta.respuesta_correcta,
+
+                detalle.respuesta_correcta_quiz,
 
             "justificacion":
             pregunta.justificacion,
@@ -805,10 +774,10 @@ def mostrar_solucion(
             "Pregunta no encontrada"
 
         }
-
-    # =====================================
-    # SI NO EXISTE DETALLE LO CREA
-    # =====================================
+        
+    # ======================================
+    # DETALLE DEL INTENTO
+    # ======================================
 
     detalle = (
 
@@ -819,10 +788,10 @@ def mostrar_solucion(
         .filter(
 
             IntentoDetalle.id_intento ==
-            intento.id_intento,
+            id_intento,
 
             IntentoDetalle.id_pregunta ==
-            pregunta.id_pregunta
+            id_pregunta
 
         )
 
@@ -832,35 +801,13 @@ def mostrar_solucion(
 
     if not detalle:
 
-        detalle = IntentoDetalle(
+        return {
 
-            id_intento=
-            intento.id_intento,
+            "mensaje":
 
-            id_pregunta=
-            pregunta.id_pregunta,
+            "Detalle del intento no encontrado"
 
-            numero_pregunta=
-            numero_pregunta,
-
-            respuesta_estudiante="X",
-
-            es_correcta=False,
-            
-            tiempo_respuesta=
-            tiempo_respuesta,
-
-            opcion_fallida=None
-
-        )
-
-        db.add(detalle)
-
-    else:
-
-        detalle.es_correcta = False
-
-    db.commit()
+        }
 
     # =====================================
     # RESPUESTA
@@ -875,14 +822,16 @@ def mostrar_solucion(
         "puede_reintentar": False,
 
         "respuesta_correcta":
-        pregunta.respuesta_correcta,
+
+            detalle.respuesta_correcta_quiz,
 
         "justificacion":
         pregunta.justificacion,
 
         "intentos_restantes":
         obtener_intentos_restantes(
-            intento.intentos_usados
+            intento.intentos_usados,
+            intento.max_intentos
         ),
 
         "opciones_bloqueadas":
@@ -914,6 +863,10 @@ def validar_respuesta(
 
 ):
 
+    # ======================================
+    # PREGUNTA
+    # ======================================
+
     pregunta = (
 
         db.query(
@@ -934,9 +887,14 @@ def validar_respuesta(
         return {
 
             "mensaje":
+
             "Pregunta no encontrada"
 
         }
+
+    # ======================================
+    # RESPUESTA
+    # ======================================
 
     respuesta = respuesta.upper()
 
@@ -955,9 +913,14 @@ def validar_respuesta(
         return {
 
             "mensaje":
+
             "Respuesta inválida"
 
         }
+
+    # ======================================
+    # INTENTO
+    # ======================================
 
     intento = (
 
@@ -979,15 +942,58 @@ def validar_respuesta(
         return {
 
             "mensaje":
+
             "Intento no encontrado"
 
         }
+
+    # ======================================
+    # DETALLE
+    # ======================================
+
+    detalle = (
+
+        db.query(
+
+            IntentoDetalle
+
+        )
+
+        .filter(
+
+            IntentoDetalle.id_intento ==
+
+            id_intento,
+
+            IntentoDetalle.id_pregunta ==
+
+            id_pregunta
+
+        )
+
+        .first()
+
+    )
+
+    if not detalle:
+
+        return {
+
+            "mensaje":
+
+            "Detalle del intento no encontrado"
+
+        }
+
+    # ======================================
+    # COMPARAR RESPUESTA
+    # ======================================
 
     correcta = (
 
         respuesta ==
 
-        pregunta.respuesta_correcta.upper()
+        detalle.respuesta_correcta_quiz
 
     )
 
@@ -997,81 +1003,18 @@ def validar_respuesta(
 
     if correcta:
 
-        detalle = (
+        detalle.respuesta_estudiante = respuesta
 
-            db.query(
-                IntentoDetalle
-            )
+        detalle.es_correcta = True
 
-            .filter(
+        detalle.opcion_fallida = None
 
-                IntentoDetalle.id_intento ==
-                intento.id_intento,
-
-                IntentoDetalle.id_pregunta ==
-                pregunta.id_pregunta
-
-            )
-
-            .first()
-
-        )
-
-        # ----------------------------------
-        # NO EXISTE DETALLE
-        # ----------------------------------
-
-        if not detalle:
-
-            detalle = IntentoDetalle(
-
-                id_intento=
-                intento.id_intento,
-
-                id_pregunta=
-                pregunta.id_pregunta,
-
-                numero_pregunta=
-                numero_pregunta,
-
-                respuesta_estudiante=
-                respuesta,
-
-                es_correcta=True,
-
-                tiempo_respuesta=
-                tiempo_respuesta,
-
-                opcion_fallida=None
-
-            )
-
-            db.add(
-                detalle
-            )
-
-        # ----------------------------------
-        # YA EXISTE
-        # ----------------------------------
-
-        else:
-
-            detalle.respuesta_estudiante = \
-                respuesta
-
-            detalle.es_correcta = True
-            
-            detalle.opcion_fallida = None
-            
-            detalle.tiempo_respuesta = \
-                tiempo_respuesta
+        detalle.tiempo_respuesta = tiempo_respuesta
 
         db.commit()
 
-        db.refresh(
-            detalle
-        )
-
+        db.refresh(detalle)
+    
         return {
 
             "correcta": True,
@@ -1081,17 +1024,25 @@ def validar_respuesta(
             "puede_reintentar": False,
 
             "respuesta_correcta":
-                pregunta.respuesta_correcta,
+
+                detalle.respuesta_correcta_quiz,
 
             "justificacion":
+
                 pregunta.justificacion,
 
             "intentos_restantes":
+
                 obtener_intentos_restantes(
-                    intento.intentos_usados
+
+                    intento.intentos_usados,
+
+                    intento.max_intentos
+
                 ),
 
             "opciones_bloqueadas":
+
                 obtener_opciones_bloqueadas(
 
                     intento.id_intento,
@@ -1110,92 +1061,13 @@ def validar_respuesta(
 
     intentos_restantes = obtener_intentos_restantes(
 
-        intento.intentos_usados
+        intento.intentos_usados,
+        intento.max_intentos
 
     )
 
     # Ya no tiene intentos disponibles
     if intentos_restantes == 0:
-
-        detalle = (
-
-            db.query(
-                IntentoDetalle
-            )
-
-            .filter(
-
-                IntentoDetalle.id_intento ==
-                intento.id_intento,
-
-                IntentoDetalle.id_pregunta ==
-                pregunta.id_pregunta
-
-            )
-
-            .first()
-
-        )
-
-        # ===============================
-        # NO EXISTE
-        # ===============================
-
-        if not detalle:
-
-            detalle = IntentoDetalle(
-
-                id_intento=
-                intento.id_intento,
-
-                id_pregunta=
-                pregunta.id_pregunta,
-
-                numero_pregunta=
-                numero_pregunta,
-
-                respuesta_estudiante=
-                respuesta,
-
-                es_correcta=False,
-
-                tiempo_respuesta=
-                tiempo_respuesta,
-
-                opcion_fallida=
-                respuesta
-
-            )
-
-            db.add(
-                detalle
-            )
-
-        # ===============================
-        # YA EXISTE
-        # ===============================
-
-        else:
-
-            detalle.numero_pregunta = \
-                numero_pregunta
-
-            detalle.respuesta_estudiante = \
-                respuesta
-
-            detalle.es_correcta = False
-
-            detalle.tiempo_respuesta = \
-                tiempo_respuesta
-
-            detalle.opcion_fallida = \
-                respuesta
-
-        db.commit()
-
-        db.refresh(
-            detalle
-        )
 
         return {
 
@@ -1206,15 +1078,17 @@ def validar_respuesta(
             "puede_reintentar": False,
 
             "respuesta_correcta":
-                pregunta.respuesta_correcta,
+
+                detalle.respuesta_correcta_quiz,
 
             "justificacion":
+
                 pregunta.justificacion,
 
-            "intentos_restantes":
-                0,
+            "intentos_restantes": 0,
 
             "opciones_bloqueadas":
+
                 obtener_opciones_bloqueadas(
 
                     intento.id_intento,
@@ -1252,3 +1126,4 @@ def validar_respuesta(
             )
 
     }
+    

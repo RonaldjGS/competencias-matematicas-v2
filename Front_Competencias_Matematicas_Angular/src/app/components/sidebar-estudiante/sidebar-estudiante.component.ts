@@ -86,6 +86,34 @@ export class SidebarEstudianteComponent{
 
   }
 
+  // =====================================
+  // HISTORIAL DE QUIZZES
+  // =====================================
+
+  irHistorial(): void {
+
+      this.router.navigate([
+
+          '/historial-estudiante'
+
+      ]);
+
+  }
+
+  // =====================================
+  // CONTENIDO MATEMÁTICO
+  // =====================================
+
+  irContenidoMatematico(): void {
+
+      this.router.navigate([
+
+          '/contenido-matematico'
+
+      ]);
+
+  }
+
   cerrarSesion(){
 
     localStorage.clear();

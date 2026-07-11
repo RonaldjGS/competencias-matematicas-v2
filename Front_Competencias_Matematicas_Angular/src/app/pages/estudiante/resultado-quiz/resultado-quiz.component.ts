@@ -84,6 +84,8 @@ implements OnInit {
 
   resultado: any;
 
+  detalleIntento:any[] = [];
+
   nombreEstudiante: string = '';
 
   // =====================================
@@ -119,6 +121,10 @@ implements OnInit {
   colorGrafico = '#22c55e';
 
   colorFondo = '#e5e7eb';
+
+  historialAbierto = false;
+
+  preguntaAbierta:number|null=null;
 
   constructor(
 
@@ -200,6 +206,8 @@ implements OnInit {
           console.log(resp);
 
           this.resultado = resp;
+
+          this.detalleIntento = resp.detalle;
           
           // ==========================
           // RESUMEN
@@ -484,6 +492,60 @@ implements OnInit {
   private refrescarVista(): void {
 
     this.cdr.detectChanges();
+
+  }
+
+  toggleHistorialActual(): void {
+
+    this.historialAbierto = !this.historialAbierto;
+
+  }
+
+  // =====================================
+  // MOSTRAR PREGUNTA
+  // =====================================
+
+  togglePregunta(
+
+      numeroPregunta: number
+
+  ): void {
+
+      if (
+
+          this.preguntaAbierta === numeroPregunta
+
+      ) {
+
+          this.preguntaAbierta = null;
+
+          return;
+
+      }
+
+      this.preguntaAbierta = numeroPregunta;
+
+  }
+
+  // =====================================
+  // FORMATEAR TIEMPO
+  // =====================================
+
+  formatearTiempo(
+    segundos: number
+  ): string {
+
+    const minutos = Math.floor(segundos / 60);
+
+    const seg = segundos % 60;
+
+    if (minutos === 0) {
+
+      return `${seg} s`;
+
+    }
+
+    return `${minutos} min ${seg.toString().padStart(2, '0')} s`;
 
   }
 

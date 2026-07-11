@@ -38,6 +38,30 @@
 
         </li>
 
+        <li (click)="irHistorial()">
+
+          <i class="bi bi-clock-history"></i>
+
+          <span *ngIf="menuAbierto">
+
+              Historial
+
+          </span>
+
+      </li>
+
+      <li (click)="irContenidoMatematico()">
+
+          <i class="bi bi-book-half"></i>
+
+          <span *ngIf="menuAbierto">
+
+              Contenido matemático
+
+          </span>
+
+      </li>
+
         <li
           class="cerrar-sesion"
           (click)="cerrarSesion()">

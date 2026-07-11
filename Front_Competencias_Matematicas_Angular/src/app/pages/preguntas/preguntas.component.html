@@ -1,167 +1,91 @@
-<div class="preguntas-container">
+<app-topbar-profesor
+    (menuToggle)="toggleMenu()">
+</app-topbar-profesor>
 
-  <h1>
-    Banco de Preguntas
-  </h1>
+<app-sidebar-profesor
+    [(menuAbierto)]="menuAbierto">
+</app-sidebar-profesor>
 
-  <p>
-    Importación de preguntas desde Excel
-  </p>
+<main
+    class="contenido"
+    [class.menu-cerrado]="!menuAbierto">
 
-  <!-- COMPETENCIA -->
+    <section class="cabecera">
 
-  <div class="form-group">
+        <h1>{{ tituloPagina }}</h1>
 
-    <label>
-      Competencia
-    </label>
+        <p>{{ descripcionPagina }}</p>
 
-    <select
-        class="input-control"
-        [(ngModel)]="competenciaSeleccionada"
-    >
+    </section>
 
-        <option [ngValue]="null">
-            Seleccione competencia
-        </option>
+    <div class="tabs">
 
-        @for (
-            competencia of competencias;
-            track competencia.id_competencia
-        ) {
+        <button
 
-        <option
-        [ngValue]="competencia.id_competencia"
-        >
+            class="tab"
 
-        {{ competencia.nombre_competencia }}
+            [class.activo]="
+                pestanaActual==='importar'
+            "
 
-        </option>
+            (click)="
+                cambiarPestana('importar')
+            ">
 
-        }
+            Importar preguntas
 
-    </select>
+        </button>
 
-  </div>
+        <button
 
-  <!-- SUBMODULO -->
+            class="tab"
 
-  <div class="form-group">
+            [class.activo]="
+                pestanaActual==='banco'
+            "
 
-    <label>
-      Submódulo
-    </label>
+            (click)="
+                cambiarPestana('banco')
+            ">
 
-    <select
-        class="input-control"
-        [(ngModel)]="submoduloSeleccionado"
-    >
+            Banco de preguntas
 
-        <option [ngValue]="null">
-            Seleccione submódulo
-        </option>
+        </button>
 
-        @for (
-            submodulo of submodulos;
-            track submodulo.id_submodulo
-        ) {
+        <button
 
-            <option
-            [ngValue]="submodulo.id_submodulo"
-            >
+            class="tab"
 
-            {{ submodulo.nombre_submodulo }}
+            [class.activo]="
+                pestanaActual==='quiz'
+            "
 
-            </option>
+            (click)="
+                cambiarPestana('quiz')
+            ">
 
-        }
+            Configuración Quiz
 
-    </select>
+        </button>
 
-  </div>
+    </div>
 
-  <!-- TEMA -->
+    @if(pestanaActual==='importar'){
 
-  <div class="form-group">
+        <app-importar-preguntas/>
 
-    <label>
-      Tema
-    </label>
+    }
 
-    <select
-        class="input-control"
-        [(ngModel)]="temaSeleccionado"
-    >
+    @if(pestanaActual==='banco'){
 
-        <option [ngValue]="null">
-            Seleccione tema
-        </option>
+        <app-banco-preguntas/>
 
-        @for (
-            tema of temas;
-            track tema.id_tema
-        ) {
+    }
 
-            <option
-            [ngValue]="tema.id_tema"
-            >
+    @if(pestanaActual==='quiz'){
 
-            {{ tema.nombre_tema }}
+    <app-configuracion-quiz/>
 
-            </option>
+    }
 
-        }
-
-    </select>
-
-  </div>
-
-  <!-- ARCHIVO -->
-
-  <div class="form-group">
-
-    <label>
-      Archivo Excel
-    </label>
-
-    <input
-        type="file"
-        accept=".xlsx,.xls"
-        (change)="onFileSelected($event)"
-    >
-
-  </div>
-
-  <button
-    class="btn-importar"
-    (click)="importarPreguntas()"
-  >
-
-    Importar Preguntas
-
-  </button>
-
- <div class="info-seleccion">
-
-  <p>
-    Competencia:
-    {{ competenciaSeleccionada }}
-  </p>
-
-  <p>
-    Submódulo:
-    {{ submoduloSeleccionado }}
-  </p>
-
-  <p>
-    Tema:
-    {{ temaSeleccionado }}
-  </p>
-
-  <p>
-    Archivo:
-    {{ archivoExcel?.name }}
-  </p>
-
- </div>
-</div>
+</main>

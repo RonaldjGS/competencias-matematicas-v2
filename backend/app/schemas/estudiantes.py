@@ -27,6 +27,8 @@ class EstudianteCreate(BaseModel):
     )
 
     id_nivel: int
+    
+    id_periodo:int
 
     id_tipo_institucion: Optional[int] = None
 
@@ -100,6 +102,35 @@ class ChangePasswordRequest(BaseModel):
         max_length=100
     )
 
+
+# ==========================================
+# VERIFICAR CORREO
+# ==========================================
+
+class VerificarCorreoRequest(BaseModel):
+
+    correo_estudiante: EmailStr
+
+
+class VerificarCorreoResponse(BaseModel):
+
+    existe: bool
+
+    nombre_estudiante: str | None = None
+
+
+# ==========================================
+# RESTABLECER CONTRASEÑA
+# ==========================================
+
+class ResetPasswordRequest(BaseModel):
+
+    correo_estudiante: EmailStr
+
+    new_password: str = Field(
+        min_length=8,
+        max_length=100
+    )
 
 
 class EstudianteProfesorCreate(

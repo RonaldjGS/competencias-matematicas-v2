@@ -272,6 +272,58 @@
 
   </div>
 
+  <!-- PERIODO ACADÉMICO -->
+
+  @if (mostrarPeriodo) {
+
+  <div class="form-group">
+
+    <label>
+
+      Periodo Académico
+
+    </label>
+
+    <select
+
+      class="input-control"
+
+      [(ngModel)]="idPeriodo"
+
+    >
+
+      <option [ngValue]="null">
+
+        Seleccione periodo académico
+
+      </option>
+
+      @for (
+
+        periodo of periodos;
+
+        track periodo.id_periodo
+
+      ) {
+
+        <option
+
+          [ngValue]="periodo.id_periodo"
+
+        >
+
+          {{ periodo.nombre_periodo }}
+
+        </option>
+
+      }
+
+    </select>
+
+  </div>
+
+  }
+
   <!-- CORREO -->
 
   <div class="form-group">

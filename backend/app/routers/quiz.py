@@ -4,6 +4,8 @@ from fastapi import (
     HTTPException
 )
 
+import random
+
 from sqlalchemy.orm import Session
 
 from sqlalchemy.sql.expression import func
@@ -14,6 +16,8 @@ from app.models.usuarios import Estudiante
 
 from app.models.estudiante_submodulo import EstudianteSubmodulo
 
+from app.models.evaluaciones import IntentoDetalle
+
 from app.models.academico import Tema
 
 from app.models.evaluaciones import (
@@ -21,6 +25,8 @@ from app.models.evaluaciones import (
     ResultadoQuiz,
     ResultadoDetalle
 )
+
+from app.services.configuracion_quiz_service import ConfiguracionQuizService
 
 from app.core.auth import (
     get_current_estudiante
@@ -48,12 +54,12 @@ from app.schemas.quiz import (
 )
 
 from app.services.quiz_service import (
-    evaluar_respuesta,
     validar_respuesta,
     obtener_estado_intentos,
     consumir_intento,
     mostrar_solucion,
-    crear_intento
+    crear_intento,
+    construir_preguntas_quiz,
 )
 
 from app.services.resultados_service import (
@@ -92,6 +98,53 @@ def generar_quiz(
     db: Session = Depends(get_db)
 ):
     
+    # ==========================================
+    # OBTENER CONFIGURACIÓN DEL PROFESOR
+    # ==========================================
+
+    configuracion = ConfiguracionQuizService.obtener_configuracion_estudiante(
+
+        db=db,
+
+        id_competencia=data.id_competencia,
+
+        id_submodulo=data.id_submodulo,
+
+        id_tema=data.id_tema,
+
+        dificultad=data.dificultad
+
+    )
+    # ==========================================
+    # VALORES DEL QUIZ
+    # ==========================================
+
+    cantidad_preguntas = 10
+
+    tiempo_minutos = 20
+
+    intentos = 3
+
+    mezclar_preguntas = True
+
+    mezclar_opciones = True
+
+    mostrar_resultado = True
+
+    if configuracion:
+
+        cantidad_preguntas = configuracion.cantidad_preguntas
+
+        tiempo_minutos = configuracion.tiempo_minutos
+
+        intentos = configuracion.intentos
+
+        mezclar_preguntas = configuracion.mezclar_preguntas
+
+        mezclar_opciones = configuracion.mezclar_opciones
+
+        mostrar_resultado = configuracion.mostrar_resultado
+    
     query = (
         db.query(
             PreguntaCompetencia
@@ -127,15 +180,34 @@ def generar_quiz(
 
         )
 
+    if mezclar_preguntas:
+
+        query = query.order_by(func.rand())
+
+    else:
+
+        query = query.order_by(
+
+            PreguntaCompetencia.id_pregunta
+
+        )
+
     preguntas = (
+
         query
-        .order_by(
-            func.rand()
-        )
-        .limit(
-            data.cantidad_preguntas
-        )
+
+        .limit(cantidad_preguntas)
+
         .all()
+
+    )
+
+    preguntas = construir_preguntas_quiz(
+
+        preguntas,
+
+        mezclar_opciones
+
     )
     
 
@@ -151,13 +223,7 @@ def generar_quiz(
     # ==========================================
 
         
-    tiempo_total = sum(
-
-        pregunta.tiempo_estimado
-
-        for pregunta in preguntas
-
-    )
+    tiempo_total = tiempo_minutos * 60
         
     
     nuevo_intento = crear_intento(
@@ -176,10 +242,97 @@ def generar_quiz(
         
         dificultad=
         data.dificultad,
+        
+        max_intentos=intentos,
 
         db=db
 
     )
+    
+    # ==========================================
+    # CREAR DETALLE DEL QUIZ
+    # ==========================================
+
+    for indice, pregunta in enumerate(preguntas):
+
+        detalle = IntentoDetalle(
+
+            id_intento=nuevo_intento.id_intento,
+
+            id_pregunta=pregunta.id_pregunta,
+
+            numero_pregunta=indice + 1,
+
+            respuesta_estudiante="-",
+
+            es_correcta=False,
+
+            tiempo_respuesta=0,
+
+            opcion_fallida=None,
+
+            respuesta_correcta_quiz=
+                pregunta.respuesta_correcta_quiz,
+
+            opcion_a_quiz=
+                pregunta.opcion_a,
+
+            opcion_b_quiz=
+                pregunta.opcion_b,
+
+            opcion_c_quiz=
+                pregunta.opcion_c,
+
+            opcion_d_quiz=
+                pregunta.opcion_d
+
+        )
+
+        db.add(detalle)
+
+    db.commit()
+
+    # ==========================================
+    # RESPUESTA PARA EL FRONT
+    # ==========================================
+
+    preguntas_front = []
+
+    for pregunta in preguntas:
+
+        preguntas_front.append({
+
+            "id_pregunta": pregunta.id_pregunta,
+
+            "pregunta": pregunta.pregunta,
+
+            "opciones": [
+
+                {
+                    "letra": "A",
+                    "texto": pregunta.opcion_a
+                },
+
+                {
+                    "letra": "B",
+                    "texto": pregunta.opcion_b
+                },
+
+                {
+                    "letra": "C",
+                    "texto": pregunta.opcion_c
+                },
+
+                {
+                    "letra": "D",
+                    "texto": pregunta.opcion_d
+                }
+
+            ],
+
+            "dificultad": pregunta.dificultad
+
+        })
 
     return QuizGeneradoOut(
 
@@ -187,10 +340,22 @@ def generar_quiz(
         nuevo_intento.id_intento,
 
         preguntas=
-        preguntas,
+        preguntas_front,
 
         tiempo_segundos=
-        tiempo_total
+        tiempo_total,
+
+        max_intentos=
+        intentos,
+
+        mostrar_resultado=
+        mostrar_resultado,
+
+        mezclar_preguntas=
+        mezclar_preguntas,
+
+        mezclar_opciones=
+        mezclar_opciones
 
     )
 
@@ -587,8 +752,11 @@ def consultar_intentos(
         id_tema=
         datos.id_tema,
 
-        db=
-        db
+        dificultad=
+        datos.dificultad,
+
+        db=db
+
     )
     
 # ==========================================
@@ -1029,3 +1197,22 @@ def obtener_resultado_quiz(
     return resultado
 
 
+#@router.get(
+ #   "/quiz-estudiante",
+  #  response_model=ConfiguracionQuizResponse | None
+#)
+#def obtener_configuracion_estudiante(
+#    id_competencia: int,
+#    id_submodulo: int,
+#    id_tema: int,
+#    dificultad: str,
+#    db: Session = Depends(get_db)
+#):
+
+#    return ConfiguracionQuizService.obtener_configuracion_estudiante(
+#        db=db,
+#        id_competencia=id_competencia,
+#        id_submodulo=id_submodulo,
+#        id_tema=id_tema,
+#        dificultad=dificultad
+#    )

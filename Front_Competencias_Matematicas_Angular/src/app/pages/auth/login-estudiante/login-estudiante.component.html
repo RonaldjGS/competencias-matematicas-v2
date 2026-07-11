@@ -93,7 +93,7 @@
       </div>
 
       <h2>
-        Bienvenido
+        Bienvenido Estudiantes
       </h2>
 
       <p class="subtitle">
@@ -156,9 +156,15 @@
         </button>
 
       <a
+
         class="forgot-password"
+
+        (click)="abrirRecuperacion()"
+
       >
+
         ¿Olvidaste tu contraseña?
+
       </a>
 
     </div>
@@ -166,3 +172,207 @@
   </div>
 
 </div>
+
+@if (mostrarModalRecuperar) {
+
+<div class="modal-overlay">
+
+    <div class="modal-card">
+
+        <h2>
+
+            Recuperar contraseña
+
+        </h2>
+
+        @if (!correoVerificado) {
+
+            <p>
+
+                Ingrese el correo con el que se registró.
+
+            </p>
+
+            <input
+
+                class="input-control"
+
+                type="email"
+
+                placeholder="Correo"
+
+                [(ngModel)]="correoRecuperacion"
+
+            >
+
+        }
+
+        @else {
+
+        <div class="correo-correcto">
+
+            <i class="bi bi-check-circle-fill"></i>
+
+            <span>
+
+                Bienvenido {{ nombreEstudiante }}
+
+            </span>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+
+                Nueva contraseña
+
+            </label>
+
+            <div class="password-wrapper">
+
+                <input
+
+                    [type]="mostrarNuevaPassword ? 'text' : 'password'"
+
+                    class="input-control password-input"
+
+                    [(ngModel)]="nuevaPassword"
+
+                >
+
+                <button
+
+                    type="button"
+
+                    class="password-toggle"
+
+                    (click)="mostrarNuevaPassword = !mostrarNuevaPassword"
+
+                >
+
+                    <i
+
+                        [class]="
+
+                        mostrarNuevaPassword
+
+                        ? 'bi bi-eye-slash'
+
+                        : 'bi bi-eye'
+
+                        "
+
+                    ></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+
+                Confirmar contraseña
+
+            </label>
+
+            <div class="password-wrapper">
+
+                <input
+
+                    [type]="mostrarConfirmarPassword ? 'text' : 'password'"
+
+                    class="input-control password-input"
+
+                    [(ngModel)]="confirmarPassword"
+
+                >
+
+                <button
+
+                    type="button"
+
+                    class="password-toggle"
+
+                    (click)="mostrarConfirmarPassword = !mostrarConfirmarPassword"
+
+                >
+
+                    <i
+
+                        [class]="
+
+                        mostrarConfirmarPassword
+
+                        ? 'bi bi-eye-slash'
+
+                        : 'bi bi-eye'
+
+                        "
+
+                    ></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        }
+
+        <div class="acciones-modal">
+
+          <button
+
+              class="btn-cancelar"
+
+              (click)="cerrarRecuperacion()"
+
+          >
+
+              Cancelar
+
+          </button>
+
+          @if (!correoVerificado) {
+
+              <button
+
+                  class="btn-guardar"
+
+                  (click)="verificarCorreo()"
+
+              >
+
+                  Verificar
+
+              </button>
+
+          }
+
+          @else {
+
+              <button
+
+                  class="btn-guardar"
+
+                  (click)="guardarNuevaPassword()"
+
+              >
+
+                  Guardar
+
+              </button>
+
+          }
+
+      </div>
+
+    </div>
+
+</div>
+
+}

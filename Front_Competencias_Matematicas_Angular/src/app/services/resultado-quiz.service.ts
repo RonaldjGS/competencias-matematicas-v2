@@ -38,4 +38,23 @@ export class ResultadoQuizService {
 
   }
 
+  
+
+  //private historialUrl =
+  //'http://localhost:8000/estudiantes-profesor';
+
+  //obtenerDetalleIntento(
+
+  //  idResultado:number
+
+  //){
+
+  //  return this.http.get<any[]>(
+
+  //    `${this.historialUrl}/historial/detalle/${idResultado}`
+
+  //  );
+
+  //}
+
 }

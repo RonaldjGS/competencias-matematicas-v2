@@ -128,4 +128,20 @@ obtenerTemasProfesor() {
 
 }
 
+// =====================================
+// PERIODOS POR NIVEL
+// =====================================
+
+obtenerPeriodosPorNivel(
+  idNivel: number
+) {
+
+  return this.http.get<any[]>(
+
+    `${this.apiUrl}/periodos/${idNivel}`
+
+  );
+
+}
+
 }

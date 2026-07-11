@@ -1514,27 +1514,50 @@ def obtener_detalle_historial(
 
         {
 
-            "numero_pregunta":fila.IntentoDetalle.numero_pregunta,
+            "numero_pregunta":
+                fila.IntentoDetalle.numero_pregunta,
 
-            "pregunta":fila.PreguntaCompetencia.pregunta,
+            "pregunta":
+                fila.PreguntaCompetencia.pregunta,
 
-            "opcion_a":fila.PreguntaCompetencia.opcion_a,
+            # =====================================
+            # OPCIONES MOSTRADAS EN EL QUIZ
+            # =====================================
 
-            "opcion_b":fila.PreguntaCompetencia.opcion_b,
+            "opcion_a":
+                fila.IntentoDetalle.opcion_a_quiz,
 
-            "opcion_c":fila.PreguntaCompetencia.opcion_c,
+            "opcion_b":
+                fila.IntentoDetalle.opcion_b_quiz,
 
-            "opcion_d":fila.PreguntaCompetencia.opcion_d,
+            "opcion_c":
+                fila.IntentoDetalle.opcion_c_quiz,
 
-            "respuesta_correcta":fila.PreguntaCompetencia.respuesta_correcta,
+            "opcion_d":
+                fila.IntentoDetalle.opcion_d_quiz,
 
-            "respuesta_estudiante":fila.IntentoDetalle.respuesta_estudiante,
+            # =====================================
+            # RESPUESTA CORRECTA DEL QUIZ
+            # =====================================
 
-            "es_correcta":fila.IntentoDetalle.es_correcta,
+            "respuesta_correcta":
+                fila.IntentoDetalle.respuesta_correcta_quiz,
 
-            "justificacion":fila.PreguntaCompetencia.justificacion,
+            # =====================================
+            # RESPUESTA DEL ESTUDIANTE
+            # =====================================
 
-            "tiempo_respuesta":fila.IntentoDetalle.tiempo_respuesta
+            "respuesta_estudiante":
+                fila.IntentoDetalle.respuesta_estudiante,
+
+            "es_correcta":
+                fila.IntentoDetalle.es_correcta,
+
+            "justificacion":
+                fila.PreguntaCompetencia.justificacion,
+
+            "tiempo_respuesta":
+                fila.IntentoDetalle.tiempo_respuesta
 
         }
 

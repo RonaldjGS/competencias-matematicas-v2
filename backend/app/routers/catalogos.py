@@ -18,7 +18,8 @@ from app.models.catalogos import (
     Carrera,
     Ciudad,
     TipoInstitucion,
-    Provincia
+    Provincia,
+    PeriodoAcademico
 )
 
 from app.models.academico import (
@@ -320,3 +321,37 @@ def listar_evolucion(
 
     )
     
+@router.get("/periodos/{id_nivel}")
+def obtener_periodos_por_nivel(
+    
+    id_nivel: int,
+
+    db: Session = Depends(get_db)
+
+):
+
+    return (
+
+        db.query(
+
+            PeriodoAcademico
+
+        )
+
+        .filter(
+
+            PeriodoAcademico.id_nivel == id_nivel,
+
+            PeriodoAcademico.estado == True
+
+        )
+
+        .order_by(
+
+            PeriodoAcademico.fecha_inicio.desc()
+
+        )
+
+        .all()
+
+    )

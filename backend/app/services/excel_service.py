@@ -42,9 +42,7 @@ def leer_excel_preguntas(
 
         "Dificultad",
 
-        "Justificacion",
-
-        "Tiempo_Estimado"
+        "Justificacion"
     ]
 
     for columna in columnas_requeridas:

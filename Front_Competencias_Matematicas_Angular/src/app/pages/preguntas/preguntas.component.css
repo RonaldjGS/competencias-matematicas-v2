@@ -1,149 +1,126 @@
-.preguntas-container {
+.contenido{
 
-  padding: 30px;
+    margin-top:100px;
 
-  background: #f8f7fc;
+    margin-left:240px;
 
-  min-height: 100vh;
+    min-height:calc(100vh - 100px);
 
-}
+    max-width:1700px;
 
-.preguntas-container h1 {
+    padding:45px;
 
-  font-size: 32px;
+    background:#f8f7fc;
 
-  margin-bottom: 10px;
+    width:calc(100% - 240px);
 
-  color: #2d2d2d;
+    transition:
+        margin-left .30s ease,
+        width .30s ease;
 
-}
+    background:#f8f1ff;
 
-.preguntas-container p {
-
-  color: #666;
-
-  margin-bottom: 25px;
 
 }
 
-.form-group {
+.contenido.menu-cerrado{
 
-  margin-bottom: 20px;
+    margin-left:85px;
 
-}
-
-.form-group label {
-
-  display: block;
-
-  font-weight: 600;
-
-  margin-bottom: 8px;
-
-  color: #333;
+    width:calc(100% - 85px);
 
 }
 
-.input-control {
+/*======================================
+TABS
+======================================*/
 
-  width: 100%;
+.tabs{
 
-  height: 50px;
+    display:flex;
 
-  border: 1px solid #d9d9d9;
+    gap:18px;
 
-  border-radius: 8px;
-
-  padding: 0 15px;
-
-  font-size: 15px;
-
-  background: white;
-
-  outline: none;
+    margin-bottom:45px;
 
 }
 
-.input-control:focus {
+.tab{
 
-  border-color: #8039E1;
+    padding:14px 28px;
 
-}
+    border:none;
 
-input[type="file"] {
+    border-radius:14px;
 
-  width: 100%;
+    background:white;
 
-  padding: 12px;
+    color:#6b7280;
 
-  border: 1px dashed #8039E1;
+    font-size:16px;
 
-  border-radius: 8px;
+    font-weight:600;
 
-  background: white;
+    cursor:pointer;
 
-  cursor: pointer;
+    transition:.25s;
 
-}
-
-.btn-importar {
-
-  width: 100%;
-
-  height: 50px;
-
-  border: none;
-
-  border-radius: 8px;
-
-  background: #8039E1;
-
-  color: white;
-
-  font-size: 17px;
-
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition: .3s;
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
 
 }
 
-.btn-importar:hover {
+.tab:hover{
 
-  background: #6c2dc5;
-
-}
-
-.info-seleccion {
-
-  margin-top: 30px;
-
-  background: white;
-
-  border-radius: 10px;
-
-  padding: 20px;
-
-  border: 1px solid #e5e5e5;
+    transform:translateY(-2px);
 
 }
 
-.info-seleccion p {
+.tab.activo{
 
-  margin: 8px 0;
+    background:linear-gradient(
+        90deg,
+        #6d00d7,
+        #b100ff
+    );
 
-  color: #444;
+    color:white;
+
+}
+
+@media(max-width:900px){
+
+    .tabs{
+
+        flex-direction:column;
+
+    }
+}
+
+.cabecera{
+
+    margin-bottom:45px;
 
 }
 
-hr {
+.cabecera h1{
 
-  margin: 30px 0;
+    margin:0;
 
-  border: none;
+    font-size:48px;
 
-  border-top: 1px solid #ddd;
+    font-weight:700;
+
+    color:#1f2937;
 
 }
+
+.cabecera p{
+
+    margin-top:14px;
+
+    font-size:18px;
+
+    color:#6b7280;
+
+}
+

@@ -1,0 +1,951 @@
+/*======================================
+CONTENEDOR GENERAL
+======================================*/
+
+.contenedor-banco{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+}
+
+/*======================================
+CARDS
+======================================*/
+
+.card{
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:25px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+}
+
+/*======================================
+FILTROS
+======================================*/
+
+.filtros{
+
+    width:100%;
+
+}
+
+/*======================================
+CONTENIDO
+======================================*/
+
+.contenido-banco{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:25px;
+
+    align-items:start;
+
+}
+
+/*======================================
+LISTA
+======================================*/
+
+.lista{
+
+    min-height:600px;
+
+}
+
+/*======================================
+DETALLE
+======================================*/
+
+.detalle{
+
+    position:sticky;
+
+    top:120px;
+
+    height:760px;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+/*======================================
+TÍTULOS
+======================================*/
+
+.card h2{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:24px;
+
+    margin-bottom:20px;
+
+}
+
+.card i{
+
+    color:#8a00ff;
+
+}
+
+/*======================================
+RESPONSIVE
+======================================*/
+
+@media(max-width:1200px){
+
+    .contenido-banco{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+/*======================================
+GRID FILTROS
+======================================*/
+
+.grid-filtros{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:25px;
+
+    margin-top:25px;
+
+}
+
+/*======================================
+CAMPOS
+======================================*/
+
+.campo{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.campo label{
+
+    font-weight:700;
+
+    color:#374151;
+
+}
+
+.campo select{
+
+    height:48px;
+
+    border:1px solid #dddddd;
+
+    border-radius:12px;
+
+    padding:0 15px;
+
+    font-size:15px;
+
+    background:white;
+
+    transition:.25s;
+
+}
+
+.campo select:focus{
+
+    outline:none;
+
+    border-color:#8a00ff;
+
+}
+
+/*======================================
+BOTONES
+======================================*/
+
+.acciones{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:15px;
+
+    margin-top:25px;
+
+}
+
+.btn-buscar{
+
+    width:150px;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-weight:700;
+
+    background:linear-gradient(
+
+        90deg,
+
+        #6d00d7,
+
+        #b100ff
+
+    );
+
+}
+
+.btn-limpiar{
+
+    width:150px;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    background:#ececec;
+
+}
+
+.btn-buscar:hover,
+
+.btn-limpiar:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/*======================================
+RESPONSIVE FILTROS
+======================================*/
+
+@media(max-width:1000px){
+
+    .grid-filtros{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .acciones{
+
+        justify-content:stretch;
+
+        flex-direction:column;
+
+    }
+
+    .btn-buscar,
+
+    .btn-limpiar{
+
+        width:100%;
+
+    }
+
+}
+
+/*======================================
+LISTA
+======================================*/
+
+.lista-preguntas{
+
+    margin-top:30px;
+
+}
+
+/*======================================
+CABECERA
+======================================*/
+
+.cabecera-lista{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.cabecera-lista h2{
+
+    margin:0;
+
+    font-size:24px;
+
+}
+
+.cabecera-lista span{
+
+    color:#6b7280;
+
+    font-weight:600;
+
+}
+
+/*======================================
+SCROLL
+======================================*/
+
+.tabla-scroll{
+
+    max-height:520px;
+
+    overflow-y:auto;
+
+    border:1px solid #ececec;
+
+    border-radius:15px;
+
+}
+
+/*======================================
+TABLA
+======================================*/
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+thead{
+
+    position:sticky;
+
+    top:0;
+
+    background:white;
+
+    z-index:10;
+
+}
+
+th{
+
+    padding:16px;
+
+    text-align:left;
+
+    border-bottom:1px solid #ececec;
+
+    font-size:15px;
+
+}
+
+td{
+
+    padding:15px;
+
+    border-bottom:1px solid #f1f1f1;
+
+    font-size:15px;
+
+}
+
+tbody tr{
+
+    cursor:pointer;
+
+    transition:.20s;
+
+}
+
+tbody tr:hover{
+
+    background:#faf5ff;
+
+}
+
+/*======================================
+PAGINACION
+======================================*/
+
+.paginacion{
+
+    margin-top:25px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.paginacion button{
+
+    width:130px;
+
+    height:44px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    background:#ececec;
+
+    font-weight:600;
+
+}
+
+.paginacion button:hover{
+
+    background:#dddddd;
+
+}
+
+/*======================================
+FILA SELECCIONADA
+======================================*/
+
+.seleccionada{
+
+    background:#f3e8ff !important;
+
+}
+
+/*======================================
+ESTADOS
+======================================*/
+
+.estado{
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.estado.activo{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+}
+
+.estado.inactivo{
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+}
+
+/*======================================
+SIN SELECCIÓN
+======================================*/
+
+.sin-seleccion{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    color:#6b7280;
+
+    height:500px;
+
+}
+
+.sin-seleccion i{
+
+    font-size:70px;
+
+    color:#d8b4fe;
+
+    margin-bottom:20px;
+
+}
+
+/*======================================
+DETALLE
+======================================*/
+
+.detalle-contenido{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+    flex:1;
+
+    overflow-y:auto;
+
+    padding-right:8px;
+
+}
+
+/*======================================
+PREGUNTA
+======================================*/
+
+.detalle-contenido h3{
+
+    font-size:32px;
+
+    line-height:1.45;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+
+    color:#1f2937;
+
+    white-space:normal;
+
+    word-break:break-word;
+
+    overflow-wrap:anywhere;
+
+}
+
+/*======================================
+CHIPS
+======================================*/
+
+.chips{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+}
+
+.chips span{
+
+    background:#f3e8ff;
+
+    color:#6d28d9;
+
+    padding:8px 15px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+/*======================================
+SECCIONES
+======================================*/
+
+.seccion{
+
+    border-top:1px solid #ececec;
+
+    padding-top:18px;
+
+}
+
+.seccion h4{
+
+    margin-bottom:10px;
+
+    color:#374151;
+
+}
+
+/*======================================
+RESPUESTA
+======================================*/
+
+.respuesta{
+
+    display:inline-block;
+
+    background:#dcfce7;
+
+    color:#166534;
+
+    padding:8px 15px;
+
+    border-radius:20px;
+
+    font-weight:700;
+
+}
+
+/*======================================
+BOTONES
+======================================*/
+
+.acciones-detalle{
+
+    display:flex;
+
+    gap:18px;
+
+    margin-top:25px;
+
+}
+
+.btn-editar,
+
+.btn-estado{
+
+    flex:1;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+}
+
+.btn-editar{
+
+    background:#8b5cf6;
+
+    color:white;
+
+}
+
+.btn-estado{
+
+    background:#dc2626;
+
+    color:white;
+
+}
+
+.btn-estado.activo{
+
+    background:#16a34a;
+
+}
+
+button:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+}
+
+/*======================================
+INFORMACIÓN GENERAL
+======================================*/
+
+.informacion-pregunta{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+    margin:25px 0;
+
+}
+
+.dato{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.titulo{
+
+    font-size:13px;
+
+    color:#6b7280;
+
+    font-weight:600;
+
+}
+
+.valor{
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#1f2937;
+
+}
+
+.badge-dificultad{
+
+    display:inline-flex;
+
+    width:max-content;
+
+    padding:8px 16px;
+
+    border-radius:20px;
+
+    background:#f3e8ff;
+
+    color:#7e22ce;
+
+    font-weight:700;
+
+}
+
+textarea{
+
+    width:100%;
+
+    min-height:110px;
+
+    padding:16px;
+
+    border:1px solid #dcdcdc;
+
+    border-radius:12px;
+
+    resize:vertical;
+
+    font-size:17px;
+
+    line-height:1.5;
+
+    font-family:inherit;
+
+}
+
+textarea:focus{
+
+    outline:none;
+
+    border-color:#8a00ff;
+
+    box-shadow:0 0 0 3px rgba(138,0,255,.15);
+
+}
+
+select{
+
+    width:100%;
+
+    height:46px;
+
+    border-radius:12px;
+
+    border:1px solid #dddddd;
+
+    padding:0 15px;
+
+    font-size:15px;
+
+    background:white;
+
+}
+
+select:focus{
+
+    outline:none;
+
+    border-color:#8a00ff;
+
+}
+
+/*======================================
+GRID OPCIONES
+======================================*/
+
+.grid-opciones{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+.campo-opcion{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.campo-opcion label{
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#6b7280;
+
+}
+
+.campo-opcion input{
+
+    width:100%;
+
+    height:46px;
+
+    border:1px solid #dddddd;
+
+    border-radius:12px;
+
+    padding:0 15px;
+
+    font-size:15px;
+
+    transition:.25s;
+
+}
+
+.campo-opcion input:focus{
+
+    outline:none;
+
+    border-color:#8a00ff;
+
+    box-shadow:0 0 0 3px rgba(138,0,255,.15);
+
+}
+
+/*======================================
+BOTONES EDICIÓN
+======================================*/
+
+.btn-guardar,
+.btn-cancelar{
+
+    flex:1;
+
+    height:54px;
+
+    min-width:170px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    transition:.25s;
+
+}
+
+.btn-guardar{
+
+    background:linear-gradient(
+        90deg,
+        #6d00d7,
+        #b100ff
+    );
+
+    color:white;
+
+}
+
+.btn-cancelar{
+
+    background:#ececec;
+
+    color:#374151;
+
+}
+
+.btn-guardar:hover,
+.btn-cancelar:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.titulo-pregunta{
+
+    font-size:30px;
+
+    font-weight:700;
+
+    line-height:1.45;
+
+    color:#1f2937;
+
+    margin-bottom:15px;
+
+    word-break:break-word;
+
+    overflow-wrap:anywhere;
+
+}

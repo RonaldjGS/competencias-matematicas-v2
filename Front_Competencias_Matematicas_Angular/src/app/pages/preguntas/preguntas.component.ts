@@ -1,289 +1,140 @@
 import {
-  Component,
-  OnInit
+    Component,
+    OnInit
 } from '@angular/core';
 
 import {
-  CommonModule
+    CommonModule
 } from '@angular/common';
 
 import {
-  FormsModule
-} from '@angular/forms';
+    TopbarProfesorComponent
+} from '../../components/topbar-profesor/topbar-profesor.component';
 
 import {
-  CatalogosService
-} from '../../services/catalogos.service';
+    SidebarProfesorComponent
+} from '../../components/sidebar-profesor/sidebar-profesor.component';
 
 import {
-  PreguntasService
-} from '../../services/preguntas.service';
+    ImportarPreguntasComponent
+} from './importar-preguntas/importar-preguntas.component';
+
+import {
+
+    BancoPreguntasComponent
+
+} from './banco-preguntas/banco-preguntas.component';
+
+import {
+
+    ConfiguracionQuizComponent
+
+} from './configuracion-quiz/configuracion-quiz.component';
 
 @Component({
-  selector: 'app-preguntas',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule
-  ],
-  templateUrl: './preguntas.component.html',
-  styleUrl: './preguntas.component.css'
+
+    selector:'app-preguntas',
+
+    standalone:true,
+
+    imports:[
+
+        CommonModule,
+
+        TopbarProfesorComponent,
+
+        SidebarProfesorComponent,
+
+        ImportarPreguntasComponent,
+
+        BancoPreguntasComponent,
+        
+        ConfiguracionQuizComponent
+
+    ],
+
+    templateUrl:'./preguntas.component.html',
+
+    styleUrl:'./preguntas.component.css'
+
 })
+
 export class PreguntasComponent
-implements OnInit {
+implements OnInit{
 
-  // ==========================================
-  // COMBOS
-  // ==========================================
+    menuAbierto = false;
 
-  competencias: any[] = [];
+    nombreProfesor = '';
 
-  submodulos: any[] = [];
+    tituloPagina = 'Importar Banco de Preguntas';
 
-  temas: any[] = [];
+    descripcionPagina =
+    'Carga masiva de preguntas desde un archivo Excel.';
 
-  // ==========================================
-  // FILTROS
-  // ==========================================
+    pestanaActual:
+    'importar'|'banco'|'quiz'='importar';
 
-  competenciaSeleccionada:
-  number | null = null;
+    ngOnInit():void{
 
-  submoduloSeleccionado:
-  number | null = null;
+        this.nombreProfesor =
 
-  temaSeleccionado:
-  number | null = null;
+            localStorage.getItem(
 
-  // ==========================================
-  // ARCHIVO
-  // ==========================================
+                'nombre_profesor'
 
-  archivoExcel:
-  File | null = null;
+            ) || 'Profesor';
 
-  constructor(
+    }
 
-    private catalogosService:
-    CatalogosService,
+    toggleMenu():void{
 
-    private preguntasService:
-    PreguntasService
-  ) {}
+        this.menuAbierto =
 
-  // ==========================================
-  // INIT
-  // ==========================================
+            !this.menuAbierto;
+        console.log(this.menuAbierto);
 
-  ngOnInit(): void {
+    }
 
-    this.cargarCompetencias();
+    cambiarPestana(
+        pestana:'importar'|'banco'|'quiz'
+    ){
 
-    this.cargarSubmodulos();
+        this.pestanaActual = pestana;
 
-    this.cargarTemas();
+        switch(pestana){
 
-  }
+            case 'importar':
 
-  // ==========================================
-  // COMPETENCIAS
-  // ==========================================
+                this.tituloPagina =
+                    'Importar Banco de Preguntas';
 
-  cargarCompetencias(): void {
+                this.descripcionPagina =
+                    'Carga masiva de preguntas desde un archivo Excel.';
 
-    this.catalogosService
-      .obtenerCompetencias()
-      .subscribe({
+            break;
 
-        next: (data: any) => {
+            case 'banco':
 
-          this.competencias = data;
+                this.tituloPagina =
+                    'Banco de Preguntas';
 
-        },
+                this.descripcionPagina =
+                    'Visualiza, edita y administra las preguntas registradas.';
 
-        error: (error: any) => {
+            break;
 
-          console.error(
-            'Error cargando competencias',
-            error
-          );
+            case 'quiz':
+
+                this.tituloPagina =
+                    'Configuración del Quiz';
+
+                this.descripcionPagina =
+                    'Administra la configuración general de los cuestionarios.';
+
+            break;
 
         }
 
-      });
-
-  }
-
-  // ==========================================
-  // SUBMODULOS
-  // ==========================================
-
-  cargarSubmodulos(): void {
-
-    this.catalogosService
-      .obtenerSubmodulos()
-      .subscribe({
-
-        next: (data: any) => {
-
-          this.submodulos = data;
-
-        },
-
-        error: (error: any) => {
-
-          console.error(
-            'Error cargando submódulos',
-            error
-          );
-
-        }
-
-      });
-
-  }
-
-  // ==========================================
-  // TEMAS
-  // ==========================================
-
-  cargarTemas(): void {
-
-    const idNivel = Number(
-
-      localStorage.getItem(
-        'id_nivel'
-      )
-
-    );
-
-    this.catalogosService
-      .obtenerTemasPorNivel(
-        idNivel
-      )
-      .subscribe({
-
-        next: (data: any) => {
-
-          this.temas = data;
-
-        },
-
-        error: (error: any) => {
-
-          console.error(
-            'Error cargando temas',
-            error
-          );
-
-        }
-
-      });
-
-  }
-
-  // ==========================================
-  // ARCHIVO EXCEL
-  // ==========================================
-
-  onFileSelected(
-    event: any
-  ): void {
-
-    if (
-
-        event.target.files &&
-        event.target.files.length > 0
-
-    ) {
-
-        const archivo =
-            event.target.files[0];
-
-        this.archivoExcel =
-            archivo;
-
-        console.log(
-            'Archivo seleccionado:',
-            archivo.name
-        );
-
-    }   
-
-  }
-
-  // ==========================================
-  // IMPORTAR
-  // ==========================================
-
-  importarPreguntas(): void {
-
-  if (
-
-    !this.competenciaSeleccionada ||
-
-    !this.submoduloSeleccionado ||
-
-    !this.temaSeleccionado ||
-
-    !this.archivoExcel
-
-  ) {
-
-    alert(
-      'Debe completar todos los campos'
-    );
-
-    return;
-
-  }
-
-  const formData =
-    new FormData();
-
-  formData.append(
-
-    'archivo',
-
-    this.archivoExcel
-
-  );
-
-  this.preguntasService
-    .importarExcel(
-
-      formData,
-
-      this.competenciaSeleccionada,
-
-      this.submoduloSeleccionado,
-
-      this.temaSeleccionado
-
-    )
-    .subscribe({
-
-      next: (resp: any) => {
-
-        console.log(resp);
-
-        alert(
-
-          `Importadas: ${resp.preguntas_importadas}
-           Rechazadas: ${resp.preguntas_rechazadas}`
-
-        );
-
-      },
-
-      error: (error: any) => {
-
-        console.error(error);
-
-      }
-
-    });
-
-  }
+    }
 
 }

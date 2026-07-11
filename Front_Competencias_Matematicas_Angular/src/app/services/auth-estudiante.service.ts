@@ -40,4 +40,56 @@ export class AuthEstudianteService {
 
  }
 
+ // =====================================
+// VERIFICAR CORREO
+// =====================================
+
+verificarCorreo(
+
+    correo_estudiante: string
+
+){
+
+    return this.http.post(
+
+        `${this.apiUrl}/verificar-correo`,
+
+        {
+
+            correo_estudiante
+
+        }
+
+    );
+
+}
+
+// =====================================
+// CAMBIAR CONTRASEÑA
+// =====================================
+
+resetPassword(
+
+    correo_estudiante: string,
+
+    new_password: string
+
+){
+
+    return this.http.put(
+
+        `${this.apiUrl}/reset-password`,
+
+        {
+
+            correo_estudiante,
+
+            new_password
+
+        }
+
+    );
+
+}
+
 }

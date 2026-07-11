@@ -104,7 +104,21 @@ implements OnInit, OnDestroy {
 
   intentosRestantes = 3;
 
+  maxIntentos = 3;
+
+  intentosVisuales:number[] = [];
+
   idIntento = 0;
+
+  // =====================================
+  // CONFIGURACIÓN DEL QUIZ
+  // =====================================
+
+  mostrarResultado = true;
+
+  mezclarPreguntas = true;
+
+  mezclarOpciones = true;
 
   // =====================================
   // RESPUESTA
@@ -335,23 +349,24 @@ implements OnInit, OnDestroy {
 
           if (resp.correcta) {
 
-            this.actualizarEstadoPregunta(
-              'correcta'
-            );
-            
-            this.preguntaRespondida = true;
+              this.actualizarEstadoPregunta(
+                  'correcta'
+              );
 
-            this.mostrarExplicacion = true;
+              this.preguntaRespondida = true;
 
-            this.respuestaCorrecta =
-              resp.respuesta_correcta;
+              this.mostrarExplicacion =
+                  this.mostrarResultado;
 
-            this.justificacion =
-              resp.justificacion;
+              this.respuestaCorrecta =
+                  resp.respuesta_correcta;
 
-            this.refrescarVista();
+              this.justificacion =
+                  resp.justificacion;
 
-            return;
+              this.refrescarVista();
+
+              return;
 
           }
 
@@ -374,15 +389,16 @@ implements OnInit, OnDestroy {
           // ==========================
 
           this.actualizarEstadoPregunta(
-            'incorrecta'
+              'incorrecta'
           );
-          
+
           this.preguntaRespondida = true;
 
-          this.mostrarExplicacion = true;
+          this.mostrarExplicacion =
+              this.mostrarResultado;
 
           this.respuestaCorrecta =
-            resp.respuesta_correcta;
+              resp.respuesta_correcta;
 
           this.respuestasIncorrectas.push(
             this.respuestaSeleccionada
@@ -725,7 +741,8 @@ implements OnInit, OnDestroy {
 
             this.preguntaRespondida = true;
 
-            this.mostrarExplicacion = true;
+            this.mostrarExplicacion =
+              this.mostrarResultado;
 
             this.respuestaCorrecta =
               resp.respuesta_correcta;
@@ -789,7 +806,8 @@ implements OnInit, OnDestroy {
           
           this.preguntaRespondida = true;
 
-          this.mostrarExplicacion = true;
+          this.mostrarExplicacion =
+            this.mostrarResultado;
 
           this.respuestaCorrecta =
               resp.respuesta_correcta;
@@ -824,21 +842,18 @@ implements OnInit, OnDestroy {
     const datos = {
 
       id_competencia:
-        config.idCompetencia,
+          config.idCompetencia,
 
       id_submodulo:
-        config.idSubmodulo,
+          config.idSubmodulo,
 
       id_tema:
-        config.idTema,
+          config.idTema,
 
       dificultad:
-        config.dificultad,
+          config.dificultad
 
-      cantidad_preguntas:
-        10
-
-    };
+  };
 
     console.log(
       'CONFIG COMPLETA'
@@ -884,6 +899,33 @@ implements OnInit, OnDestroy {
 
 
           this.iniciarTemporizador();
+
+          this.maxIntentos =
+              response.max_intentos;
+
+          this.intentosRestantes =
+              response.max_intentos;
+          
+          this.intentosVisuales = Array.from(
+
+              {
+
+                  length:this.maxIntentos
+
+              },
+
+              (_,i)=>i+1
+
+          );
+
+          this.mostrarResultado =
+              response.mostrar_resultado;
+
+          this.mezclarPreguntas =
+              response.mezclar_preguntas;
+
+          this.mezclarOpciones =
+              response.mezclar_opciones;
 
           this.estadoPreguntas =
             this.preguntas.map(() => 'sin_responder');
@@ -1146,8 +1188,10 @@ implements OnInit, OnDestroy {
   finalizarPorTiempo(): void {
 
       alert(
-          'Se terminó el tiempo.'
-      );  
+          'Se terminó el tiempo. El Quiz será finalizado automáticamente.'
+      );
+
+      this.finalizarQuiz();
 
   }
 

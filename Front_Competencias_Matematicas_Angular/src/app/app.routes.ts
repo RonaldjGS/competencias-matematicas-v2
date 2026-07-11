@@ -84,6 +84,14 @@ import {
   VideoProfesorComponent
 } from './pages/profesor/video-profesor/video-profesor.component';
 
+import {
+  HistorialEstudianteComponent
+} from './pages/estudiante/historial-estudiante/historial-estudiante.component';
+
+import {
+  ImportarPreguntasComponent
+} from './pages/preguntas/importar-preguntas/importar-preguntas.component';
+
 export const routes: Routes = [
 
   {
@@ -190,6 +198,16 @@ export const routes: Routes = [
   {
     path: 'dashboard-admin',
     component: DashboardAdminComponent
-  }
+  },
+
+  {
+    path: 'historial-estudiante',
+    component: HistorialEstudianteComponent
+  },
+
+  {
+    path: 'importar-pregunta',
+    component: ImportarPreguntasComponent
+  },
 
 ];

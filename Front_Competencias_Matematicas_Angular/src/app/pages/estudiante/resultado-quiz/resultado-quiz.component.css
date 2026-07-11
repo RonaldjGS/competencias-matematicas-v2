@@ -632,3 +632,581 @@ ESTADÍSTICAS
     color:#6d28d9;
 
 }
+
+/*=========================================
+REVISIÓN DEL INTENTO
+=========================================*/
+
+.contenedor-historial{
+
+    margin:35px 0;
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    padding:30px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.titulo-historial{
+
+    margin-bottom:25px;
+
+}
+
+.titulo-historial h2{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    color:#5d00c8;
+
+    margin-bottom:8px;
+
+}
+
+.titulo-historial p{
+
+    color:#666;
+
+    margin:0;
+
+}
+
+/*=========================================
+CARD DEL INTENTO
+=========================================*/
+
+.card-intento{
+
+    border:1px solid #ead7ff;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+/*=========================================
+CABECERA DEL INTENTO
+=========================================*/
+
+.cabecera-intento{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:22px 28px;
+
+    background:#f6ebff;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.cabecera-intento:hover{
+
+    background:#efe2ff;
+
+}
+
+.info-intento h3{
+
+    margin:0;
+
+    color:#2d2d2d;
+
+}
+
+.info-intento span{
+
+    color:#666;
+
+}
+
+.resumen-intento{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:35px;
+
+}
+
+.dato{
+
+    text-align:center;
+
+}
+
+.dato strong{
+
+    display:block;
+
+    color:#5d00c8;
+
+    font-size:18px;
+
+}
+
+.dato small{
+
+    color:#666;
+
+}
+
+.resumen-intento i{
+
+    font-size:24px;
+
+    color:#5d00c8;
+
+}
+
+/*=========================================
+DETALLE
+=========================================*/
+
+.detalle-intento{
+
+    padding:30px;
+
+    background:#faf7ff;
+
+}
+
+/*=========================================
+PREGUNTA
+=========================================*/
+
+.pregunta-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    margin-bottom:30px;
+
+    box-shadow:0 5px 18px rgba(0,0,0,.06);
+
+}
+
+.pregunta-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.pregunta-header h3{
+
+    margin:0;
+
+    color:#5d00c8;
+
+}
+
+.tiempo{
+
+    background:#efe2ff;
+
+    color:#6d00d7;
+
+    padding:7px 16px;
+
+    border-radius:30px;
+
+    font-weight:700;
+
+    font-size:14px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.texto-pregunta{
+
+    margin-bottom:25px;
+
+    color:#222;
+
+    line-height:1.6;
+
+}
+
+/*=========================================
+OPCIONES
+=========================================*/
+
+.opcion{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    border:2px solid #ececec;
+
+    border-radius:15px;
+
+    padding:18px 22px;
+
+    margin-bottom:15px;
+
+    transition:.25s;
+
+}
+
+.opcion-texto{
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+}
+
+.opcion strong{
+
+    color:#7c3aed;
+
+    font-size:20px;
+
+}
+
+.opcion.correcta{
+
+    background:#dcfce7;
+
+    border-color:#22c55e;
+
+}
+
+.opcion.incorrecta{
+
+    background:#fee2e2;
+
+    border-color:#ef4444;
+
+}
+
+/*=========================================
+BADGES
+=========================================*/
+
+.badges{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+}
+
+.badge-correcta{
+
+    background:#ecfdf5;
+
+    color:#15803d;
+
+    padding:7px 14px;
+
+    border-radius:25px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+.badge-estudiante{
+
+    background:#efe2ff;
+
+    color:#6d28d9;
+
+    padding:7px 14px;
+
+    border-radius:25px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+/*=========================================
+RESULTADO
+=========================================*/
+
+.resultado{
+
+    margin-top:25px;
+
+    border-radius:15px;
+
+    padding:15px 20px;
+
+    font-weight:700;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.resultado.correcto{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+}
+
+.resultado.incorrecto{
+
+    background:#fee2e2;
+
+    color:#b91c1c;
+
+}
+
+/*=========================================
+JUSTIFICACIÓN
+=========================================*/
+
+.justificacion{
+
+    margin-top:20px;
+
+    padding:22px;
+
+    border-left:6px solid #f59e0b;
+
+    background:#fffbeb;
+
+    border-radius:12px;
+
+}
+
+.justificacion h5{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:10px;
+
+    color:#92400e;
+
+}
+
+.justificacion p{
+
+    margin:0;
+
+    line-height:1.7;
+
+    color:#555;
+
+}
+
+/*======================================
+BOTÓN MOSTRAR MENOS
+======================================*/
+
+.cerrar-historial{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-top:35px;
+
+    padding-bottom:10px;
+
+}
+
+.btn-mostrar-menos{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    border:none;
+
+    background:#f3e8ff;
+
+    color:#7c3aed;
+
+    padding:14px 24px;
+
+    border-radius:30px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:0 4px 10px rgba(124,58,237,.15);
+
+}
+
+.btn-mostrar-menos i{
+
+    font-size:18px;
+
+}
+
+.btn-mostrar-menos:hover{
+
+    background:#7c3aed;
+
+    color:white;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 22px rgba(124,58,237,.25);
+
+}
+
+.pregunta-resumen{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px 24px;
+
+    cursor:pointer;
+
+}
+
+.lado-derecho{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.pregunta-card{
+
+    animation:desplegar .25s ease;
+
+}
+
+@keyframes desplegar{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-8px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/*=========================================
+RESPONSIVE
+=========================================*/
+
+@media(max-width:900px){
+
+    .cabecera-intento{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+    .resumen-intento{
+
+        width:100%;
+
+        justify-content:space-between;
+
+    }
+
+    .opcion{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .badges{
+
+        width:100%;
+
+    }
+
+}

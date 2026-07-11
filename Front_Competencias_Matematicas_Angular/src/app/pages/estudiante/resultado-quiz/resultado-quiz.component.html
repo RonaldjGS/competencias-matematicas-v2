@@ -201,7 +201,7 @@
 
             <h2>
 
-                {{ tiempoSegundos }} s
+                {{ formatearTiempo(tiempoSegundos) }}
 
             </h2>
 
@@ -246,6 +246,441 @@
         </div>
 
     </div>
+
+    <!-- ===================================== -->
+    <!-- REVISIÓN DEL INTENTO -->
+    <!-- ===================================== -->
+
+    <section
+    class="contenedor-historial"
+    *ngIf="detalleIntento.length>0">
+
+        <div class="titulo-historial">
+
+            <div>
+
+                <h2>
+
+                    <i class="bi bi-journal-check"></i>
+
+                    Revisión del intento
+
+                </h2>
+
+                <p>
+
+                    Revise cada pregunta, la respuesta seleccionada y la explicación correspondiente.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- CARD DEL INTENTO -->
+
+        <div class="card-intento">
+
+            <div
+                class="cabecera-intento"
+                (click)="toggleHistorialActual()">
+
+                <!-- Información -->
+
+                <div class="info-intento">
+
+                    <h3>
+
+                        {{ resultado.competencia }}
+
+                    </h3>
+
+                    <span>
+
+                        {{ resultado.submodulo }}
+
+                        •
+
+                        {{ resultado.tema }}
+
+                    </span>
+
+                </div>
+
+                <!-- Resumen -->
+
+                <div class="resumen-intento">
+
+                    <div class="dato">
+
+                        <strong>
+
+                            {{ porcentaje }}%
+
+                        </strong>
+
+                        <small>
+
+                            Precisión
+
+                        </small>
+
+                    </div>
+
+                    <div class="dato">
+
+                        <strong>
+
+                            {{ nivelDesempeno }}
+
+                        </strong>
+
+                        <small>
+
+                            Nivel
+
+                        </small>
+
+                    </div>
+
+                    <div class="dato">
+
+                        <strong>
+
+                            {{ tiempoSegundos }} s
+
+                        </strong>
+
+                        <small>
+
+                            Tiempo
+
+                        </small>
+
+                    </div>
+
+                    <i
+
+                        class="bi"
+
+                        [ngClass]="
+                        historialAbierto
+                        ?
+                        'bi-chevron-up'
+                        :
+                        'bi-chevron-down'
+                        ">
+
+                    </i>
+
+                </div>
+
+            </div>
+
+            <!-- AQUÍ IRÁN LAS PREGUNTAS -->
+
+            <div
+            class="detalle-intento"
+            *ngIf="historialAbierto">
+
+                <div
+                class="pregunta-card"
+                *ngFor="let pregunta of detalleIntento">
+
+                    <!-- Cabecera -->
+
+                    <div
+
+                        class="pregunta-resumen"
+
+                        (click)="togglePregunta(
+
+                            pregunta.numero_pregunta
+
+                        )"
+
+                    >
+
+                        <div class="lado-izquierdo">
+
+                            <h4>
+
+                                Pregunta
+
+                                {{ pregunta.numero_pregunta }}
+
+                            </h4>
+
+                        </div>
+
+                        <div class="lado-derecho">
+
+                            <span
+
+                                class="estado"
+
+                                [class.correcta]="
+
+                                    pregunta.es_correcta
+
+                                "
+
+                                [class.incorrecta]="
+
+                                    !pregunta.es_correcta
+
+                                "
+
+                            >
+
+                                <i
+
+                                    class="bi"
+
+                                    [ngClass]="
+
+                                    pregunta.es_correcta
+
+                                    ?
+
+                                    'bi-check-circle-fill'
+
+                                    :
+
+                                    'bi-x-circle-fill'
+
+                                    "
+
+                                ></i>
+
+                                {{
+
+                                    pregunta.es_correcta
+
+                                    ?
+
+                                    'Correcta'
+
+                                    :
+
+                                    'Incorrecta'
+
+                                }}
+
+                            </span>
+
+                            <span class="tiempo">
+
+                                {{ formatearTiempo(pregunta.tiempo_respuesta) }}
+
+                            </span>
+
+                            <i
+
+                                class="bi"
+
+                                [ngClass]="
+
+                                preguntaAbierta===pregunta.numero_pregunta
+
+                                ?
+
+                                'bi-chevron-up'
+
+                                :
+
+                                'bi-chevron-down'
+
+                                "
+
+                            ></i>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Pregunta -->
+
+                    <div
+
+                        class="pregunta-card"
+
+                        *ngIf="
+
+                            preguntaAbierta===
+
+                            pregunta.numero_pregunta
+
+                        "
+
+                    >
+
+                        <h4 class="texto-pregunta">
+
+                            {{ pregunta.pregunta }}
+
+                        </h4>
+
+                        <div
+
+                            class="opcion"
+
+                            *ngFor="let opcion of pregunta.opciones"
+
+                            [ngClass]="{
+
+                                correcta:
+                                    pregunta.respuesta_correcta == opcion.letra,
+
+                                incorrecta:
+                                    pregunta.respuesta_estudiante == opcion.letra
+                                    &&
+                                    !pregunta.es_correcta
+
+                            }"
+
+                        >
+
+                            <div class="opcion-texto">
+
+                                <strong>
+
+                                    {{ opcion.letra }}.
+
+                                </strong>
+
+                                {{ opcion.texto }}
+
+                            </div>
+
+                            <div class="badges">
+
+                                <span
+
+                                    class="badge-correcta"
+
+                                    *ngIf="
+
+                                        pregunta.respuesta_correcta == opcion.letra
+
+                                    "
+
+                                >
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                    Correcta
+
+                                </span>
+
+                                <span
+
+                                    class="badge-estudiante"
+
+                                    *ngIf="
+
+                                        pregunta.respuesta_estudiante == opcion.letra
+
+                                    "
+
+                                >
+
+                                    <i class="bi bi-person-fill"></i>
+
+                                    Tu respuesta
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Resultado -->
+
+                        <div
+
+                            class="resultado"
+
+                            [ngClass]="{
+
+                                correcto: pregunta.es_correcta,
+
+                                incorrecto: !pregunta.es_correcta
+
+                            }">
+
+                            <i
+
+                                class="bi"
+
+                                [ngClass]="
+
+                                pregunta.es_correcta
+
+                                ?
+
+                                'bi-check-circle-fill'
+
+                                :
+
+                                'bi-x-circle-fill'
+
+                                ">
+
+                            </i>
+
+                            {{ pregunta.es_correcta ? 'Respuesta correcta' : 'Respuesta incorrecta' }}
+
+                        </div>
+
+                        <!-- Justificación -->
+
+                        <div
+
+                            class="justificacion"
+
+                            *ngIf="!pregunta.es_correcta">
+
+                            <h5>
+
+                                <i class="bi bi-lightbulb-fill"></i>
+
+                                ¿Por qué?
+
+                            </h5>
+
+                            <p>
+
+                                {{ pregunta.justificacion }}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="cerrar-historial">
+
+                    <button
+                        class="btn-mostrar-menos"
+                        (click)="toggleHistorialActual()">
+
+                        <i class="bi bi-chevron-up"></i>
+
+                        Mostrar menos
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
 
     <!-- ===================================== -->
     <!-- GRÁFICO Y ACCIONES -->

@@ -10,43 +10,39 @@ from typing import List
 # Preguntas
 # ==========================================
 
+class OpcionQuizOut(BaseModel):
+
+    letra:str
+
+    texto:str
+    
+
 class PreguntaQuizOut(BaseModel):
 
     id_pregunta: int
 
     pregunta: str
 
-    opcion_a: str
-
-    opcion_b: str
-
-    opcion_c: str
-
-    opcion_d: str
+    opciones: list[OpcionQuizOut]
 
     dificultad: str
 
-    model_config = ConfigDict(
-        from_attributes=True
-    )
 
+    
+    
 # ==========================================
 # Generar Quiz
 # ==========================================
 
-class GenerarQuizRequest(
-    BaseModel
-):
+class GenerarQuizRequest(BaseModel):
 
-    id_competencia: int
+    id_competencia:int
 
-    id_submodulo: int
+    id_submodulo:int
 
-    id_tema: int
-    
-    dificultad: str
+    id_tema:int
 
-    cantidad_preguntas: int = 10
+    dificultad:str
 
 # ==========================================
 # Respuestas Estudainte
@@ -170,6 +166,8 @@ class ConsultarIntentosRequest(
 
     id_tema: int
     
+    dificultad:str
+    
 # ==========================================
 # Submodulo Disponible
 # ==========================================
@@ -239,8 +237,16 @@ class QuizGeneradoOut(BaseModel):
     id_intento: int
 
     preguntas: list[PreguntaQuizOut]
-    
+
     tiempo_segundos: int
+
+    max_intentos: int
+
+    mostrar_resultado: bool
+
+    mezclar_preguntas: bool
+
+    mezclar_opciones: bool
 
 # ==========================================
 # REINTENTAR PREGUNTA
@@ -307,14 +313,28 @@ class FinalizarQuizRequest(BaseModel):
 class FinalizarQuizOut(BaseModel):
 
     id_resultado: int
+
+# ==========================================
+# OPCIÓN DEL RESULTADO
+# ==========================================
+
+class OpcionResultadoOut(BaseModel):
+
+    letra: str
+
+    texto: str
     
 # ==========================================
-# DETALLE RESULTADO
+# DETALLE DEL RESULTADO
 # ==========================================
 
 class ResultadoDetalleOut(BaseModel):
 
     numero_pregunta: int
+
+    pregunta: str
+
+    opciones: list[OpcionResultadoOut]
 
     respuesta_estudiante: str
 
@@ -324,11 +344,7 @@ class ResultadoDetalleOut(BaseModel):
 
     tiempo_respuesta: int
 
-    model_config = {
-
-        "from_attributes": True
-
-    }
+    justificacion: str
 
 
 # ==========================================

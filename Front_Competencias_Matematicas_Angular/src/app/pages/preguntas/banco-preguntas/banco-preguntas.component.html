@@ -1,0 +1,923 @@
+<section class="contenedor-banco">
+
+    <!--==========================
+    FILTROS
+    ===========================-->
+
+    <div class="card filtros">
+
+        <h2>
+
+            <i class="bi bi-funnel-fill"></i>
+
+            Filtrar preguntas
+
+        </h2>
+
+        <div class="grid-filtros">
+
+            <div class="campo">
+
+                <label>
+
+                    Competencia
+
+                </label>
+
+                <select
+
+                    [(ngModel)]="competenciaSeleccionada"
+
+                >
+
+                    <option
+
+                        [ngValue]="null"
+
+                    >
+
+                        Todas las competencias
+
+                    </option>
+
+                    @for(
+
+                        competencia of competencias;
+
+                        track competencia.id_competencia
+
+                    ){
+
+                        <option
+
+                            [ngValue]="
+
+                                competencia.id_competencia
+
+                            "
+
+                        >
+
+                            {{ competencia.nombre_competencia }}
+
+                        </option>
+
+                    }
+
+                </select>
+
+            </div>
+
+            <div class="campo">
+
+                <label>
+
+                    Submódulo
+
+                </label>
+
+                <select
+
+                    [(ngModel)]="submoduloSeleccionado"
+
+                >
+
+                    <option
+
+                        [ngValue]="null"
+
+                    >
+
+                        Todos los submódulos
+
+                    </option>
+
+                    @for(
+
+                        submodulo of submodulos;
+
+                        track submodulo.id_submodulo
+
+                    ){
+
+                        <option
+
+                            [ngValue]="
+
+                                submodulo.id_submodulo
+
+                            "
+
+                        >
+
+                            {{ submodulo.nombre_submodulo }}
+
+                        </option>
+
+                    }
+
+                </select>
+
+            </div>
+
+            <div class="campo">
+
+                <label>
+
+                    Tema
+
+                </label>
+
+                <select
+
+                    [(ngModel)]="temaSeleccionado"
+
+                >
+
+                    <option
+
+                        [ngValue]="null"
+
+                    >
+
+                        Todos los temas
+
+                    </option>
+
+                    @for(
+
+                        tema of temas;
+
+                        track tema.id_tema
+
+                    ){
+
+                        <option
+
+                            [ngValue]="
+
+                                tema.id_tema
+
+                            "
+
+                        >
+
+                            {{ tema.nombre_tema }}
+
+                        </option>
+
+                    }
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="acciones">
+
+            <button
+
+                class="btn-buscar"
+
+                (click)="buscar()"
+
+            >
+
+                Buscar
+
+            </button>
+
+            <button
+
+                class="btn-limpiar"
+
+                (click)="limpiarFiltros()"
+
+            >
+
+                Limpiar
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!--==========================
+    CONTENIDO
+    ===========================-->
+
+    <div class="contenido-banco">
+
+        <!--==================================
+        LISTA DE PREGUNTAS
+        ===================================-->
+
+        <div class="card lista-preguntas">
+
+            <div class="cabecera-lista">
+
+                <h2>
+
+                    Banco de preguntas
+
+                </h2>
+
+                <span>
+
+                    {{ preguntas.length }}
+
+                    preguntas
+
+                </span>
+
+            </div>
+
+            <div class="tabla-scroll">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Pregunta</th>
+
+                            <th>Dificultad</th>
+
+                            <th>Tema</th>
+
+                            <th>Estado</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @for(
+
+                            pregunta of preguntasPaginadas;
+
+                            track pregunta.id_pregunta
+
+                        ){
+
+                            <tr
+
+                                (click)="
+
+                                    seleccionarPregunta(
+
+                                        pregunta
+
+                                    )
+
+                                "
+
+                                [class.seleccionada]="
+                                    preguntaSeleccionada?.id_pregunta ===
+                                    pregunta.id_pregunta
+                                "
+
+                            >
+
+                                <td>
+
+                                    {{ pregunta.id_pregunta }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ pregunta.pregunta }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ pregunta.dificultad }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ pregunta.tema }}
+
+                                </td>
+
+                                <td>
+
+                                    @if(pregunta.estado){
+
+                                        <span class="estado activo">
+
+                                            Activa
+
+                                        </span>
+
+                                    }@else{
+
+                                        <span class="estado inactivo">
+
+                                            Inactiva
+
+                                        </span>
+
+                                    }
+
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="paginacion">
+
+                <button
+
+                    (click)="paginaAnterior()"
+
+                    [disabled]="
+
+                        paginaActual===1
+
+                    "
+
+                >
+
+                    Anterior
+
+                </button>
+
+                <span>
+
+                    Página {{ paginaActual }}
+
+                    de
+
+                    {{ totalPaginas }}
+
+                </span>
+
+                <button
+
+                    (click)="paginaSiguiente()"
+
+                    [disabled]="
+
+                        paginaActual===totalPaginas
+
+                    "
+
+                >
+
+                    Siguiente
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!--======================
+        DETALLE
+        =======================-->
+
+        <div class="card detalle">
+
+            <h2>
+
+                <i class="bi bi-file-earmark-text"></i>
+
+                Detalle de la pregunta
+
+            </h2>
+
+            @if(!preguntaSeleccionada){
+
+                <div class="sin-seleccion">
+
+                    <i class="bi bi-journal-text"></i>
+
+                    <h3>
+
+                        Ninguna pregunta seleccionada
+
+                    </h3>
+
+                    <p>
+
+                        Seleccione una pregunta del listado para visualizar su información.
+
+                    </p>
+
+                </div>
+
+            }@else{
+
+                <div class="detalle-contenido">
+
+                    @if(!modoEdicion){
+
+                        <div class="titulo-pregunta">
+
+                            {{ preguntaSeleccionada.pregunta }}
+
+                        </div>
+
+                    }@else{
+
+                        <textarea
+
+                            rows="4"
+
+                            [(ngModel)]="preguntaEditando.pregunta"
+
+                        >
+
+                        </textarea>
+
+                    }
+
+                    <!-- Chips -->
+
+                    @if(!modoEdicion){
+
+                        <div class="informacion-pregunta">
+
+                            <div class="dato">
+
+                                <span class="titulo">Competencia</span>
+
+                                <span class="valor">
+                                    {{ preguntaSeleccionada.nombre_competencia }}
+                                </span>
+
+                            </div>
+
+                            <div class="dato">
+
+                                <span class="titulo">Submódulo</span>
+
+                                <span class="valor">
+                                    {{ preguntaSeleccionada.nombre_submodulo }}
+                                </span>
+
+                            </div>
+
+                            <div class="dato">
+
+                                <span class="titulo">Tema</span>
+
+                                <span class="valor">
+                                    {{ preguntaSeleccionada.nombre_tema }}
+                                </span>
+
+                            </div>
+
+                            <div class="dato">
+
+                                <span class="titulo">Dificultad</span>
+
+                                <span class="badge-dificultad">
+                                    {{ preguntaSeleccionada.dificultad }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    }@else{
+
+                        <div class="grid-edicion">
+
+                            <div class="campo">
+
+                                <label>
+
+                                    Competencia
+
+                                </label>
+
+                                <select
+
+                                    [(ngModel)]="preguntaEditando.id_competencia"
+
+                                >
+
+                                    @for(
+
+                                        competencia of competencias;
+
+                                        track competencia.id_competencia
+
+                                    ){
+
+                                        <option
+
+                                            [ngValue]="
+
+                                                competencia.id_competencia
+
+                                            "
+
+                                        >
+
+                                            {{ competencia.nombre_competencia }}
+
+                                        </option>
+
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            <div class="campo">
+
+                                <label>
+
+                                    Submódulo
+
+                                </label>
+
+                                <select
+
+                                    [(ngModel)]="preguntaEditando.id_submodulo"
+
+                                >
+
+                                    @for(
+
+                                        submodulo of submodulos;
+
+                                        track submodulo.id_submodulo
+
+                                    ){
+
+                                        <option
+
+                                            [ngValue]="
+
+                                                submodulo.id_submodulo
+
+                                            "
+
+                                        >
+
+                                            {{ submodulo.nombre_submodulo }}
+
+                                        </option>
+
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            <div class="campo">
+
+                                <label>
+
+                                    Tema
+
+                                </label>
+
+                                <select
+
+                                    [(ngModel)]="preguntaEditando.id_tema"
+
+                                >
+
+                                    @for(
+
+                                        tema of temas;
+
+                                        track tema.id_tema
+
+                                    ){
+
+                                        <option
+
+                                            [ngValue]="
+
+                                                tema.id_tema
+
+                                            "
+
+                                        >
+
+                                            {{ tema.nombre_tema }}
+
+                                        </option>
+
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            <div class="campo">
+
+                                <label>
+
+                                    Dificultad
+
+                                </label>
+
+                                <select
+
+                                    [(ngModel)]="preguntaEditando.dificultad"
+
+                                >
+
+                                    <option value="Basico">
+
+                                        Básico
+
+                                    </option>
+
+                                    <option value="Intermedio">
+
+                                        Intermedio
+
+                                    </option>
+
+                                    <option value="Avanzado">
+
+                                        Avanzado
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                    <div class="seccion">
+
+                        <h4>Opciones</h4>
+
+                        @if(!modoEdicion){
+
+                            <p>A) {{ preguntaSeleccionada.opcion_a }}</p>
+                            <p>B) {{ preguntaSeleccionada.opcion_b }}</p>
+                            <p>C) {{ preguntaSeleccionada.opcion_c }}</p>
+                            <p>D) {{ preguntaSeleccionada.opcion_d }}</p>
+
+                        }@else{
+
+                            <div class="grid-opciones">
+
+                                <div class="campo-opcion">
+
+                                    <label>Opción A</label>
+
+                                    <input
+                                        type="text"
+                                        [(ngModel)]="preguntaEditando.opcion_a">
+
+                                </div>
+
+                                <div class="campo-opcion">
+
+                                    <label>Opción B</label>
+
+                                    <input
+                                        type="text"
+                                        [(ngModel)]="preguntaEditando.opcion_b">
+
+                                </div>
+
+                                <div class="campo-opcion">
+
+                                    <label>Opción C</label>
+
+                                    <input
+                                        type="text"
+                                        [(ngModel)]="preguntaEditando.opcion_c">
+
+                                </div>
+
+                                <div class="campo-opcion">
+
+                                    <label>Opción D</label>
+
+                                    <input
+                                        type="text"
+                                        [(ngModel)]="preguntaEditando.opcion_d">
+
+                                </div>
+
+                            </div>
+
+                        }
+
+                    </div>
+
+                    <div class="seccion">
+
+                        <h4>
+
+                            Respuesta correcta
+
+                        </h4>
+
+                        @if(!modoEdicion){
+
+                            <span class="respuesta">
+
+                                {{ preguntaSeleccionada.respuesta_correcta }}
+
+                            </span>
+
+                        }@else{
+
+                            <select
+
+                                [(ngModel)]="preguntaEditando.respuesta_correcta"
+
+                            >
+
+                                <option value="A">
+
+                                    A
+
+                                </option>
+
+                                <option value="B">
+
+                                    B
+
+                                </option>
+
+                                <option value="C">
+
+                                    C
+
+                                </option>
+
+                                <option value="D">
+
+                                    D
+
+                                </option>
+
+                            </select>
+
+                        }
+
+                    </div>
+
+                    <div class="seccion">
+
+                        <h4>
+
+                            Justificación
+
+                        </h4>
+
+                        @if(!modoEdicion){
+
+                            <p>
+
+                                {{ preguntaSeleccionada.justificacion }}
+
+                            </p>
+
+                        }@else{
+
+                            <textarea
+
+                                rows="5"
+
+                                [(ngModel)]="preguntaEditando.justificacion"
+
+                            >
+
+                            </textarea>
+
+                        }
+
+                    </div>
+
+                    <div class="seccion">
+
+                        <h4>
+
+                            Estado
+
+                        </h4>
+
+                        <span
+
+                            class="estado"
+
+                            [class.activo]="preguntaSeleccionada.estado"
+
+                            [class.inactivo]="!preguntaSeleccionada.estado"
+
+                        >
+
+                            {{ preguntaSeleccionada.estado ? 'Activa' : 'Inactiva' }}
+
+                        </span>
+
+                    </div>
+
+                    <div class="acciones-detalle">
+
+                        @if(!modoEdicion){
+
+                            <button
+
+                                class="btn-editar"
+
+                                (click)="editarPregunta()"
+
+                            >
+
+                                <i class="bi bi-pencil"></i>
+
+                                Editar
+
+                            </button>
+
+                            <button
+
+                                 class="btn-estado"
+
+                                [class.activo]="
+
+                                    !preguntaSeleccionada?.estado
+
+                                "
+
+                                (click)="cambiarEstado()"
+
+                            >
+
+                                @if(
+
+                                    preguntaSeleccionada?.estado
+
+                                ){
+
+                                    Desactivar
+
+                                }@else{
+
+                                    Activar
+
+                                }
+
+                            </button>
+
+                        }@else{
+
+                            <div class="acciones-detalle">
+
+                                <button
+                                    class="btn-guardar"
+                                    (click)="guardarCambios()">
+
+                                    Guardar
+
+                                </button>
+
+                                <button
+                                    class="btn-cancelar"
+                                    (click)="cancelarEdicion()">
+
+                                    Cancelar
+
+                                </button>
+
+                            </div>
+
+                        }
+
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</section>

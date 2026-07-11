@@ -194,6 +194,7 @@ def register_profesor(
         "Profesor registrado correctamente"
     }
 
+
 @router.post(
     "/login",
     response_model=TokenResponse
@@ -262,6 +263,8 @@ def login_profesor(
             profesor.id_nivel
         }
     }
+    
+
     
 @router.put("/change-password")
 def change_password(

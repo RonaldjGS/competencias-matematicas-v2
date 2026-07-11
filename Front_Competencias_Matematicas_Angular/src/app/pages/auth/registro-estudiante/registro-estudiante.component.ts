@@ -1,6 +1,7 @@
 import {
   Component,
-  OnInit
+  OnInit,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import Swal from 'sweetalert2';
@@ -68,6 +69,8 @@ implements OnInit {
 
   ciudades: any[] = [];
 
+  periodos: any[] = [];
+
   // ==========================================
   // IDS SELECCIONADOS
   // ==========================================
@@ -86,6 +89,8 @@ implements OnInit {
   idCiudad:
   number | null = null;
 
+  idPeriodo: number | null = null;
+
   // ==========================================
   // UI
   // ==========================================
@@ -96,10 +101,14 @@ implements OnInit {
 
   mostrarPassword = false;
 
+  mostrarPeriodo = false;
+
   constructor(
 
     private catalogosService:
     CatalogosService,
+
+    private cdr:ChangeDetectorRef,
 
     private authService:
     AuthEstudianteService,
@@ -138,6 +147,7 @@ implements OnInit {
         next: (data: any) => {
 
           this.niveles = data;
+          this.refrescarVista();
 
         },
 
@@ -167,6 +177,7 @@ implements OnInit {
         next: (data: any) => {
 
           this.carreras = data;
+          this.refrescarVista();
 
         },
 
@@ -196,6 +207,7 @@ implements OnInit {
         next: (data: any) => {
 
           this.tiposInstitucion = data;
+          this.refrescarVista();
 
         },
 
@@ -225,6 +237,7 @@ implements OnInit {
         next: (data: any) => {
 
           this.provincias = data;
+          this.refrescarVista();
 
         },
 
@@ -240,6 +253,8 @@ implements OnInit {
       });
 
   }
+
+  
 
   // ==========================================
   // CIUDADES POR PROVINCIA
@@ -266,6 +281,7 @@ implements OnInit {
         next: (data: any) => {
 
           this.ciudades = data;
+          this.refrescarVista();
 
         },
 
@@ -279,6 +295,8 @@ implements OnInit {
         }
 
       });
+
+      
 
   }
 
@@ -296,6 +314,18 @@ implements OnInit {
 
     this.idCarrera = null;
 
+    this.idPeriodo = null;
+
+    this.periodos = [];
+
+    this.idProvincia = null;
+
+    this.idCiudad = null;
+
+    this.ciudades = [];
+
+    this.mostrarPeriodo = false;
+
     if (
       this.nivelSeleccionado === 1
     ) {
@@ -312,6 +342,8 @@ implements OnInit {
       this.mostrarCarrera = true;
 
     }
+
+    this.cargarPeriodosPorNivel();
 
   }
 
@@ -362,6 +394,22 @@ implements OnInit {
 
       text:
         'Debe completar toda la información requerida.'
+
+    });
+
+    return;
+
+  }
+
+  if (!this.idPeriodo) {
+
+    Swal.fire({
+
+    icon:'warning',
+
+    title:'Campo requerido',
+
+    text:'Debe seleccionar un período académico.'
 
     });
 
@@ -438,6 +486,9 @@ implements OnInit {
     id_nivel:
       this.nivelSeleccionado,
 
+    id_periodo:
+      this.idPeriodo,
+
     id_tipo_institucion:
       this.idTipoInstitucion,
 
@@ -492,6 +543,7 @@ implements OnInit {
           timer: 2500
 
         });
+        this.refrescarVista();
 
       },
 
@@ -519,34 +571,89 @@ implements OnInit {
 
   }
 
-private limpiarFormulario(): void {
+  private limpiarFormulario(): void {
 
-  this.nombreEstudiante = '';
+    this.nombreEstudiante = '';
 
-  this.institucionEducativa = '';
+    this.institucionEducativa = '';
 
-  this.correo = '';
+    this.correo = '';
 
-  this.password = '';
+    this.password = '';
 
-  this.nivelSeleccionado = 0;
+    this.nivelSeleccionado = 0;
 
-  this.idTipoInstitucion = null;
+    this.idTipoInstitucion = null;
 
-  this.idCarrera = null;
+    this.idCarrera = null;
 
-  this.idProvincia = null;
+    this.idProvincia = null;
 
-  this.idCiudad = null;
+    this.idCiudad = null;
 
-  this.ciudades = [];
+    this.ciudades = [];
 
-  this.mostrarInstitucion = false;
+    this.mostrarInstitucion = false;
 
-  this.mostrarCarrera = false;
+    this.mostrarCarrera = false;
 
-  this.mostrarPassword = false;
+    this.mostrarPassword = false;
 
-}
+    this.idPeriodo = null;
+
+    this.periodos = [];
+
+    this.mostrarPeriodo = false;
+
+  }
+
+  // ==========================================
+  // PERIODOS POR NIVEL
+  // ==========================================
+
+  cargarPeriodosPorNivel(): void {
+
+    console.log("Nivel seleccionado:", this.nivelSeleccionado);
+
+    if (!this.nivelSeleccionado) {
+
+      this.periodos = [];
+      this.idPeriodo = null;
+      this.mostrarPeriodo = false;
+      return;
+
+    }
+
+    this.catalogosService
+      .obtenerPeriodosPorNivel(this.nivelSeleccionado)
+      .subscribe({
+
+        next: (data:any) => {
+
+          console.log("PERIODOS");
+          console.log(data);
+
+          this.periodos = data;
+          this.mostrarPeriodo = true;
+          this.refrescarVista();
+
+        },
+
+        error: (error) => {
+
+          console.error(error);
+
+        }
+
+      });
+
+  }
+
+  private refrescarVista():void{
+
+    this.cdr.detectChanges();
+
+  }
+
 }
 

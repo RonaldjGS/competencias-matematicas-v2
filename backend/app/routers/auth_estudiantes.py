@@ -16,6 +16,7 @@ from app.models.usuarios import (
 from app.models.catalogos import (
     Rol,
     NivelEducativo,
+    PeriodoAcademico,
     Carrera,
     TipoInstitucion,
     Ciudad
@@ -25,7 +26,10 @@ from app.schemas.estudiantes import (
     EstudianteCreate,
     EstudianteLogin,
     TokenResponse,
-    ChangePasswordRequest
+    ChangePasswordRequest,
+    VerificarCorreoRequest,
+    VerificarCorreoResponse,
+    ResetPasswordRequest
 )
 
 from app.core.auth import (
@@ -76,6 +80,56 @@ def register_estudiante(
         raise HTTPException(
             status_code=400,
             detail="Nivel educativo no válido"
+        )
+        
+    periodo = (
+
+        db.query(
+
+            PeriodoAcademico
+
+        )
+
+        .filter(
+
+            PeriodoAcademico.id_periodo ==
+
+            data.id_periodo
+
+        )
+
+        .first()
+
+    )
+
+    if not periodo:
+
+        raise HTTPException(
+
+            status_code=400,
+
+            detail="Periodo académico no válido"
+
+        )
+
+    if not periodo.estado:
+
+        raise HTTPException(
+
+            status_code=400,
+
+            detail="El período académico se encuentra inactivo"
+
+        )
+
+    if periodo.id_nivel != data.id_nivel:
+
+        raise HTTPException(
+
+            status_code=400,
+
+            detail="El período no pertenece al nivel educativo seleccionado"
+
         )
 
     ciudad = (
@@ -146,18 +200,31 @@ def register_estudiante(
         )
 
     nuevo_estudiante = Estudiante(
+
         nombre_estudiante=data.nombre_estudiante,
+
         institucion_edu=data.institucion_edu,
+
         id_nivel=data.id_nivel,
+
+        id_periodo=data.id_periodo,
+
         id_tipo_institucion=data.id_tipo_institucion,
+
         id_carrera=data.id_carrera,
+
         id_ciudad=data.id_ciudad,
+
         correo_estudiante=data.correo_estudiante,
+
         password_hash=hash_password(
             data.password
         ),
+
         id_rol=rol_estudiante.id_rol,
+
         estado=True
+
     )
 
     db.add(
@@ -247,6 +314,128 @@ def login_estudiante(
             estudiante.nivel.nombre_nivel
 
         }
+    }
+    
+# ==========================================
+# VERIFICAR CORREO
+# ==========================================
+
+@router.post(
+
+    "/verificar-correo",
+
+    response_model=VerificarCorreoResponse
+
+)
+def verificar_correo(
+
+    data: VerificarCorreoRequest,
+
+    db: Session = Depends(get_db)
+
+):
+
+    estudiante = (
+
+        db.query(
+
+            Estudiante
+
+        )
+
+        .filter(
+
+            Estudiante.correo_estudiante ==
+
+            data.correo_estudiante
+
+        )
+
+        .first()
+
+    )
+
+    if not estudiante:
+
+        return VerificarCorreoResponse(
+
+            existe=False,
+
+            nombre_estudiante=None
+
+        )
+
+    return VerificarCorreoResponse(
+
+        existe=True,
+
+        nombre_estudiante=
+
+            estudiante.nombre_estudiante
+
+    )
+    
+# ==========================================
+# RESTABLECER CONTRASEÑA
+# ==========================================
+
+@router.put(
+
+    "/reset-password"
+
+)
+def reset_password(
+
+    data: ResetPasswordRequest,
+
+    db: Session = Depends(get_db)
+
+):
+
+    estudiante = (
+
+        db.query(
+
+            Estudiante
+
+        )
+
+        .filter(
+
+            Estudiante.correo_estudiante ==
+
+            data.correo_estudiante
+
+        )
+
+        .first()
+
+    )
+
+    if not estudiante:
+
+        raise HTTPException(
+
+            status_code=404,
+
+            detail="El correo no se encuentra registrado"
+
+        )
+
+    estudiante.password_hash = hash_password(
+
+        data.new_password
+
+    )
+
+    db.commit()
+
+    return {
+
+        "message":
+
+        "Contraseña actualizada correctamente"
+
     }
     
 @router.put("/change-password")

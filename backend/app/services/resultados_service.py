@@ -1305,29 +1305,101 @@ def obtener_resumen_quiz(
 
         )
 
-        detalle_respuestas.append({
+            # ==========================================
+            # DETALLE PARA EL FRONT
+            # ==========================================
 
-            "numero_pregunta":
+        detalle_respuestas = []
 
-                detalle.numero_pregunta,
+        for detalle in detalles:
 
-            "respuesta_estudiante":
+            pregunta = (
 
-                detalle.respuesta_estudiante,
+                db.query(
 
-            "respuesta_correcta":
+                    PreguntaCompetencia
 
-                pregunta.respuesta_correcta,
+                )
 
-            "es_correcta":
+                .filter(
 
-                detalle.es_correcta,
+                    PreguntaCompetencia.id_pregunta ==
 
-            "tiempo_respuesta":
+                    detalle.id_pregunta
 
-                detalle.tiempo_respuesta
+                )
 
-        })
+                .first()
+
+            )
+
+            detalle_respuestas.append({
+
+                "numero_pregunta":
+
+                    detalle.numero_pregunta,
+
+                "pregunta":
+
+                    pregunta.pregunta,
+
+                "opciones":[
+
+                    {
+
+                        "letra":"A",
+
+                        "texto":detalle.opcion_a_quiz
+
+                    },
+
+                    {
+
+                        "letra":"B",
+
+                        "texto":detalle.opcion_b_quiz
+
+                    },
+
+                    {
+
+                        "letra":"C",
+
+                        "texto":detalle.opcion_c_quiz
+
+                    },
+
+                    {
+
+                        "letra":"D",
+
+                        "texto":detalle.opcion_d_quiz
+
+                    }
+
+                ],
+
+                "respuesta_estudiante":
+
+                    detalle.respuesta_estudiante,
+
+                "respuesta_correcta":
+
+                    detalle.respuesta_correcta_quiz,
+
+                "es_correcta":
+
+                    detalle.es_correcta,
+
+                "tiempo_respuesta":
+
+                    detalle.tiempo_respuesta,
+
+                "justificacion":
+
+                    pregunta.justificacion
+
+            })
         
     # ==========================================
     # BUSCAR INTENTO ANTERIOR

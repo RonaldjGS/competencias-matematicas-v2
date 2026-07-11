@@ -47,6 +47,8 @@ from app.routers.dashboard_profesor import router as dashboardProfesorRouter
 
 from app.routers.estudiantes_profesor import router as estudiantes_profesor
 
+from app.routers.configuracion_quiz import router as configuracion_quiz
+
 app = FastAPI()
 
 app.add_middleware(
@@ -123,4 +125,8 @@ app.include_router(
 
 app.include_router(
     admin_router
+)
+
+app.include_router(
+    configuracion_quiz
 )

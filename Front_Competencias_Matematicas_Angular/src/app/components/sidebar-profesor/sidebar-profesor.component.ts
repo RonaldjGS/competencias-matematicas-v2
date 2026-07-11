@@ -63,6 +63,7 @@ export class SidebarProfesorComponent{
             this.menuAbierto
 
         );
+        console.log(this.menuAbierto);
 
     }
 

@@ -1,0 +1,784 @@
+<div class="dashboard-container">
+
+    <!-- ===================================== -->
+    <!-- TOPBAR -->
+    <!-- ===================================== -->
+
+    <app-topbar-estudiante
+
+        [nombreEstudiante]="nombreEstudiante">
+
+    </app-topbar-estudiante>
+
+    <!-- ===================================== -->
+    <!-- SIDEBAR -->
+    <!-- ===================================== -->
+
+    <app-sidebar-estudiante
+
+        [(menuAbierto)]="menuAbierto">
+
+    </app-sidebar-estudiante>
+
+    <!-- ===================================== -->
+    <!-- CONTENIDO -->
+    <!-- ===================================== -->
+
+    <main
+
+        class="contenido"
+
+        [class.menu-cerrado]="!menuAbierto">
+
+        <!-- CABECERA -->
+
+        <div class="cabecera">
+
+            <h1>
+
+                Historial de evaluaciones
+
+            </h1>
+
+            <p>
+
+                Consulta todas las evaluaciones realizadas y revisa el detalle de cada una.
+
+            </p>
+
+        </div>
+
+        <!-- ===================================== -->
+        <!-- RESUMEN DEL HISTORIAL -->
+        <!-- ===================================== -->
+
+        <section class="estadisticas">
+
+            <div class="card-estadistica">
+
+                <div class="icono">
+
+                    <i class="bi bi-journal-check"></i>
+
+                </div>
+
+                <div>
+
+                    <span>Total de evaluaciones</span>
+
+                    <h2>{{ totalEvaluaciones }}</h2>
+
+                </div>
+
+            </div>
+
+            <div class="card-estadistica">
+
+                <div class="icono">
+
+                    <i class="bi bi-trophy-fill"></i>
+
+                </div>
+
+                <div>
+
+                    <span>Mejor puntaje</span>
+
+                    <h2>{{ mejorPuntaje }}%</h2>
+
+                </div>
+
+            </div>
+
+            <div class="card-estadistica">
+
+                <div class="icono">
+
+                    <i class="bi bi-stopwatch-fill"></i>
+
+                </div>
+
+                <div>
+
+                    <span>Tiempo promedio</span>
+
+                    <h2>{{ tiempoPromedio }}</h2>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- FILTROS -->
+        <!-- ===================================== -->
+
+        <section class="contenedor-filtros">
+
+            <div class="titulo-filtros">
+
+                <i class="bi bi-funnel-fill"></i>
+
+                <div>
+
+                    <h3>Filtrar historial</h3>
+
+                    <span>
+                        Encuentra rápidamente una evaluación específica.
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="filtros">
+
+                <!-- Competencia -->
+
+                <div class="grupo-filtro">
+
+                    <select
+
+                        [(ngModel)]="competenciaSeleccionada"
+
+                        (change)="filtrarCompetencia()"
+
+                    >
+
+                        <option value="">
+
+                            Todas
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let competencia of competencias"
+
+                            [value]="competencia"
+
+                        >
+
+                            {{ competencia }}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- Submódulo -->
+
+                <div class="grupo-filtro">
+
+                    <select
+
+                        [(ngModel)]="submoduloSeleccionado"
+
+                        (change)="filtrarSubmodulo()"
+
+                    >
+
+                        <option value="">
+
+                            Todos
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let sub of submodulos"
+
+                            [value]="sub"
+
+                        >
+
+                            {{ sub }}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- Tema -->
+
+                <div class="grupo-filtro">
+
+                    <select
+
+                        [(ngModel)]="temaSeleccionado"
+
+                        (change)="aplicarFiltros()"
+
+                    >
+
+                        <option value="">
+
+                            Todos
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let tema of temas"
+
+                            [value]="tema"
+
+                        >
+
+                            {{ tema }}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- Botón -->
+
+                <div class="acciones-filtro">
+
+                    <button
+                        class="btn-limpiar"
+                        (click)="limpiarFiltros()"
+                        >
+
+                        <i class="bi bi-arrow-clockwise"></i>
+
+                        Limpiar filtros
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- SIN HISTORIAL -->
+
+        <div
+
+            class="sin-historial"
+
+            *ngIf="!cargando && historialEvaluaciones.length==0">
+
+            <i class="bi bi-clock-history"></i>
+
+            <h2>
+
+                Aún no tienes evaluaciones registradas
+
+            </h2>
+
+            <p>
+
+                Cuando completes un quiz aparecerá aquí.
+
+            </p>
+
+        </div>
+
+        <!-- ===================================== -->
+        <!-- HISTORIAL -->
+        <!-- ===================================== -->
+
+        <section
+            *ngIf="historialEvaluaciones.length>0"
+            class="contenedor-historial">
+
+            <!-- CABECERA -->
+
+            <div class="cabecera-historial">
+
+                <div>
+
+                    <h2>
+
+                        <i class="bi bi-clock-history"></i>
+
+                        Historial de evaluaciones
+
+                    </h2>
+
+                    <p>
+
+                        Revisa todas las evaluaciones realizadas y consulta el detalle de cada intento.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- CONTENEDOR CON SCROLL -->
+
+            <div class="historial-scroll">
+
+                <div
+
+                    class="historial-card"
+
+                    *ngFor="let intento of historialPaginado">
+
+                    <!-- CABECERA DEL INTENTO -->
+
+                    <div
+
+                        class="historial-resumen"
+
+                        (click)="verDetalle(intento)">
+
+                        <div>
+
+                            <h2>
+
+                                {{ intento.competencia }}
+
+                            </h2>
+
+                            <span>
+
+                                {{ intento.submodulo }}
+
+                                •
+
+                                {{ intento.tema }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="datos-intento">
+
+                            <span class="badge-porcentaje">
+
+                                {{ intento.porcentaje }}%
+
+                            </span>
+
+                            <span class="badge-nivel">
+
+                                {{ intento.nivel_desempeno }}
+
+                            </span>
+
+                            <span class="fecha">
+
+                                {{ intento.fecha | date:'dd/MM/yyyy' }}
+
+                            </span>
+
+                            <i
+
+                                class="bi"
+
+                                [ngClass]="
+
+                                    evaluacionSeleccionada===intento.id_resultado
+
+                                    ? 'bi-chevron-up'
+
+                                    : 'bi-chevron-down'
+
+                                ">
+
+                            </i>
+
+                        </div>
+
+                    </div>
+
+                    <!-- DETALLE -->
+
+                    <div
+
+                        class="detalle-intento"
+
+                        *ngIf="evaluacionSeleccionada===intento.id_resultado">
+
+                        <div
+
+                            class="pregunta-card"
+
+                            *ngFor="let pregunta of detalleHistorial">
+
+                            <!-- CABECERA PREGUNTA -->
+
+                            <div
+
+                                class="pregunta-resumen"
+
+                                (click)="togglePregunta(pregunta.numero_pregunta)">
+
+                                <div>
+
+                                    <h4>
+
+                                        Pregunta
+
+                                        {{ pregunta.numero_pregunta }}
+
+                                    </h4>
+
+                                </div>
+
+                                <div class="lado-derecho">
+
+                                    <span
+
+                                        class="estado"
+
+                                        [class.correcta]="pregunta.es_correcta"
+
+                                        [class.incorrecta]="!pregunta.es_correcta">
+
+                                        <i
+
+                                            class="bi"
+
+                                            [ngClass]="
+
+                                                pregunta.es_correcta
+
+                                                ? 'bi-check-circle-fill'
+
+                                                : 'bi-x-circle-fill'
+
+                                            ">
+
+                                        </i>
+
+                                        {{
+
+                                            pregunta.es_correcta
+
+                                            ? 'Correcta'
+
+                                            : 'Incorrecta'
+
+                                        }}
+
+                                    </span>
+
+                                    <span class="tiempo">
+
+                                        {{ formatearTiempo(pregunta.tiempo_respuesta) }}
+
+                                    </span>
+
+                                    <i
+
+                                        class="bi"
+
+                                        [ngClass]="
+
+                                            preguntaAbierta===pregunta.numero_pregunta
+
+                                            ? 'bi-chevron-up'
+
+                                            : 'bi-chevron-down'
+
+                                        ">
+
+                                    </i>
+
+                                </div>
+
+                            </div>
+
+                            <!-- DETALLE PREGUNTA -->
+
+                            <div
+
+                                class="detalle-pregunta"
+
+                                *ngIf="
+
+                                    preguntaAbierta===
+
+                                    pregunta.numero_pregunta
+
+                                ">
+
+                                <h3 class="texto-pregunta">
+
+                                    {{ pregunta.pregunta }}
+
+                                </h3>
+
+                                <!-- OPCIÓN A -->
+
+                                <div
+
+                                    class="opcion"
+
+                                    [ngClass]="{
+
+                                        correcta: pregunta.respuesta_correcta=='A',
+
+                                        incorrecta: pregunta.respuesta_estudiante=='A' && !pregunta.es_correcta
+
+                                    }">
+
+                                    <strong>A.</strong>
+
+                                    {{ pregunta.opcion_a }}
+
+                                </div>
+
+                                <!-- OPCIÓN B -->
+
+                                <div
+
+                                    class="opcion"
+
+                                    [ngClass]="{
+
+                                        correcta: pregunta.respuesta_correcta=='B',
+
+                                        incorrecta: pregunta.respuesta_estudiante=='B' && !pregunta.es_correcta
+
+                                    }">
+
+                                    <strong>B.</strong>
+
+                                    {{ pregunta.opcion_b }}
+
+                                </div>
+
+                                <!-- OPCIÓN C -->
+
+                                <div
+
+                                    class="opcion"
+
+                                    [ngClass]="{
+
+                                        correcta: pregunta.respuesta_correcta=='C',
+
+                                        incorrecta: pregunta.respuesta_estudiante=='C' && !pregunta.es_correcta
+
+                                    }">
+
+                                    <strong>C.</strong>
+
+                                    {{ pregunta.opcion_c }}
+
+                                </div>
+
+                                <!-- OPCIÓN D -->
+
+                                <div
+
+                                    class="opcion"
+
+                                    [ngClass]="{
+
+                                        correcta: pregunta.respuesta_correcta=='D',
+
+                                        incorrecta: pregunta.respuesta_estudiante=='D' && !pregunta.es_correcta
+
+                                    }">
+
+                                    <strong>D.</strong>
+
+                                    {{ pregunta.opcion_d }}
+
+                                </div>
+
+                                <!-- RESULTADO -->
+
+                                <div
+
+                                    class="resultado"
+
+                                    [class.correcto]="pregunta.es_correcta"
+
+                                    [class.incorrecto]="!pregunta.es_correcta">
+
+                                    <i
+
+                                        class="bi"
+
+                                        [ngClass]="
+
+                                            pregunta.es_correcta
+
+                                            ? 'bi-check-circle-fill'
+
+                                            : 'bi-x-circle-fill'
+
+                                        ">
+
+                                    </i>
+
+                                    {{
+
+                                        pregunta.es_correcta
+
+                                        ? 'Respuesta correcta'
+
+                                        : 'Respuesta incorrecta'
+
+                                    }}
+
+                                </div>
+
+                                <!-- JUSTIFICACIÓN -->
+
+                                <div
+
+                                    class="justificacion"
+
+                                    *ngIf="!pregunta.es_correcta">
+
+                                    <h4>
+
+                                        <i class="bi bi-lightbulb-fill"></i>
+
+                                        Justificación
+
+                                    </h4>
+
+                                    <p>
+
+                                        {{ pregunta.justificacion }}
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- MOSTRAR MENOS -->
+
+                        <div class="cerrar-historial">
+
+                            <button
+
+                                class="btn-mostrar-menos"
+
+                                (click)="cerrarDetalle()">
+
+                                <i class="bi bi-chevron-up"></i>
+
+                                Mostrar menos
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ===================================== -->
+            <!-- PAGINACIÓN -->
+            <!-- ===================================== -->
+
+            <div
+
+                class="paginacion"
+
+                *ngIf="totalPaginas > 1"
+
+            >
+
+                <button
+
+                    (click)="paginaAnterior()"
+
+                    [disabled]="paginaActual===1"
+
+                >
+
+                    <i class="bi bi-chevron-left"></i>
+
+                </button>
+
+                <button
+
+                    *ngFor="let pagina of paginas"
+
+                    (click)="irPagina(pagina)"
+
+                    [class.activa]="pagina===paginaActual"
+
+                >
+
+                    {{ pagina }}
+
+                </button>
+
+                <button
+
+                    (click)="paginaSiguiente()"
+
+                    [disabled]="paginaActual===totalPaginas"
+
+                >
+
+                    <i class="bi bi-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+            <div class="info-registros">
+
+                Mostrando
+
+                {{
+
+                    (paginaActual-1)
+
+                    *
+
+                    elementosPorPagina
+
+                    +
+
+                    1
+
+                }}
+
+                -
+
+                {{
+
+                    historialPaginado.length
+
+                    +
+
+                    (
+
+                        paginaActual-1
+
+                    )
+
+                    *
+
+                    elementosPorPagina
+
+                }}
+
+                de
+
+                {{ historialEvaluaciones.length }}
+
+                evaluaciones
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>

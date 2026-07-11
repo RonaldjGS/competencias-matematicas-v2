@@ -87,7 +87,14 @@ class Estudiante(Base):
         ForeignKey("niveles_educativos.id_nivel"),
         nullable=False
     )
+    
+    id_periodo = Column(
+        Integer,
+        ForeignKey("periodos_academicos.id_periodo"),
+        nullable=False
+    )
 
+    
     id_tipo_institucion = Column(
         Integer,
         ForeignKey("tipos_institucion.id_tipo"),
@@ -146,6 +153,7 @@ class Estudiante(Base):
         onupdate=func.now()
     )
     
+    
     nivel = relationship(
         "NivelEducativo"
     )
@@ -157,6 +165,11 @@ class Estudiante(Base):
         back_populates="estudiante"
 
     )
+    
+    periodo = relationship(
+        "PeriodoAcademico"
+    )
+
 
 # ==========================================
 # profesor
