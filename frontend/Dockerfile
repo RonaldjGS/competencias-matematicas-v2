@@ -11,5 +11,3 @@ COPY . .
 ENV NODE_ENV=development
 
 EXPOSE 1030
-
-CMD ["npx","ng","serve","--host","0.0.0.0","--port","1030","--configuration","docker","--allowed-hosts"] 

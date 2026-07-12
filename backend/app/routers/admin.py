@@ -12,7 +12,8 @@ from app.database.database import get_db
 from app.services.admin_service import (
     obtener_resumen_dashboard,
     obtener_usuarios,
-    obtener_detalle_usuario
+    obtener_detalle_usuario,
+    actualizar_usuario_admin
 )
 
 from app.schemas.admin import (

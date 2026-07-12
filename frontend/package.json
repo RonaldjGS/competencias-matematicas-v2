@@ -4,10 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:docker": "ng serve --configuration docker --host 0.0.0.0 --port 1030",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:Front_Competencias_Matematicas_Angular": "node dist/Front_Competencias_Matematicas_Angular/server/server.mjs"
+    "test": "ng test"
   },
   "private": true,
   "packageManager": "npm@11.12.1",

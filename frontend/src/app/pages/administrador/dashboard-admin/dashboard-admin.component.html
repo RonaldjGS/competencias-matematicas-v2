@@ -617,7 +617,7 @@
 
                                 </div>
 
-                                @if(detalleUsuario.nivel){
+                                @if(detalleUsuario.tipo_usuario !== 'Administrador'){
 
                                     <div class="item">
 
@@ -644,6 +644,10 @@
                                             class="input-detalle"
 
                                             [(ngModel)]="usuarioEdicion.id_nivel"
+
+                                            (change)="cambioNivelEdicion()"
+
+                                            
 
                                         >
 
@@ -675,7 +679,7 @@
 
                                 }
 
-                                @if(detalleUsuario.tipo_institucion){
+                                @if(mostrarTipoInstitucion()){
 
                                     <div class="item">
 
@@ -733,7 +737,7 @@
 
                                 }
 
-                                @if(detalleUsuario.carrera){
+                                @if(mostrarCarrera()){
 
                                     <div class="item">
 
@@ -791,7 +795,7 @@
 
                                 }
 
-                                @if(detalleUsuario.periodo){
+                                @if(mostrarPeriodo()){
 
                                 <div class="item">
 
@@ -889,7 +893,11 @@
 
                             </div>
 
-                            <div class="acciones">
+                        </div>
+
+                        }
+
+                        <div class="acciones">
 
                                 <button
 
@@ -922,10 +930,6 @@
                                 </button>
 
                             </div>
-
-                        </div>
-
-                        }
 
                 </section>
 

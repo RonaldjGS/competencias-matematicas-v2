@@ -451,7 +451,10 @@ def obtener_detalle_usuario(
 
             profesor.carrera.nombre_carrera
 
-            if profesor.carrera
+            if (
+                profesor.id_nivel != 1 and
+                profesor.carrera
+            )
 
             else None,
 
@@ -459,11 +462,16 @@ def obtener_detalle_usuario(
 
             profesor.id_tipo_institucion,
 
+            # Solo Bachillerato
+
             "tipo_institucion":
 
             profesor.tipo_institucion.nombre_tipo
 
-            if profesor.tipo_institucion
+            if (
+                profesor.id_nivel == 1 and
+                profesor.tipo_institucion
+            )
 
             else None,
 

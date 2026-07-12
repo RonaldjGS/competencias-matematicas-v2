@@ -769,4 +769,112 @@ export class DashboardAdminComponent implements OnInit {
 
     }
 
+    // =====================================
+    // ES BACHILLERATO
+    // =====================================
+
+    esBachillerato(): boolean {
+
+        const idNivel = this.modoEdicion
+            ? this.usuarioEdicion.id_nivel
+            : this.detalleUsuario?.id_nivel;
+
+        return idNivel === 1;
+
+    }
+
+    // =====================================
+    // ES UNIVERSIDAD
+    // =====================================
+
+    esUniversidad(): boolean {
+
+        return !this.esBachillerato();
+
+    }
+
+    // =====================================
+    // MOSTRAR TIPO DE INSTITUCIÓN
+    // =====================================
+
+    mostrarTipoInstitucion(): boolean {
+
+        return this.esBachillerato();
+
+    }
+
+    // =====================================
+    // MOSTRAR CARRERA
+    // =====================================
+
+    mostrarCarrera(): boolean {
+
+        return this.esUniversidad();
+
+    }
+
+    // =====================================
+    // MOSTRAR PERIODO
+    // =====================================
+
+    mostrarPeriodo(): boolean {
+
+        const tipo = this.detalleUsuario?.tipo_usuario;
+
+        return (
+
+            tipo === 'Estudiante'
+
+            &&
+
+            this.esUniversidad()
+
+        );
+
+    }
+
+    // =====================================
+    // CAMBIO DE NIVEL EN EDICIÓN
+    // =====================================
+
+    cambioNivelEdicion(): void {
+
+        if (
+
+            this.esBachillerato()
+
+        ){
+
+            this.usuarioEdicion.id_carrera = null;
+
+            this.usuarioEdicion.id_periodo = null;
+
+        }
+
+        else{
+
+            this.usuarioEdicion.id_tipo_institucion = null;
+
+            this.catalogosService
+
+                .obtenerPeriodosPorNivel(
+
+                    this.usuarioEdicion.id_nivel
+
+                )
+
+                .subscribe({
+
+                    next:(respuesta:any)=>{
+
+                        this.periodos = respuesta;
+
+                    }
+
+                });
+
+        }
+
+    }
+
 }
