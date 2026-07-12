@@ -332,6 +332,8 @@ def obtener_rendimiento_competencias(
 
         .group_by(
 
+            Competencia.id_competencia,
+
             Competencia.nombre_competencia
 
         )
@@ -347,23 +349,11 @@ def obtener_rendimiento_competencias(
     )
 
     return [
-
         {
-
-            "competencia":fila.nombre_competencia,
-
-            "promedio":round(
-
-                fila.promedio,
-
-                1
-
-            )
-
+            "competencia": fila.nombre_competencia,
+            "promedio": round(fila.promedio, 1) if fila.promedio is not None else 0
         }
-
         for fila in datos
-
     ]
     
 
@@ -713,6 +703,8 @@ def obtener_rendimiento_submodulos(
 
         .group_by(
 
+            Submodulo.id_submodulo,
+
             Submodulo.nombre_submodulo
 
         )
@@ -728,23 +720,11 @@ def obtener_rendimiento_submodulos(
     )
 
     return [
-
         {
-
             "submodulo": fila.nombre_submodulo,
-
-            "promedio": round(
-
-                fila.promedio,
-
-                1
-
-            )
-
+            "promedio": round(fila.promedio, 1) if fila.promedio is not None else 0
         }
-
         for fila in datos
-
     ]
     
 # ==========================================

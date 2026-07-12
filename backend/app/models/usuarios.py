@@ -58,6 +58,7 @@ class Administrador(Base):
         server_default=func.now(),
         onupdate=func.now()
     )
+    
 
 # ==========================================
 # estudiante
@@ -170,6 +171,14 @@ class Estudiante(Base):
         "PeriodoAcademico"
     )
 
+    tipo_institucion = relationship(
+        "TipoInstitucion"
+    )
+
+    carrera = relationship(
+        "Carrera"
+    )
+
 
 # ==========================================
 # profesor
@@ -262,4 +271,44 @@ class Profesor(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now()
+    )
+    
+    # ==========================================
+    # RELACIONES
+    # ==========================================
+
+    nivel = relationship(
+
+        "NivelEducativo"
+
+    )
+
+    tipo_institucion = relationship(
+
+        "TipoInstitucion"
+
+    )
+
+    carrera = relationship(
+
+        "Carrera"
+
+    )
+
+    provincia = relationship(
+
+        "Provincia"
+
+    )
+
+    ciudad = relationship(
+
+        "Ciudad"
+
+    )
+
+    rol = relationship(
+
+        "Rol"
+
     )

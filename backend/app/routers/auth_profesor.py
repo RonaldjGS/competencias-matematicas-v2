@@ -26,7 +26,9 @@ from app.schemas.profesor import (
     ProfesorCreate,
     ProfesorLogin,
     TokenResponse,
-    ChangePasswordRequest
+    ChangePasswordRequest,
+    VerifyCorreoRequest,
+    ResetPasswordRequest
 )
 
 from app.core.auth import (
@@ -294,4 +296,107 @@ def change_password(
     return {
         "message":
         "Contraseña actualizada correctamente"
+    }
+    
+# ==========================================
+# VERIFICAR CORREO
+# ==========================================
+
+@router.post("/verify-email")
+def verify_email(
+
+    data: VerifyCorreoRequest,
+
+    db: Session = Depends(get_db)
+
+):
+
+    profesor = (
+
+        db.query(Profesor)
+
+        .filter(
+
+            Profesor.correo ==
+
+            data.correo
+
+        )
+
+        .first()
+
+    )
+
+    if not profesor:
+
+        return {
+
+            "existe": False
+
+        }
+
+    return {
+
+        "existe": True,
+
+        "nombre_profesor":
+
+        profesor.nombre_profesor
+
+    }
+    
+    
+# ==========================================
+# RESET PASSWORD
+# ==========================================
+
+@router.put("/reset-password")
+def reset_password(
+
+    data: ResetPasswordRequest,
+
+    db: Session = Depends(get_db)
+
+):
+
+    profesor = (
+
+        db.query(Profesor)
+
+        .filter(
+
+            Profesor.correo ==
+
+            data.correo
+
+        )
+
+        .first()
+
+    )
+
+    if not profesor:
+
+        raise HTTPException(
+
+            status_code=404,
+
+            detail="Profesor no encontrado"
+
+        )
+
+    profesor.password_hash = hash_password(
+
+        data.new_password
+
+    )
+
+    db.commit()
+
+    return {
+
+        "message":
+
+        "Contraseña actualizada correctamente"
+
     }

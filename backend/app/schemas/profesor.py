@@ -102,3 +102,28 @@ class ChangePasswordRequest(BaseModel):
         max_length=100
     )
     
+# ==========================================
+# VERIFICAR CORREO
+# ==========================================
+
+class VerifyCorreoRequest(BaseModel):
+
+    correo: EmailStr
+
+
+# ==========================================
+# RESET PASSWORD
+# ==========================================
+
+class ResetPasswordRequest(BaseModel):
+
+    correo: EmailStr
+
+    new_password: str = Field(
+
+        min_length=8,
+
+        max_length=100
+
+    )
+    

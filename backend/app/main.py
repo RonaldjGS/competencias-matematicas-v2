@@ -55,13 +55,12 @@ app.add_middleware(
     CORSMiddleware,
 
     allow_origins=[
-        "http://localhost:4200"
+        "http://localhost:4200",   # Desarrollo fuera de Docker
+        "http://localhost:1030"    # Desarrollo con Docker
     ],
 
     allow_credentials=True,
-
     allow_methods=["*"],
-
     allow_headers=["*"]
 )
 
@@ -130,3 +129,9 @@ app.include_router(
 app.include_router(
     configuracion_quiz
 )
+
+@app.get("/docker-test")
+def docker_test():
+    return {
+        "mensaje": "Docker funciona correctamente"
+    }

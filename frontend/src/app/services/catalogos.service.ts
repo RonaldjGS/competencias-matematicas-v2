@@ -1,0 +1,149 @@
+import { Injectable } from '@angular/core';
+
+import { HttpClient } from '@angular/common/http';
+
+import { environment } from '../../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CatalogosService {
+
+  private apiUrl =
+    `${environment.apiUrl}/catalogos`;
+
+  constructor(
+    private http: HttpClient
+  ) {}
+
+  obtenerNiveles() {
+
+    return this.http.get(
+      `${this.apiUrl}/niveles`
+    );
+
+  }
+
+  obtenerCarreras() {
+
+    return this.http.get(
+      `${this.apiUrl}/carreras`
+    );
+
+  }
+
+  obtenerTiposInstitucion() {
+
+    return this.http.get(
+      `${this.apiUrl}/tipos-institucion`
+    );
+
+  }
+
+  obtenerCiudades() {
+
+    return this.http.get(
+      `${this.apiUrl}/ciudades`
+    );
+
+  }
+
+  obtenerProvincias() {
+
+    return this.http.get(
+        `${this.apiUrl}/provincias`
+    );
+
+    }
+
+obtenerCiudadesPorProvincia(
+  idProvincia: number
+) {
+
+  return this.http.get(
+
+    `${this.apiUrl}/ciudades/provincia/${idProvincia}`
+
+  );
+
+}
+
+obtenerCompetencias() {
+
+  return this.http.get(
+    `${this.apiUrl}/competencias`
+  );
+
+}
+
+obtenerSubmodulos() {
+
+  return this.http.get(
+    `${this.apiUrl}/submodulos`
+  );
+
+}
+
+obtenerTemas(
+  
+) {
+
+  return this.http.get(
+    `${this.apiUrl}/temas`
+  );
+
+}
+
+obtenerTemasPorNivel(
+  idNivel: number
+) {
+
+  return this.http.get(
+
+    `${this.apiUrl}/temas/${idNivel}`
+
+  );
+
+}
+
+obtenerSubmodulosPorCompetencia(
+
+  idCompetencia:number
+
+){
+
+  return this.http.get(
+
+    `${this.apiUrl}/submodulos/competencia/${idCompetencia}`
+
+  );
+
+}
+
+obtenerTemasProfesor() {
+
+  return this.http.get(
+
+    `${this.apiUrl}/temas-profesor`
+
+  );
+
+}
+
+// =====================================
+// PERIODOS POR NIVEL
+// =====================================
+
+obtenerPeriodosPorNivel(
+  idNivel: number
+) {
+
+  return this.http.get<any[]>(
+
+    `${this.apiUrl}/periodos/${idNivel}`
+
+  );
+
+}
+
+}
