@@ -1,0 +1,46 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: competencias_matematicas_v2
+      MYSQL_ROOT_HOST: "%"
+
+    ports:
+      - "1032:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/competencias_matematicas_v2.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    image: ronaldgs/competencias-backend:latest
+
+    restart: always
+
+    depends_on:
+      - mysql
+
+    env_file:
+      - ./backend/.env.docker
+
+    ports:
+      - "1031:1031"
+
+  frontend:
+    image: ronaldgs/competencias-frontend:latest
+
+    restart: always
+
+    depends_on:
+      - backend
+
+    ports:
+      - "1030:80"
+
+volumes:
+  mysql_data:

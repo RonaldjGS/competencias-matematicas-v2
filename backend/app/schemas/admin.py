@@ -88,8 +88,64 @@ class UsuarioActualizar(BaseModel):
 
     correo: str
 
-    rol: str
-
     id_nivel: int | None = None
 
     id_periodo: int | None = None
+
+    id_tipo_institucion: int | None = None
+
+    id_carrera: int | None = None
+    
+
+
+# ==========================================
+# CAMBIO CONTRASEÑA
+# ==========================================
+
+class CambioPasswordAdmin(BaseModel):
+
+    password: str
+
+    
+# ==========================================
+# CREAR USUARIO
+# ==========================================
+
+class UsuarioCrear(BaseModel):
+
+    tipo_usuario: str
+
+    nombre: str
+
+    correo: str
+
+    password: str
+
+    institucion_educativa: str | None = None
+
+    id_nivel: int | None = None
+
+    id_tipo_institucion: int | None = None
+
+    id_carrera: int | None = None
+
+    id_periodo: int | None = None
+
+    id_provincia: int | None = None
+
+    id_ciudad: int | None = None
+    
+    
+# ==========================================
+# ROL
+# ==========================================
+
+class RolResponse(BaseModel):
+
+    id_rol: int
+
+    nombre_rol: str
+
+    class Config:
+
+        from_attributes = True

@@ -123,6 +123,7 @@ class PreguntaCompetencia(Base):
         DateTime(timezone=True),
         nullable=True
     )
+    
 
 
 # ==========================================

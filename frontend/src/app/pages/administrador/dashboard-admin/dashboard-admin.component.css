@@ -1019,3 +1019,463 @@ DETALLE USUARIO
     transform:scale(1.01);
 
 }
+
+.btn-guardar{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#22c55e;
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.btn-guardar:hover{
+
+    background:#16a34a;
+
+    transform:translateY(-2px);
+
+}
+
+.btn-cancelar{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#f3f4f6;
+
+    color:#374151;
+
+    font-size:17px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.btn-cancelar:hover{
+
+    background:#e5e7eb;
+
+}
+
+
+/*======================================
+MODAL PASSWORD
+======================================*/
+
+.modal-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+.modal-password{
+
+    width:430px;
+
+    background:#fff;
+
+    border-radius:22px;
+
+    padding:35px;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.25);
+
+    animation:aparecer .25s ease;
+
+}
+
+.modal-password h2{
+
+    margin:0;
+
+    color:#7c3aed;
+
+    margin-bottom:8px;
+
+}
+
+.modal-password p{
+
+    color:#666;
+
+    margin-bottom:25px;
+
+}
+
+.grupo{
+
+    display:flex;
+
+    flex-direction:column;
+
+    margin-bottom:20px;
+
+}
+
+.grupo label{
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+}
+
+.grupo input{
+
+    height:48px;
+
+    border-radius:12px;
+
+    border:1px solid #ddd;
+
+    padding:0 15px;
+
+    font-size:15px;
+
+}
+
+.acciones-modal{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+    margin-top:15px;
+
+}
+
+.btn-cancelar-modal{
+
+    border:none;
+
+    background:#e5e7eb;
+
+    border-radius:12px;
+
+    padding:12px 20px;
+
+    cursor:pointer;
+
+}
+
+.btn-guardar-modal{
+
+    border:none;
+
+    background:#7c3aed;
+
+    color:white;
+
+    border-radius:12px;
+
+    padding:12px 22px;
+
+    cursor:pointer;
+
+}
+
+.btn-guardar-modal:hover{
+
+    background:#6d28d9;
+
+}
+
+@keyframes aparecer{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.9);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+/*======================================
+PASSWORD NUEVO USUARIO
+======================================*/
+
+.password-wrapper{
+
+    position:relative;
+
+    width:100%;
+
+}
+
+.password-wrapper .input-control{
+
+    padding-right:55px;
+
+}
+
+.password-toggle{
+
+    position:absolute;
+
+    top:50%;
+
+    right:16px;
+
+    transform:translateY(-50%);
+
+    border:none;
+
+    background:transparent;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#7c3aed;
+
+    font-size:22px;
+
+    padding:0;
+
+}
+
+.password-toggle:hover{
+
+    color:#5b21b6;
+
+}
+
+.password-toggle i{
+
+    pointer-events:none;
+
+}
+
+.btn-danger{
+
+    width:100%;
+
+    background:#1f2937;
+
+    color:white;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.btn-danger:hover{
+
+    background:#111827;
+
+}
+
+/*======================================
+MODAL NUEVO USUARIO
+======================================*/
+
+.modal-nuevo{
+
+    width:650px;
+
+    max-height:85vh;
+
+    overflow-y:auto;
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:35px;
+
+    animation:aparecer .25s;
+
+}
+
+.modal-nuevo::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.modal-nuevo::-webkit-scrollbar-thumb{
+
+    background:#b084ff;
+
+    border-radius:10px;
+
+}
+
+.modal-nuevo h2{
+
+    margin-bottom:10px;
+
+    color:#7c3aed;
+
+}
+
+.modal-nuevo p{
+
+    color:#666;
+
+    margin-bottom:25px;
+
+}
+
+/* =======================================
+   INPUTS Y SELECTS
+======================================= */
+
+.input-control{
+
+    width:100%;
+
+    padding:14px 18px;
+
+    border:1.8px solid #d8d8d8;
+
+    border-radius:14px;
+
+    background:#fff;
+
+    font-size:16px;
+
+    font-family:inherit;
+
+    transition:.25s;
+
+    outline:none;
+
+    box-sizing:border-box;
+
+}
+
+.input-control:focus{
+
+    border-color:#8b00ff;
+
+    box-shadow:0 0 0 4px rgba(139,0,255,.12);
+
+}
+
+
+/* =======================================
+   SELECT PERSONALIZADO
+======================================= */
+
+select.input-control{
+
+    appearance:none;
+
+    -webkit-appearance:none;
+
+    -moz-appearance:none;
+
+    cursor:pointer;
+
+    padding-right:48px;
+
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%237c3aed' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 5.646a.5.5 0 0 1 .708 0L8 11.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+
+    background-repeat:no-repeat;
+
+    background-position:right 16px center;
+
+    background-size:18px;
+
+}
+
+
+/* =======================================
+   LABELS
+======================================= */
+
+.grupo{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    margin-bottom:18px;
+
+}
+
+.grupo label{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:#222;
+
+}
+
+
+/* =======================================
+   HOVER
+======================================= */
+
+select.input-control:hover{
+
+    border-color:#8b00ff;
+
+}

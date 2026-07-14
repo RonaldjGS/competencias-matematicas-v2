@@ -108,6 +108,218 @@ export class AdminService {
 
     }
 
-    
+    // =====================================
+    // CAMBIAR CONTRASEÑA
+    // =====================================
+
+    cambiarPassword(
+
+        tipoUsuario:string,
+
+        id:number,
+
+        password:string
+
+    ){
+
+        return this.http.put(
+
+            `${this.apiUrl}/usuarios/${tipoUsuario}/${id}/password`,
+
+            {
+
+                password
+
+            }
+
+        );
+
+    }
+
+    // =====================================
+    // DESACTIVAR USUARIO
+    // =====================================
+
+    desactivarUsuario(
+
+        tipoUsuario:string,
+
+        id:number
+
+    ){
+
+        return this.http.put(
+
+            `${this.apiUrl}/usuarios/${tipoUsuario}/${id}/desactivar`,
+
+            {}
+
+        );
+
+    }
+
+    // =====================================
+    // ELIMINAR USUARIO
+    // =====================================
+
+    eliminarUsuario(
+
+        tipoUsuario: string,
+
+        id: number
+
+    ){
+
+        return this.http.delete(
+
+            `${this.apiUrl}/usuarios/${tipoUsuario}/${id}`
+
+        );
+
+    }
+
+    // =====================================
+    // ROLES
+    // =====================================
+
+    obtenerRoles(){
+
+        return this.http.get(
+
+            `${this.apiUrl}/roles`
+
+        );
+
+    }
+
+    // =====================================
+    // CREAR USUARIO
+    // =====================================
+
+    crearUsuario(
+
+        datos:any
+
+    ){
+
+        return this.http.post(
+
+            `${this.apiUrl}/usuarios`,
+
+            datos
+
+        );
+
+    }
+
+    obtenerPreguntas(
+
+        idNivel?: number,
+
+        idProfesor?: number,
+
+        idCompetencia?: number,
+
+        idSubmodulo?: number,
+
+        idTema?: number
+
+    ){
+
+        let params:any = {};
+
+        if(idNivel){
+
+            params.id_nivel = idNivel;
+
+        }
+
+        if(idProfesor){
+
+            params.id_profesor = idProfesor;
+
+        }
+
+        if(idCompetencia){
+
+            params.id_competencia = idCompetencia;
+
+        }
+
+        if(idSubmodulo){
+
+            params.id_submodulo = idSubmodulo;
+
+        }
+
+        if(idTema){
+
+            params.id_tema = idTema;
+
+        }
+
+        return this.http.get(
+
+            `${this.apiUrl}/preguntas`,
+
+            { params }
+
+        );
+
+    }
+
+    obtenerDetallePregunta(idPregunta:number){
+
+        return this.http.get(
+
+            `${this.apiUrl}/preguntas/${idPregunta}`
+
+        );
+
+    }
+
+    actualizarPreguntaAdmin(
+
+        idPregunta: number,
+
+        datos: any
+
+    ){
+
+        return this.http.put(
+
+            `${this.apiUrl}/preguntas/${idPregunta}`,
+
+            datos
+
+        );
+
+    }
+
+    cambiarEstadoPregunta(
+        idPregunta:number
+    ){
+
+        return this.http.patch(
+
+            `${this.apiUrl}/preguntas/${idPregunta}/estado`,
+
+            {}
+
+        );
+
+    }
+
+    eliminarPregunta(
+        idPregunta:number
+    ){
+
+        return this.http.delete(
+
+            `${this.apiUrl}/preguntas/${idPregunta}`
+
+        );
+
+    }
 
 }

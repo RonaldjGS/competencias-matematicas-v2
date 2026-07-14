@@ -92,6 +92,10 @@ import {
   ImportarPreguntasComponent
 } from './pages/preguntas/importar-preguntas/importar-preguntas.component';
 
+import {
+  PreguntasAdminComponent
+} from './pages/administrador/preguntas-admin/preguntas-admin.component';
+
 export const routes: Routes = [
 
   {
@@ -209,5 +213,10 @@ export const routes: Routes = [
     path: 'importar-pregunta',
     component: ImportarPreguntasComponent
   },
+
+  {
+    path: 'preguntas-admin',
+    component: PreguntasAdminComponent
+  }
 
 ];

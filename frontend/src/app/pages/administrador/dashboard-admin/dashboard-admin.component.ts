@@ -30,6 +30,8 @@ import {
 
 } from '../../../components/topbar-admin/topbar-admin.component';
 
+import Swal from 'sweetalert2';
+
 import {
 
   SidebarAdminComponent
@@ -129,6 +131,60 @@ export class DashboardAdminComponent implements OnInit {
 
     carreras:any[]=[];
 
+    mostrarModalPassword=false;
+
+    passwordNueva='';
+
+    confirmarPassword='';
+
+    mostrarPasswordNueva = false;
+
+    mostrarConfirmarPassword = false;
+
+    // =====================================
+    // NUEVO USUARIO
+    // =====================================
+
+    mostrarModalNuevoUsuario = false;
+
+    mostrarPasswordNuevo = false;
+
+    nuevoUsuario:any={
+
+        tipo_usuario:'',
+
+        nombre:'',
+
+        institucion_educativa:'',
+
+        id_nivel:null,
+
+        id_tipo_institucion:null,
+
+        id_carrera:null,
+
+        provincias:null,
+
+        ciudades:null,
+
+        id_periodo:null,
+
+        id_provincia:null,
+
+        id_ciudad:null,
+
+        correo:'',
+
+        password:''
+
+    };
+
+    provincias:any[]=[];
+
+    ciudades:any[]=[];
+
+    roles:any[]=[];
+
     constructor(
 
         private adminService: AdminService,
@@ -169,7 +225,11 @@ export class DashboardAdminComponent implements OnInit {
 
     this.cargarTiposInstitucion();
 
-    this.cargarCarreras();  
+    this.cargarCarreras();
+    
+    this.cargarRoles();
+
+    this.cargarProvincias();
 
   }
 
@@ -409,6 +469,8 @@ export class DashboardAdminComponent implements OnInit {
 
                     this.niveles = respuesta;
 
+                    this.refrescarVista();
+
                 },
 
                 error: (error) => {
@@ -455,6 +517,8 @@ export class DashboardAdminComponent implements OnInit {
 
                     this.periodos = respuesta;
 
+                    this.refrescarVista();
+
                 },
 
                 error:(error)=>{
@@ -495,6 +559,8 @@ export class DashboardAdminComponent implements OnInit {
 
         this.aplicarFiltros();
 
+        this.refrescarVista();
+
     }
 
     // =====================================
@@ -514,6 +580,8 @@ export class DashboardAdminComponent implements OnInit {
         }
 
         this.aplicarFiltros();
+
+        this.refrescarVista();
 
     }
 
@@ -605,6 +673,8 @@ export class DashboardAdminComponent implements OnInit {
 
         this.actualizarPaginacion();
 
+        this.refrescarVista();
+
     }
 
     // =====================================
@@ -693,6 +763,27 @@ export class DashboardAdminComponent implements OnInit {
 
     guardarUsuario(): void {
 
+        const datos = {
+
+            nombre: this.usuarioEdicion.nombre,
+
+            correo: this.usuarioEdicion.correo,
+
+            id_nivel: this.usuarioEdicion.id_nivel,
+
+            id_periodo: this.usuarioEdicion.id_periodo,
+
+            id_tipo_institucion: this.usuarioEdicion.id_tipo_institucion,
+
+            id_carrera: this.usuarioEdicion.id_carrera
+
+        };
+
+        console.log(
+            'Datos enviados:',
+            datos
+        );
+
         this.adminService
 
             .actualizarUsuario(
@@ -701,13 +792,17 @@ export class DashboardAdminComponent implements OnInit {
 
                 this.usuarioSeleccionado.id,
 
-                this.usuarioEdicion
+                datos
 
             )
 
             .subscribe({
 
                 next: () => {
+
+                    console.log(
+                        'Actualizado correctamente'
+                    );
 
                     this.modoEdicion = false;
 
@@ -721,11 +816,25 @@ export class DashboardAdminComponent implements OnInit {
 
                     this.cargarUsuarios();
 
+                    this.refrescarVista();
+
                 },
 
                 error: (error) => {
 
-                    console.error(error);
+                    console.log(
+
+                        'Respuesta backend:',
+
+                        error.error
+
+                    );
+
+                    console.error(
+
+                        error
+
+                    );
 
                 }
 
@@ -745,6 +854,8 @@ export class DashboardAdminComponent implements OnInit {
 
                     this.tiposInstitucion = respuesta;
 
+                    this.refrescarVista();
+
                 }
 
             });
@@ -762,6 +873,8 @@ export class DashboardAdminComponent implements OnInit {
                 next:(respuesta:any)=>{
 
                     this.carreras = respuesta;
+
+                    this.refrescarVista();
 
                 }
 
@@ -869,11 +982,647 @@ export class DashboardAdminComponent implements OnInit {
 
                         this.periodos = respuesta;
 
+                        this.refrescarVista();
+
                     }
 
                 });
 
         }
+
+    }
+
+    abrirModalPassword():void{
+
+        this.passwordNueva='';
+
+        this.confirmarPassword='';
+
+        this.mostrarModalPassword=true;
+
+    }
+
+    cerrarModalPassword(): void {
+
+        this.passwordNueva = '';
+
+        this.confirmarPassword = '';
+
+        this.mostrarPasswordNueva = false;
+
+        this.mostrarConfirmarPassword = false;
+
+        this.mostrarModalPassword = false;
+
+    }
+
+    guardarPassword():void{
+
+        if(
+
+            this.passwordNueva!==
+
+            this.confirmarPassword
+
+        ){
+
+            Swal.fire({
+
+                icon:'error',
+
+                title:'Las contraseñas no coinciden'
+
+            });
+
+            return;
+
+        }
+
+        this.adminService
+
+            .cambiarPassword(
+
+                this.usuarioSeleccionado.tipo_usuario,
+
+                this.usuarioSeleccionado.id,
+
+                this.passwordNueva
+
+            )
+
+            .subscribe({
+
+                next:()=>{
+
+                    this.cerrarModalPassword();
+
+                    setTimeout(()=>{
+
+                        Swal.fire({
+
+                            icon:'success',
+
+                            title:'Contraseña actualizada',
+
+                            text:'La contraseña se cambió correctamente.',
+
+                            confirmButtonColor:'#7c3aed'
+
+                        });
+
+                    },150);
+
+                    this.refrescarVista();
+
+                }
+
+        });
+
+    }
+
+
+    // =====================================
+    // DESACTIVAR USUARIO
+    // =====================================
+
+    confirmarCambiarEstadoUsuario(): void {
+
+        const activar =
+
+            this.detalleUsuario.estado === 'Inactivo';
+
+        Swal.fire({
+
+            title: activar
+
+                ? '¿Activar usuario?'
+
+                : '¿Desactivar usuario?',
+
+            text: activar
+
+                ? 'El usuario podrá volver a iniciar sesión.'
+
+                : 'El usuario no podrá iniciar sesión.',
+
+            icon: 'warning',
+
+            showCancelButton: true,
+
+            confirmButtonText: activar
+
+                ? 'Sí, activar'
+
+                : 'Sí, desactivar',
+
+            cancelButtonText: 'Cancelar',
+
+            confirmButtonColor: activar
+
+                ? '#16a34a'
+
+                : '#dc2626'
+
+        }).then(resultado=>{
+
+            if(!resultado.isConfirmed){
+
+                return;
+
+            }
+
+            this.adminService
+
+                .desactivarUsuario(
+
+                    this.usuarioSeleccionado.tipo_usuario,
+
+                    this.usuarioSeleccionado.id
+
+                )
+
+                .subscribe({
+
+                   next: (respuesta: any) => {
+
+                        Swal.fire({
+
+                            icon: 'success',
+
+                            title: respuesta.mensaje,
+
+                            confirmButtonColor: '#7c3aed'
+
+                        });
+
+                        this.cargarUsuarios();
+
+                        this.cargarDetalleUsuario(
+
+                            this.usuarioSeleccionado.tipo_usuario,
+
+                            this.usuarioSeleccionado.id
+
+                        );
+
+                        this.refrescarVista();
+
+                    },
+
+                    error:(error)=>{
+
+                        console.error(error);
+
+                    }
+
+                });
+
+        });
+
+    }
+
+    confirmarEliminarUsuario(): void {
+
+        Swal.fire({
+
+            title:'¿Eliminar usuario?',
+
+            html:`
+                <b>Esta acción no se puede deshacer.</b>
+                <br><br>
+                Se eliminarán todos los datos asociados.
+            `,
+
+            icon:'error',
+
+            showCancelButton:true,
+
+            confirmButtonColor:'#dc2626',
+
+            confirmButtonText:'Eliminar',
+
+            cancelButtonText:'Cancelar'
+
+        }).then(resultado=>{
+
+            if(!resultado.isConfirmed){
+
+                return;
+
+            }
+
+            this.adminService
+
+                .eliminarUsuario(
+
+                    this.usuarioSeleccionado.tipo_usuario,
+
+                    this.usuarioSeleccionado.id
+
+                )
+
+                .subscribe({
+
+                    next:()=>{
+
+                        Swal.fire({
+
+                            icon:'success',
+
+                            title:'Usuario eliminado'
+
+                        });
+
+                        this.usuarioSeleccionado = null;
+
+                        this.detalleUsuario = null;
+
+                        this.cargarUsuarios();
+
+                        this.refrescarVista();
+
+                    }
+
+                });
+
+        });
+
+    }
+
+    // =====================================
+    // ABRIR MODAL NUEVO USUARIO
+    // =====================================
+
+    abrirModalNuevoUsuario():void{
+
+        this.nuevoUsuario={
+
+            tipo_usuario:'',
+
+            nombre:'',
+
+            institucion_educativa:'',
+
+            id_nivel:null,
+
+            id_tipo_institucion:null,
+
+            id_carrera:null,
+
+            id_periodo:null,
+
+            id_provincia:null,
+
+            id_ciudad:null,
+
+            correo:'',
+
+            password:''
+
+        };
+
+        this.resetNuevoUsuario();
+
+        this.mostrarModalNuevoUsuario=true;
+
+    }
+
+    // =====================================
+    // CERRAR MODAL NUEVO USUARIO
+    // =====================================
+
+    cerrarModalNuevoUsuario():void{
+
+        this.resetNuevoUsuario();
+
+        this.mostrarModalNuevoUsuario=false;
+
+    }
+
+    // =====================================
+    // CAMBIO ROL NUEVO USUARIO
+    // =====================================
+
+    cambioRolNuevoUsuario(): void {
+
+        this.nuevoUsuario.id_nivel = null;
+
+        this.nuevoUsuario.id_tipo_institucion = null;
+
+        this.nuevoUsuario.id_carrera = null;
+
+        this.nuevoUsuario.id_periodo = null;
+
+        this.nuevoUsuario.id_provincia = null;
+
+        this.nuevoUsuario.id_ciudad = null;
+
+        this.nuevoUsuario.institucion_educativa = '';
+
+    }
+
+    mostrarTipoInstitucionNuevo(): boolean{
+
+        return(
+
+            this.nuevoUsuario.id_nivel==1 &&
+
+            (
+
+                this.nuevoUsuario.tipo_usuario=='Profesor' ||
+
+                this.nuevoUsuario.tipo_usuario=='Estudiante'
+
+            )
+
+        );
+
+    }
+
+    mostrarCarreraNuevo(): boolean{
+
+        return(
+
+            this.nuevoUsuario.id_nivel!=1 &&
+
+            this.nuevoUsuario.id_nivel!=null &&
+
+            (
+
+                this.nuevoUsuario.tipo_usuario=='Profesor' ||
+
+                this.nuevoUsuario.tipo_usuario=='Estudiante'
+
+            )
+
+        );
+
+    }
+
+    mostrarPeriodoNuevo(): boolean{
+
+        return(
+
+            this.nuevoUsuario.tipo_usuario == 'Estudiante' &&
+
+            this.nuevoUsuario.id_nivel != null
+
+        );
+
+    }
+
+    // =====================================
+    // CAMBIO NIVEL NUEVO USUARIO
+    // =====================================
+
+    cambioNivelNuevoUsuario(): void {
+
+        console.log(
+            'Nivel seleccionado:',
+            this.nuevoUsuario.id_nivel
+        );
+
+        // Reiniciar selecciones dependientes
+        this.nuevoUsuario.id_tipo_institucion = null;
+
+        this.nuevoUsuario.id_carrera = null;
+
+        this.nuevoUsuario.id_periodo = null;
+
+        // Si es Bachillerato no hay carrera
+        if (
+
+            this.nuevoUsuario.id_nivel == 1
+
+        ){
+
+            this.nuevoUsuario.id_carrera = null;
+
+        }
+
+        // Si es Nivelación o Primer Semestre no hay tipo institución
+        else{
+
+            this.nuevoUsuario.id_tipo_institucion = null;
+
+        }
+
+        // Cargar períodos para cualquier nivel
+        this.catalogosService
+
+            .obtenerPeriodosPorNivel(
+
+                this.nuevoUsuario.id_nivel
+
+            )
+
+            .subscribe({
+
+                next:(respuesta:any)=>{
+
+                    this.periodos = respuesta;
+
+                    this.refrescarVista();
+
+                },
+
+                error:(error)=>{
+
+                    console.error(error);
+
+                }
+
+            });
+
+    }
+
+    cargarProvincias(): void {
+
+        this.catalogosService
+
+            .obtenerProvincias()
+
+            .subscribe({
+
+                next:(respuesta:any)=>{
+
+                    console.log('Provincias', respuesta);
+
+                    this.provincias = respuesta;
+
+                    this.refrescarVista();
+
+                },
+
+                error:(error)=>{
+
+                    console.error(error);
+
+                }
+
+            });
+
+    }
+
+    // =====================================
+    // CAMBIO PROVINCIA NUEVO USUARIO
+    // =====================================
+
+    cambioProvinciaNuevoUsuario(): void {
+
+        this.nuevoUsuario.id_ciudad = null;
+
+        this.catalogosService
+
+            .obtenerCiudadesPorProvincia(
+
+                this.nuevoUsuario.id_provincia
+
+            )
+
+            .subscribe({
+
+                next:(respuesta:any)=>{
+
+                    this.ciudades = respuesta;
+
+                    this.refrescarVista();
+
+                }
+
+            });
+
+    }
+
+    // =====================================
+    // CARGAR ROLES
+    // =====================================
+
+    cargarRoles(): void {
+
+        this.adminService
+
+            .obtenerRoles()
+
+            .subscribe({
+
+                next: (respuesta: any) => {
+
+                    this.roles = respuesta;
+
+                },
+
+                error: (error) => {
+
+                    console.error(error);
+
+                }
+
+            });
+
+    }
+
+    // =====================================
+    // REGISTRAR NUEVO USUARIO
+    // =====================================
+
+    registrarNuevoUsuario(): void {
+
+        this.adminService
+
+            .crearUsuario(
+
+                this.nuevoUsuario
+
+            )
+
+            .subscribe({
+
+                next:()=>{
+
+                    this.mostrarModalNuevoUsuario = false;
+
+                    Swal.fire({
+
+                        icon:'success',
+
+                        title:'Usuario registrado',
+
+                        text:'El usuario fue registrado correctamente.',
+
+                        confirmButtonColor:'#7c3aed'
+
+                    });
+
+                    this.cargarUsuarios();
+
+                    this.resetNuevoUsuario();
+
+                },
+
+                error:(error)=>{
+
+                    console.error(error);
+
+                    Swal.fire({
+
+                        icon:'error',
+
+                        title:'Error',
+
+                        text:
+
+                            error.error?.detail ||
+
+                            'No fue posible registrar el usuario.',
+
+                        confirmButtonColor:'#7c3aed'
+
+                    });
+
+                }
+
+            });
+
+    }
+
+    // =====================================
+    // LIMPIAR FORMULARIO NUEVO USUARIO
+    // =====================================
+
+    resetNuevoUsuario(): void {
+
+        this.nuevoUsuario = {
+
+            nombre:'',
+
+            tipo_usuario:'',
+
+            institucion_educativa:'',
+
+            id_nivel:null,
+
+            id_tipo_institucion:null,
+
+            id_carrera:null,
+
+            id_periodo:null,
+
+            id_provincia:null,
+
+            id_ciudad:null,
+
+            correo:'',
+
+            password:''
+
+        };
+
+        this.ciudades = [];
+
+        this.periodos = [];
+
+        this.mostrarPasswordNuevo = false;
 
     }
 

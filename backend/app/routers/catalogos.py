@@ -36,7 +36,8 @@ from app.schemas.catalogos import (
     CompetenciaOut,
     SubmoduloOut,
     TemaOut,
-    ProvinciaOut
+    ProvinciaOut,
+    ProfesorOut
 )
 
 from app.services.catalogos_service import (
@@ -349,6 +350,48 @@ def obtener_periodos_por_nivel(
         .order_by(
 
             PeriodoAcademico.fecha_inicio.desc()
+
+        )
+
+        .all()
+
+    )
+    
+# ==========================================
+# PROFESORES POR NIVEL
+# ==========================================
+
+@router.get(
+    "/profesores/{id_nivel}",
+    response_model=list[ProfesorOut]
+)
+def listar_profesores_por_nivel(
+
+    id_nivel: int,
+
+    db: Session = Depends(get_db)
+
+):
+
+    return (
+
+        db.query(
+
+            Profesor
+
+        )
+
+        .filter(
+
+            Profesor.id_nivel == id_nivel,
+
+            Profesor.estado == True
+
+        )
+
+        .order_by(
+
+            Profesor.nombre_profesor.asc()
 
         )
 

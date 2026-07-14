@@ -138,3 +138,76 @@ class ImportacionResponse(BaseModel):
     mensaje: str
 
     errores: List[ErrorImportacion] = []
+    
+
+class PreguntaBancoAdminOut(BaseModel):
+
+    id_pregunta:int
+
+    profesor:str
+
+    nivel:str
+
+    pregunta:str
+
+    dificultad:str
+
+    estado:bool
+
+    model_config = ConfigDict(
+
+        from_attributes=True
+
+    )
+    
+# ==========================================
+# DETALLE PREGUNTA ADMIN
+# ==========================================
+
+class PreguntaDetalleAdminOut(BaseModel):
+
+    id_pregunta:int
+
+    id_profesor:int
+
+    id_nivel:int
+
+    id_competencia:int
+
+    id_submodulo:int
+
+    id_tema:int
+
+    profesor:str
+
+    nivel:str
+
+    competencia:str
+
+    submodulo:str
+
+    tema:str
+
+    pregunta:str
+
+    opcion_a:str
+
+    opcion_b:str
+
+    opcion_c:str
+
+    opcion_d:str
+
+    respuesta_correcta:str
+
+    justificacion:str | None
+
+    dificultad:str
+
+    estado:bool
+
+    model_config = ConfigDict(
+
+        from_attributes=True
+
+    )

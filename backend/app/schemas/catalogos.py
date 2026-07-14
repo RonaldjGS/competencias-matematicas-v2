@@ -113,3 +113,12 @@ class ProvinciaOut(BaseModel):
         from_attributes=True
     )
 
+class ProfesorOut(BaseModel):
+
+    id_profesor: int
+
+    nombre_profesor: str
+
+    model_config = ConfigDict(
+        from_attributes=True
+    )

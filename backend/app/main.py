@@ -49,6 +49,8 @@ from app.routers.estudiantes_profesor import router as estudiantes_profesor
 
 from app.routers.configuracion_quiz import router as configuracion_quiz
 
+from app.routers.preguntas_admin import router as preguntas_admin
+
 app = FastAPI()
 
 app.add_middleware(
@@ -130,8 +132,6 @@ app.include_router(
     configuracion_quiz
 )
 
-@app.get("/docker-test")
-def docker_test():
-    return {
-        "mensaje": "Docker funciona correctamente"
-    }
+app.include_router(
+    preguntas_admin
+)

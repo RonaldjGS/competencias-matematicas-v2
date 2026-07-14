@@ -146,4 +146,18 @@ obtenerPeriodosPorNivel(
 
 }
 
+obtenerProfesoresPorNivel(
+    idNivel:number
+){
+
+    return this.http.get<any[]>(
+
+        `${this.apiUrl}/profesores/${idNivel}`
+
+    );
+
+}
+
+
+
 }

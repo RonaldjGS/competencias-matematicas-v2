@@ -300,7 +300,9 @@
                         </h2>
 
                         <button
-                            class="btn-nuevo">
+                            class="btn-nuevo"
+                            (click)="abrirModalNuevoUsuario()"
+                        >
 
                             <i class="bi bi-person-plus-fill"></i>
 
@@ -899,12 +901,11 @@
 
                         <div class="acciones">
 
+                            @if(!modoEdicion){
+
                                 <button
-
                                     class="btn-editar"
-
                                     (click)="editarUsuario()"
-
                                 >
 
                                     <i class="bi bi-pencil-square"></i>
@@ -913,7 +914,10 @@
 
                                 </button>
 
-                                <button class="btn-password">
+                                <button
+                                    class="btn-password"
+                                    (click)="abrirModalPassword()"
+                                >
 
                                     <i class="bi bi-key-fill"></i>
 
@@ -921,15 +925,64 @@
 
                                 </button>
 
-                                <button class="btn-eliminar">
+                                <button
+                                    class="btn-eliminar"
+                                    (click)="confirmarCambiarEstadoUsuario()"
+                                >
 
-                                    <i class="bi bi-trash-fill"></i>
+                                    <i
+                                        class="bi"
+                                        [class.bi-person-x-fill]="detalleUsuario?.estado === 'Activo'"
+                                        [class.bi-person-check-fill]="detalleUsuario?.estado === 'Inactivo'"
+                                    ></i>
 
-                                    Desactivar usuario
+                                    {{ detalleUsuario?.estado === 'Activo'
+                                        ? 'Desactivar usuario'
+                                        : 'Activar usuario'
+                                    }}
 
                                 </button>
 
-                            </div>
+                                <button
+                                    class="btn-danger"
+                                    (click)="confirmarEliminarUsuario()"
+                                >
+
+                                    <i class="bi bi-trash-fill"></i>
+
+                                    Eliminar permanentemente
+
+                                </button>
+
+                            }
+
+                            @else{
+
+                                <button
+                                    class="btn-guardar"
+                                    (click)="guardarUsuario()"
+                                >
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                    Guardar cambios
+
+                                </button>
+
+                                <button
+                                    class="btn-cancelar"
+                                    (click)="cancelarEdicion()"
+                                >
+
+                                    <i class="bi bi-x-circle-fill"></i>
+
+                                    Cancelar
+
+                                </button>
+
+                            }
+
+                        </div>
 
                 </section>
 
@@ -940,3 +993,717 @@
     </main>
 
 </div>
+
+@if(mostrarModalPassword){
+
+<div class="modal-overlay">
+
+    <div class="modal-password">
+
+        <h2>
+            Cambiar contraseña
+        </h2>
+
+        <p>
+            Ingrese la nueva contraseña del usuario.
+        </p>
+
+            <div class="grupo">
+
+                <label>Nueva contraseña</label>
+
+                <div class="input-password">
+
+                    <input
+
+                        [type]="mostrarPasswordNueva ? 'text' : 'password'"
+
+                        [(ngModel)]="passwordNueva"
+
+                    >
+
+                    <button
+
+                        type="button"
+
+                        class="btn-ojo"
+
+                        (click)="mostrarPasswordNueva = !mostrarPasswordNueva"
+
+                    >
+
+                        <i
+
+                            class="bi"
+
+                            [class.bi-eye-fill]="!mostrarPasswordNueva"
+
+                            [class.bi-eye-slash-fill]="mostrarPasswordNueva"
+
+                        ></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="grupo">
+
+                <label>Confirmar contraseña</label>
+
+                <div class="input-password">
+
+                    <input
+
+                        [type]="mostrarConfirmarPassword ? 'text' : 'password'"
+
+                        [(ngModel)]="confirmarPassword"
+
+                    >
+
+                    <button
+
+                        type="button"
+
+                        class="btn-ojo"
+
+                        (click)="mostrarConfirmarPassword = !mostrarConfirmarPassword"
+
+                    >
+
+                        <i
+
+                            class="bi"
+
+                            [class.bi-eye-fill]="!mostrarConfirmarPassword"
+
+                            [class.bi-eye-slash-fill]="mostrarConfirmarPassword"
+
+                        ></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        <div class="acciones-modal">
+
+            <button
+                class="btn-cancelar-modal"
+                (click)="cerrarModalPassword()"
+            >
+                Cancelar
+            </button>
+
+            <button
+                class="btn-guardar-modal"
+                (click)="guardarPassword()"
+            >
+                Cambiar contraseña
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+}
+
+@if(mostrarModalNuevoUsuario){
+
+<div class="modal-overlay">
+
+    <div class="modal-nuevo">
+
+        <h2>
+
+            Registrar nuevo usuario
+
+        </h2>
+
+        <p>
+
+            Complete la información del nuevo usuario.
+
+        </p>
+
+        <!-- ===================================== -->
+        <!-- NOMBRE -->
+        <!-- ===================================== -->
+
+        <div class="grupo">
+
+            <label>
+
+                Nombre
+
+            </label>
+
+            <input
+
+                class="input-control"
+
+                [(ngModel)]="nuevoUsuario.nombre"
+
+            >
+
+        </div>
+
+        <!-- ===================================== -->
+        <!-- ROL -->
+        <!-- ===================================== -->
+
+        <div class="grupo">
+
+            <label>
+
+                Rol
+
+            </label>
+
+            <select
+
+                class="input-control"
+
+                [(ngModel)]="nuevoUsuario.tipo_usuario"
+
+                (change)="cambioRolNuevoUsuario()"
+
+            >
+
+                <option value="">
+
+                    Seleccione...
+
+                </option>
+
+                @for(
+
+                    rol of roles;
+
+                    track rol.id_rol
+
+                ){
+
+                    <option
+
+                        [value]="rol.nombre_rol"
+
+                    >
+
+                        {{ rol.nombre_rol }}
+
+                    </option>
+
+                }
+
+            </select>
+
+        </div>
+
+        <!-- ===================================== -->
+        <!-- DATOS PROFESOR / ESTUDIANTE -->
+        <!-- ===================================== -->
+
+        @if(
+
+            nuevoUsuario.tipo_usuario=='Profesor' ||
+
+            nuevoUsuario.tipo_usuario=='Estudiante'
+
+        ){
+
+        <div class="grupo">
+
+            <label>
+
+                Institución educativa
+
+            </label>
+
+            <input
+
+                class="input-control"
+
+                [(ngModel)]="nuevoUsuario.institucion_educativa"
+
+            >
+
+        </div>
+
+        <div class="grupo">
+
+            <label>
+
+                Nivel educativo
+
+            </label>
+
+            <select
+
+                class="input-control"
+
+                [(ngModel)]="nuevoUsuario.id_nivel"
+
+                (change)="cambioNivelNuevoUsuario()"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Seleccione...
+
+                </option>
+
+                @for(
+
+                    nivel of niveles;
+
+                    track nivel.id_nivel
+
+                ){
+
+                <option
+
+                    [ngValue]="nivel.id_nivel"
+
+                >
+
+                    {{ nivel.nombre_nivel }}
+
+                </option>
+
+                }
+
+            </select>
+
+        </div>
+
+        }
+
+        <!-- ===================================== -->
+        <!-- TIPO INSTITUCIÓN -->
+        <!-- ===================================== -->
+
+        @if(
+
+            mostrarTipoInstitucionNuevo()
+
+        ){
+
+        <div class="grupo">
+
+            <label>
+
+                Tipo de institución
+
+            </label>
+
+            <select
+
+                class="input-control"
+
+                [(ngModel)]="nuevoUsuario.id_tipo_institucion"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Seleccione...
+
+                </option>
+
+                @for(
+
+                    tipo of tiposInstitucion;
+
+                    track tipo.id_tipo
+
+                ){
+
+                <option
+
+                    [ngValue]="tipo.id_tipo"
+
+                >
+
+                    {{ tipo.nombre_tipo }}
+
+                </option>
+
+                }
+
+            </select>
+
+        </div>
+
+        }
+
+        <!-- ===================================== -->
+        <!-- CARRERA -->
+        <!-- ===================================== -->
+
+        @if(
+
+            mostrarCarreraNuevo()
+
+        ){
+
+        <div class="grupo">
+
+            <label>
+
+                Carrera
+
+            </label>
+
+            <select
+
+                class="input-control"
+
+                [(ngModel)]="nuevoUsuario.id_carrera"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Seleccione...
+
+                </option>
+
+                @for(
+
+                    carrera of carreras;
+
+                    track carrera.id_carrera
+
+                ){
+
+                <option
+
+                    [ngValue]="carrera.id_carrera"
+
+                >
+
+                    {{ carrera.nombre_carrera }}
+
+                </option>
+
+                }
+
+            </select>
+
+        </div>
+
+        }
+
+        <!-- ===================================== -->
+        <!-- PERÍODO -->
+        <!-- ===================================== -->
+
+        @if(
+
+            mostrarPeriodoNuevo()
+
+        ){
+
+        <div class="grupo">
+
+            <label>
+
+                Período académico
+
+            </label>
+
+            <select
+
+                class="input-control"
+
+                [(ngModel)]="nuevoUsuario.id_periodo"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Seleccione...
+
+                </option>
+
+                @for(
+
+                    periodo of periodos;
+
+                    track periodo.id_periodo
+
+                ){
+
+                <option
+
+                    [ngValue]="periodo.id_periodo"
+
+                >
+
+                    {{ periodo.nombre_periodo }}
+
+                </option>
+
+                }
+
+            </select>
+
+        </div>
+
+        }
+
+        @if(
+
+            nuevoUsuario.tipo_usuario=='Profesor' ||
+
+            nuevoUsuario.tipo_usuario=='Estudiante'
+
+        ){
+
+        <div class="grupo">
+
+            <label>
+
+                Provincia
+
+            </label>
+
+            <select
+
+                class="input-control"
+
+                [(ngModel)]="nuevoUsuario.id_provincia"
+
+                (change)="cambioProvinciaNuevoUsuario()"
+
+            >
+
+                <option [ngValue]="null">
+
+                    Seleccione...
+
+                </option>
+
+                @for(
+
+                    provincia of provincias;
+
+                    track provincia.id_provincia
+
+                ){
+
+                <option
+
+                    [ngValue]="provincia.id_provincia"
+
+                >
+
+                    {{ provincia.nombre_provincia }}
+
+                </option>
+
+                }
+
+            </select>
+
+        </div>
+
+        }
+
+        @if(
+
+            nuevoUsuario.tipo_usuario=='Profesor' ||
+
+            nuevoUsuario.tipo_usuario=='Estudiante'
+
+        ){
+
+        <div class="grupo">
+
+            <label>
+
+                Ciudad
+
+            </label>
+
+            <select
+
+                class="input-control"
+
+                [(ngModel)]="nuevoUsuario.id_ciudad"
+
+            >
+
+                <option [ngValue]="null">
+
+                    Seleccione...
+
+                </option>
+
+                @for(
+
+                    ciudad of ciudades;
+
+                    track ciudad.id_ciudad
+
+                ){
+
+                <option
+
+                    [ngValue]="ciudad.id_ciudad"
+
+                >
+
+                    {{ ciudad.nombre_ciudad }}
+
+                </option>
+
+                }
+
+            </select>
+
+        </div>
+
+        }
+
+        <div class="grupo">
+
+            <label>
+
+                Correo electrónico
+
+            </label>
+
+            <input
+
+                type="email"
+
+                class="input-control"
+
+                [(ngModel)]="nuevoUsuario.correo"
+
+            >
+
+        </div>
+
+        <div class="grupo">
+
+            <label>
+
+                Contraseña
+
+            </label>
+
+            <div class="password-wrapper">
+
+                <input
+
+                    class="input-control"
+
+                    [type]="
+
+                        mostrarPasswordNuevo
+
+                        ? 'text'
+
+                        : 'password'
+
+                    "
+
+                    [(ngModel)]="nuevoUsuario.password"
+
+                >
+
+                <button
+
+                    type="button"
+
+                    class="password-toggle"
+
+                    (click)="
+
+                        mostrarPasswordNuevo =
+
+                        !mostrarPasswordNuevo
+
+                    "
+
+                >
+
+                    <i
+
+                        class="bi"
+
+                        [class.bi-eye]="!mostrarPasswordNuevo"
+
+                        [class.bi-eye-slash]="mostrarPasswordNuevo"
+
+                    ></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        
+
+        <!-- ===================================== -->
+        <!-- BOTONES -->
+        <!-- ===================================== -->
+
+        <div class="acciones-modal">
+
+            <button
+
+                class="btn-cancelar-modal"
+
+                (click)="cerrarModalNuevoUsuario()"
+
+            >
+
+                Cancelar
+
+            </button>
+
+            <button
+
+                class="btn-guardar-modal"
+
+                (click)="registrarNuevoUsuario()"
+
+            >
+
+                Continuar
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+}
