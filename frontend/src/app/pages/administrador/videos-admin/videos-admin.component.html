@@ -1,0 +1,1135 @@
+<div class="dashboard-container">
+
+    <app-topbar-admin
+        [nombreAdministrador]="nombreAdministrador">
+    </app-topbar-admin>
+
+    <app-sidebar-admin
+        [(menuAbierto)]="menuAbierto">
+    </app-sidebar-admin>
+
+    <main
+
+        class="contenido"
+
+        [class.menu-cerrado]="!menuAbierto"
+
+    >
+
+        <section class="cabecera">
+
+            <h1>
+
+                Gestión de Videos
+
+            </h1>
+
+            <p>
+
+                Administra el banco general de videos educativos del sistema.
+
+            </p>
+
+        </section>
+
+        <!--======================================
+        RESUMEN
+        =======================================-->
+
+        <section class="resumen">
+
+            <div class="card-resumen">
+
+                <div class="icono morado">
+
+                    <i class="bi bi-camera-video-fill"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+
+                        Total videos
+
+                    </span>
+
+                    <h2>
+
+                        {{ resumen.total_videos }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="card-resumen">
+
+                <div class="icono azul">
+
+                    <i class="bi bi-play-circle-fill"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+
+                        Diagnóstico
+
+                    </span>
+
+                    <h2>
+
+                        {{ resumen.total_diagnostico }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="card-resumen">
+
+                <div class="icono verde">
+
+                    <i class="bi bi-journal-check"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+
+                        Refuerzo
+
+                    </span>
+
+                    <h2>
+
+                        {{ resumen.total_refuerzo }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="card-resumen">
+
+                <div class="icono naranja">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+
+                        Activos
+
+                    </span>
+
+                    <h2>
+
+                        {{ resumen.total_activos }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!--======================================
+        FILTROS
+        =======================================-->
+
+        <section class="card filtros">
+
+            <h2>
+
+                <i class="bi bi-funnel-fill"></i>
+
+                Filtrar videos
+
+            </h2>
+
+            <div class="grid-filtros">
+
+                <!--==================================
+                COMPETENCIA
+                ==================================-->
+
+                <div class="campo">
+
+                    <label>
+
+                        Competencia
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="competenciaSeleccionada"
+
+                    >
+
+                        <option
+
+                            [ngValue]="null"
+
+                        >
+
+                            Todas las competencias
+
+                        </option>
+
+                        @for(
+
+                            competencia of competencias;
+
+                            track competencia.id_competencia
+
+                        ){
+
+                            <option
+
+                                [ngValue]="
+
+                                    competencia.id_competencia
+
+                                "
+
+                            >
+
+                                {{ competencia.nombre_competencia }}
+
+                            </option>
+
+                        }
+
+                    </select>
+
+                </div>
+
+                <!--==================================
+                SUBMÓDULO
+                ==================================-->
+
+                <div class="campo">
+
+                    <label>
+
+                        Submódulo
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="submoduloSeleccionado"
+
+                    >
+
+                        <option
+
+                            [ngValue]="null"
+
+                        >
+
+                            Todos los submódulos
+
+                        </option>
+
+                        @for(
+
+                            submodulo of submodulos;
+
+                            track submodulo.id_submodulo
+
+                        ){
+
+                            <option
+
+                                [ngValue]="
+
+                                    submodulo.id_submodulo
+
+                                "
+
+                            >
+
+                                {{ submodulo.nombre_submodulo }}
+
+                            </option>
+
+                        }
+
+                    </select>
+
+                </div>
+
+                <!--==================================
+                TEMA
+                ==================================-->
+
+                <div class="campo">
+
+                    <label>
+
+                        Tema
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="temaSeleccionado"
+
+                    >
+
+                        <option
+
+                            [ngValue]="null"
+
+                        >
+
+                            Todos los temas
+
+                        </option>
+
+                        @for(
+
+                            tema of temas;
+
+                            track tema.id_tema
+
+                        ){
+
+                            <option
+
+                                [ngValue]="
+
+                                    tema.id_tema
+
+                                "
+
+                            >
+
+                                {{ tema.nombre_tema }}
+
+                            </option>
+
+                        }
+
+                    </select>
+
+                </div>
+
+                <!--==================================
+                TIPO
+                ==================================-->
+
+                <div class="campo">
+
+                    <label>
+
+                        Tipo de video
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="tipoSeleccionado"
+
+                    >
+
+                        <option value="">
+
+                            Todos
+
+                        </option>
+
+                        <option value="DIAGNOSTICO">
+
+                            Diagnóstico
+
+                        </option>
+
+                        <option value="REFUERZO">
+
+                            Refuerzo
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!--==================================
+            BOTONES
+            ==================================-->
+
+            <div class="acciones">
+
+                <button
+
+                    class="btn-buscar"
+
+                    (click)="filtrarVideos()"
+
+                >
+
+                    <i class="bi bi-search"></i>
+
+                    Buscar
+
+                </button>
+
+                <button
+
+                    class="btn-limpiar"
+
+                    (click)="limpiarFiltros()"
+
+                >
+
+                    <i class="bi bi-arrow-clockwise"></i>
+
+                    Limpiar
+
+                </button>
+
+            </div>
+
+        </section>
+
+        <!--======================================
+        CONTENIDO
+        =======================================-->
+
+        <section class="layout-videos">
+
+            <!--======================================
+            BIBLIOTECA
+            =======================================-->
+
+            <div class="card tabla-card">
+
+                <!--======================================
+                HEADER
+                =======================================-->
+
+                <div class="tabla-header">
+
+                    <div>
+
+                        <h2>
+
+                            Biblioteca de Videos
+
+                        </h2>
+
+                        <span>
+
+                            {{ videosFiltrados.length }} videos
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!--======================================
+                TABLA
+                =======================================-->
+
+                <div class="tabla-responsive">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+
+                                <th>Título</th>
+
+                                <th>Tipo</th>
+
+                                <th>Estado</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @if(videosFiltrados.length===0){
+
+                                <tr>
+
+                                    <td
+
+                                        colspan="4"
+
+                                        class="sin-registros"
+
+                                    >
+
+                                        No existen videos registrados.
+
+                                    </td>
+
+                                </tr>
+
+                            }
+
+                            @for(
+
+                                video of videosPaginados;
+
+                                track video.id_video
+
+                            ){
+
+                                <tr
+
+                                    class="fila"
+
+                                    (click)="seleccionarVideo(video)"
+
+                                >
+
+                                    <td>
+
+                                        {{ video.id_video }}
+
+                                    </td>
+
+                                    <td class="titulo-video">
+
+                                        {{ video.titulo }}
+
+                                    </td>
+
+                                    <td>
+
+                                        {{ video.tipo }}
+
+                                    </td>
+
+                                    <td>
+
+                                        <span
+
+                                            class="badge"
+
+                                            [class.activo]="video.estado"
+
+                                            [class.inactivo]="!video.estado"
+
+                                        >
+
+                                            {{
+
+                                                video.estado
+
+                                                ? 'Activo'
+
+                                                : 'Inactivo'
+
+                                            }}
+
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            <!--======================================
+                PAGINACIÓN
+                =======================================-->
+
+                <div class="paginacion">
+
+                    <button
+
+                        (click)="paginaAnterior()"
+
+                        [disabled]="paginaActual===1"
+
+                    >
+
+                        <i class="bi bi-chevron-left"></i>
+
+                        Anterior
+
+                    </button>
+
+                    <span>
+
+                        Página {{ paginaActual }}
+
+                        de
+
+                        {{ totalPaginas }}
+
+                    </span>
+
+                    <button
+
+                        (click)="paginaSiguiente()"
+
+                        [disabled]="
+
+                            paginaActual===totalPaginas ||
+
+                            totalPaginas===0
+
+                        "
+
+                    >
+
+                        Siguiente
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </button>
+
+                </div> 
+
+
+
+            </div>
+
+            <!--======================================
+            PANEL DETALLE
+            =======================================-->
+
+            <div class="card panel-detalle">
+
+                @if(!videoSeleccionado){
+
+                    <div class="panel-vacio">
+
+                        <i class="bi bi-camera-video"></i>
+
+                        <h3>
+
+                            Ningún video seleccionado
+
+                        </h3>
+
+                        <p>
+
+                            Seleccione un video para visualizar su información.
+
+                        </p>
+
+                    </div>
+
+                }
+
+                @if(videoSeleccionado){
+
+                    <div class="detalle">
+
+                        <div class="panel-header">
+
+                            <div class="titulo-detalle">
+
+                                <i class="bi bi-play-circle-fill"></i>
+
+                                <h2>
+
+                                    Detalle del video
+
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+                        <div class="panel-body">
+
+                            <!--======================================
+                            VISTA PREVIA
+                            =======================================-->
+
+                            <div class="preview-video">
+
+                                <iframe
+
+                                    width="100%"
+
+                                    height="250"
+
+                                    [src]="videoSeguro"
+
+                                    allowfullscreen
+
+                                >
+
+                                </iframe>
+
+                            </div>
+
+                            <div class="campo-detalle">
+
+                                <label>
+
+                                    Título
+
+                                </label>
+
+                                @if(!modoEdicion){
+
+                                    <span>
+
+                                        {{ videoSeleccionado.titulo }}
+
+                                    </span>
+
+                                }
+
+                                @if(modoEdicion){
+
+                                    <input
+
+                                        type="text"
+
+                                        [(ngModel)]="videoEditando.titulo"
+
+                                    >
+
+                                }
+
+                            </div>
+
+                            <div class="campo-detalle">
+
+                                <label>
+
+                                    Descripción
+
+                                </label>
+
+                                @if(!modoEdicion){
+
+                                    <p>
+
+                                        {{ videoSeleccionado.descripcion }}
+
+                                    </p>
+
+                                }
+
+                                @if(modoEdicion){
+
+                                    <textarea
+
+                                        rows="5"
+
+                                        [(ngModel)]="videoEditando.descripcion"
+
+                                    >
+
+                                    </textarea>
+
+                                }
+
+                            </div>
+
+                            <!--======================================
+                            COMPETENCIA
+                            =======================================-->
+
+                            <div class="campo-detalle">
+
+                                <label>
+
+                                    Competencia
+
+                                </label>
+
+                                @if(!modoEdicion){
+
+                                    <span>
+
+                                        {{ videoSeleccionado.competencia }}
+
+                                    </span>
+
+                                }
+
+                                @if(modoEdicion){
+
+                                    <select
+
+                                        [(ngModel)]="videoEditando.id_competencia"
+
+                                    >
+
+                                        @for(
+
+                                            competencia of competencias;
+
+                                            track competencia.id_competencia
+
+                                        ){
+
+                                            <option
+
+                                                [ngValue]="
+
+                                                    competencia.id_competencia
+
+                                                "
+
+                                            >
+
+                                                {{ competencia.nombre_competencia }}
+
+                                            </option>
+
+                                        }
+
+                                    </select>
+
+                                }
+
+                            </div>
+
+                            <!--======================================
+                            SUBMÓDULO
+                            =======================================-->
+
+                            <div class="campo-detalle">
+
+                                <label>
+
+                                    Submódulo
+
+                                </label>
+
+                                @if(!modoEdicion){
+
+                                    <span>
+
+                                        {{ videoSeleccionado.submodulo }}
+
+                                    </span>
+
+                                }
+
+                                @if(modoEdicion){
+
+                                    <select
+
+                                        [(ngModel)]="videoEditando.id_submodulo"
+
+                                    >
+
+                                        @for(
+
+                                            submodulo of submodulos;
+
+                                            track submodulo.id_submodulo
+
+                                        ){
+
+                                            <option
+
+                                                [ngValue]="
+
+                                                    submodulo.id_submodulo
+
+                                                "
+
+                                            >
+
+                                                {{ submodulo.nombre_submodulo }}
+
+                                            </option>
+
+                                        }
+
+                                    </select>
+
+                                }
+
+                            </div>
+
+                            <!--======================================
+                            TEMA
+                            =======================================-->
+
+                            <div class="campo-detalle">
+
+                                <label>
+
+                                    Tema
+
+                                </label>
+
+                                @if(!modoEdicion){
+
+                                    <span>
+
+                                        {{ videoSeleccionado.tema }}
+
+                                    </span>
+
+                                }
+
+                                @if(modoEdicion){
+
+                                    <select
+
+                                        [(ngModel)]="videoEditando.id_tema"
+
+                                    >
+
+                                        @for(
+
+                                            tema of temas;
+
+                                            track tema.id_tema
+
+                                        ){
+
+                                            <option
+
+                                                [ngValue]="
+
+                                                    tema.id_tema
+
+                                                "
+
+                                            >
+
+                                                {{ tema.nombre_tema }}
+
+                                            </option>
+
+                                        }
+
+                                    </select>
+
+                                }
+
+                            </div>
+
+                            <!--======================================
+                            TIPO
+                            =======================================-->
+
+                            <div class="campo-detalle">
+
+                                <label>
+
+                                    Tipo
+
+                                </label>
+
+                                @if(!modoEdicion){
+
+                                    <span class="badge-tipo">
+
+                                        {{ videoSeleccionado.tipo }}
+
+                                    </span>
+
+                                }
+
+                                @if(modoEdicion){
+
+                                    <select
+
+                                        [(ngModel)]="videoEditando.tipo"
+
+                                    >
+
+                                        <option value="DIAGNOSTICO">
+
+                                            Diagnóstico
+
+                                        </option>
+
+                                        <option value="REFUERZO">
+
+                                            Refuerzo
+
+                                        </option>
+
+                                    </select>
+
+                                }
+
+                            </div>
+
+                            <!--======================================
+                            ESTADO
+                            =======================================-->
+
+                            <div class="campo-detalle">
+
+                                <label>
+
+                                    Estado
+
+                                </label>
+
+                                <span
+
+                                    class="badge"
+
+                                    [class.activo]="videoSeleccionado.estado"
+
+                                    [class.inactivo]="!videoSeleccionado.estado"
+
+                                >
+
+                                    {{
+
+                                        videoSeleccionado.estado
+
+                                        ? 'Activo'
+
+                                        : 'Inactivo'
+
+                                    }}
+
+                                </span>
+
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+                    <!--======================================
+                    ACCIONES
+                    =======================================-->
+
+                    <div class="panel-acciones">
+
+                        @if(!modoEdicion){
+
+                            <button
+
+                                class="btn-editar"
+
+                                (click)="activarEdicion()"
+
+                            >
+
+                                <i class="bi bi-pencil-square"></i>
+
+                                Editar
+
+                            </button>
+
+                        }
+
+                        @if(modoEdicion){
+
+                            <button
+
+                                class="btn-guardar"
+
+                                (click)="guardarCambios()"
+
+                            >
+
+                                <i class="bi bi-check-circle"></i>
+
+                                Guardar cambios
+
+                            </button>
+
+                            <button
+
+                                class="btn-cancelar"
+
+                                (click)="cancelarEdicion()"
+
+                            >
+
+                                <i class="bi bi-x-circle"></i>
+
+                                Cancelar
+
+                            </button>
+
+                        }
+
+                        <button
+
+                            class="btn-estado"
+
+                            (click)="cambiarEstado()"
+
+                        >
+
+                            <i class="bi bi-arrow-repeat"></i>
+
+                            {{
+
+                                videoSeleccionado.estado
+
+                                ? 'Desactivar'
+
+                                : 'Activar'
+
+                            }}
+
+                        </button>
+
+                        <button
+
+                            class="btn-eliminar"
+
+                            (click)="eliminarVideo()"
+
+                        >
+
+                            <i class="bi bi-trash"></i>
+
+                            Eliminar
+
+                        </button>
+
+                    </div>
+
+                }
+
+
+
+            </div>
+
+        </section>
+
+
+
+    </main>
+
+</div>

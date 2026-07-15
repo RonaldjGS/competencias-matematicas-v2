@@ -51,6 +51,12 @@ from app.routers.configuracion_quiz import router as configuracion_quiz
 
 from app.routers.preguntas_admin import router as preguntas_admin
 
+from app.routers.videos_admin import (
+
+    router as videos_admin
+
+)
+
 app = FastAPI()
 
 app.add_middleware(
@@ -134,4 +140,10 @@ app.include_router(
 
 app.include_router(
     preguntas_admin
+)
+
+app.include_router(
+
+    videos_admin
+
 )

@@ -96,6 +96,10 @@ import {
   PreguntasAdminComponent
 } from './pages/administrador/preguntas-admin/preguntas-admin.component';
 
+import {
+  VideosAdminComponent
+} from './pages/administrador/videos-admin/videos-admin.component';
+
 export const routes: Routes = [
 
   {
@@ -217,6 +221,11 @@ export const routes: Routes = [
   {
     path: 'preguntas-admin',
     component: PreguntasAdminComponent
+  },
+
+  {
+    path: 'videos-admin',
+    component: VideosAdminComponent
   }
 
 ];
