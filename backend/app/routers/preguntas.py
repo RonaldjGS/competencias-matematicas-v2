@@ -6,6 +6,8 @@ from fastapi import (
     HTTPException
 )
 
+import traceback
+
 from sqlalchemy.orm import Session
 
 import unicodedata
@@ -480,19 +482,39 @@ def importar_excel(
             continue
 
         try:
+            
+            print("--------------------------------")
+
+            print("Profesor:", profesor.id_profesor)
+
+            print("Nivel:", profesor.id_nivel)
+
+            print("Competencia:", id_competencia)
+
+            print("Submodulo:", id_submodulo)
+
+            print("Tema:", id_tema)
+
+            print("Tiempo:", pregunta.tiempo_estimado)
+
+            print("--------------------------------")
 
             db.commit()
 
         except Exception:
 
             db.rollback()
+            
+            traceback.print_exc()
+
 
             raise HTTPException(
 
                 status_code=500,
 
                 detail="Ocurrió un error al guardar las preguntas."
-
+                
+                
             )
 
     # ==========================================
@@ -611,7 +633,7 @@ def descargar_plantilla():
 
         / "templates"
 
-        / "Plantilla_Importacion_Preguntas.xlsx"
+        / "Plantilla_Importacion_Preguntas_1.xlsx"
 
     )
 

@@ -121,7 +121,8 @@ class PreguntaCompetencia(Base):
 
     update_at = Column(
         DateTime(timezone=True),
-        nullable=True
+        server_default=func.now(),
+        onupdate=func.now()
     )
     
 

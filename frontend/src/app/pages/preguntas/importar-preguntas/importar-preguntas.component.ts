@@ -804,6 +804,8 @@ implements OnInit {
 
                 }
 
+                this.actualizarCabeceraPaso();
+
               },
 
               error:(error:any)=>{
