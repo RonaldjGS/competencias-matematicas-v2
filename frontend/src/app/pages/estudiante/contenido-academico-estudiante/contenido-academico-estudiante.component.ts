@@ -116,6 +116,8 @@ export class ContenidoAcademicoEstudianteComponent implements OnInit{
 
     ngOnInit():void{
 
+        
+
         this.cargarCompetencias();
 
         this.cargarTiposContenido();

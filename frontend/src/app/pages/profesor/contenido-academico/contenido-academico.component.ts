@@ -8,6 +8,8 @@ import {
 
 } from '@angular/core';
 
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 import { HttpErrorResponse } from '@angular/common/http';
 
 import {
@@ -167,7 +169,7 @@ export class ContenidoAcademicoComponent implements OnInit{
 
     registrosPorPagina = 8;
 
-    urlVistaPrevia = '';
+    urlVistaPrevia!: SafeResourceUrl;
 
     //==========================================
     // CONSTRUCTOR
@@ -178,6 +180,8 @@ export class ContenidoAcademicoComponent implements OnInit{
         private contenidoService:ContenidoAcademicoService,
 
         private catalogosService:CatalogosService,
+
+        private sanitizer: DomSanitizer,
 
         private cdr:ChangeDetectorRef
 
@@ -219,7 +223,7 @@ export class ContenidoAcademicoComponent implements OnInit{
 
         this.modoEdicion = false;
 
-        this.urlVistaPrevia = '';
+        this.urlVistaPrevia = null as any;
 
     }
 
@@ -553,13 +557,21 @@ export class ContenidoAcademicoComponent implements OnInit{
 
                     this.contenidoSeleccionado = resp;
 
-                    this.urlVistaPrevia =
+                    const url =
 
                         'http://localhost:1031/uploads/contenido_academico/'
 
                         +
 
                         resp.archivo;
+
+                    this.urlVistaPrevia =
+
+                        this.sanitizer.bypassSecurityTrustResourceUrl(
+
+                            url
+
+                        );
 
                     this.modoEdicion = false;
 
