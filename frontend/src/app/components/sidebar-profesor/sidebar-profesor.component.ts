@@ -107,6 +107,15 @@ export class SidebarProfesorComponent{
 
     }
     
+    irContenidoAcademico(){
+
+        this.router.navigate([
+
+            '/contenido-academico'
+
+        ]);
+
+    }
 
     cerrarSesion(){
 

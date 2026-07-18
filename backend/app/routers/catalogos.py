@@ -9,6 +9,10 @@ from app.core.auth import (
     get_current_profesor
 )
 
+from app.core.auth import get_current_estudiante
+
+from app.models.usuarios import Estudiante
+
 from app.models.usuarios import (
     Profesor
 )
@@ -25,7 +29,8 @@ from app.models.catalogos import (
 from app.models.academico import (
     Competencia,
     Submodulo,
-    Tema
+    Tema,
+    TipoContenidoAcademico
 )
 
 from app.schemas.catalogos import (
@@ -37,7 +42,8 @@ from app.schemas.catalogos import (
     SubmoduloOut,
     TemaOut,
     ProvinciaOut,
-    ProfesorOut
+    ProfesorOut,
+    TipoContenidoAcademicoOut
 )
 
 from app.services.catalogos_service import (
@@ -392,6 +398,88 @@ def listar_profesores_por_nivel(
         .order_by(
 
             Profesor.nombre_profesor.asc()
+
+        )
+
+        .all()
+
+    )
+    
+# ==========================================
+# TIPOS DE CONTENIDO
+# ==========================================
+
+@router.get(
+    "/tipos-contenido",
+    response_model=list[TipoContenidoAcademicoOut]
+)
+def listar_tipos_contenido(
+    db: Session = Depends(get_db)
+):
+
+    return (
+
+        db.query(
+
+            TipoContenidoAcademico
+
+        )
+
+        .filter(
+
+            TipoContenidoAcademico.estado == True
+
+        )
+
+        .order_by(
+
+            TipoContenidoAcademico.nombre_tipo.asc()
+
+        )
+
+        .all()
+
+    )
+    
+# ==========================================
+# TEMAS DEL ESTUDIANTE LOGUEADO
+# ==========================================
+
+@router.get(
+
+    "/temas-estudiante",
+
+    response_model=list[TemaOut]
+
+)
+
+def listar_temas_estudiante(
+
+    estudiante: Estudiante = Depends(
+
+        get_current_estudiante
+
+    ),
+
+    db: Session = Depends(get_db)
+
+):
+
+    return (
+
+        db.query(
+
+            Tema
+
+        )
+
+        .filter(
+
+            Tema.id_nivel ==
+
+            estudiante.id_nivel,
+
+            Tema.estado == True
 
         )
 

@@ -100,6 +100,19 @@ import {
   VideosAdminComponent
 } from './pages/administrador/videos-admin/videos-admin.component';
 
+ import {
+
+    ContenidoAcademicoComponent
+
+} from './pages/profesor/contenido-academico/contenido-academico.component';
+
+ import {
+
+    ContenidoAcademicoEstudianteComponent
+
+} from './pages/estudiante/contenido-academico-estudiante/contenido-academico-estudiante.component';
+
+
 export const routes: Routes = [
 
   {
@@ -226,6 +239,18 @@ export const routes: Routes = [
   {
     path: 'videos-admin',
     component: VideosAdminComponent
+  },
+
+  {
+    path:'contenido-academico',
+
+    component:ContenidoAcademicoComponent
+  },
+
+  {
+    path:'contenido-academico-estudiante',
+
+    component:ContenidoAcademicoEstudianteComponent
   }
 
 ];

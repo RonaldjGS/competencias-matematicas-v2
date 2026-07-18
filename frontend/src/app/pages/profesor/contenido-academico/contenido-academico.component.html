@@ -1,0 +1,1637 @@
+<app-topbar-profesor
+        [nombreProfesor]="nombreProfesor">
+    </app-topbar-profesor>
+
+    <app-sidebar-profesor
+        [(menuAbierto)]="menuAbierto">
+    </app-sidebar-profesor>
+
+<div
+
+    class="contenido"
+
+    [class.expandido]="!menuAbierto"
+
+>
+
+    <!--======================================
+    CABECERA
+    =======================================-->
+
+    <div class="cabecera">
+
+        <div>
+
+            <h1>
+
+                Contenido Matemático
+
+            </h1>
+
+            <p>
+
+                Administre los recursos académicos que estarán disponibles para los estudiantes.
+
+            </p>
+
+        </div>
+
+        <button
+
+            class="btn-agregar"
+
+            (click)="abrirModal()"
+
+        >
+
+            <i class="bi bi-cloud-arrow-up"></i>
+
+            Añadir contenido
+
+        </button>
+
+    </div>
+
+    <!--======================================
+    FILTROS
+    =======================================-->
+
+    <div class="card-filtros">
+
+        <div class="grupo-filtro">
+
+            <label>
+
+                Competencia
+
+            </label>
+
+            <select
+
+                [(ngModel)]="filtroCompetencia"
+
+                (change)="cambioCompetencia()"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Todas
+
+                </option>
+
+                <option
+
+                    *ngFor="let competencia of competencias"
+
+                    [ngValue]="competencia.id_competencia"
+
+                >
+
+                    {{competencia.nombre_competencia}}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="grupo-filtro">
+
+            <label>
+
+                Submódulo
+
+            </label>
+
+            <select
+
+                [(ngModel)]="filtroSubmodulo"
+
+                (change)="cambioSubmodulo()"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Todos
+
+                </option>
+
+                <option
+
+                    *ngFor="let submodulo of submodulos"
+
+                    [ngValue]="submodulo.id_submodulo"
+
+                >
+
+                    {{submodulo.nombre_submodulo}}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="grupo-filtro">
+
+            <label>
+
+                Tema
+
+            </label>
+
+            <select
+
+                [(ngModel)]="filtroTema"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Todos
+
+                </option>
+
+                <option
+
+                    *ngFor="let tema of temas"
+
+                    [ngValue]="tema.id_tema"
+
+                >
+
+                    {{tema.nombre_tema}}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="grupo-filtro">
+
+            <label>
+
+                Tipo
+
+            </label>
+
+            <select
+
+                [(ngModel)]="filtroTipo"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Todos
+
+                </option>
+
+                <option
+
+                    *ngFor="let tipo of tiposContenido"
+
+                    [ngValue]="tipo.id_tipo_contenido"
+
+                >
+
+                    {{tipo.nombre_tipo}}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="acciones-filtro">
+
+            <button
+
+                class="btn-buscar"
+
+                (click)="buscarContenidos()"
+
+            >
+
+                <i class="bi bi-search"></i>
+
+                Buscar
+
+            </button>
+
+            <button
+
+                class="btn-limpiar"
+
+                (click)="limpiarFiltros()"
+
+            >
+
+                <i class="bi bi-arrow-clockwise"></i>
+
+                Limpiar
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!--======================================
+    PESTAÑAS
+    =======================================-->
+
+    <div class="pestanas">
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='PDF'"
+
+            (click)="seleccionarPestana('PDF')"
+
+        >
+
+            <i class="bi bi-file-earmark-pdf"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    PDF
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('PDF')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='WORD'"
+
+            (click)="seleccionarPestana('WORD')"
+
+        >
+
+            <i class="bi bi-file-earmark-word"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    Word
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('WORD')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='EXCEL'"
+
+            (click)="seleccionarPestana('EXCEL')"
+
+        >
+
+            <i class="bi bi-file-earmark-excel"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    Excel
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('EXCEL')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='POWERPOINT'"
+
+            (click)="seleccionarPestana('POWERPOINT')"
+
+        >
+
+            <i class="bi bi-file-earmark-ppt"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    PowerPoint
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('POWERPOINT')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='IMAGEN'"
+
+            (click)="seleccionarPestana('IMAGEN')"
+
+        >
+
+            <i class="bi bi-image"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    Imagen
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('IMAGEN')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='ARTICULO'"
+
+            (click)="seleccionarPestana('ARTICULO')"
+
+        >
+
+            <i class="bi bi-journal-text"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    Artículo
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('ARTICULO')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='OTRO'"
+
+            (click)="seleccionarPestana('OTRO')"
+
+        >
+
+            <i class="bi bi-folder2-open"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    Otros
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('OTRO')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+    </div>
+
+    <!--======================================
+    CONTENEDOR PRINCIPAL
+    =======================================-->
+
+    <div
+
+        class="contenedor-principal"
+
+        [class.detalle-abierto]="contenidoSeleccionado"
+
+    >
+
+        <!-- Biblioteca -->
+
+        <div class="columna-biblioteca">
+
+            <div class="biblioteca">
+
+                <!--======================================
+                BIBLIOTECA
+                =======================================-->
+
+                <div
+
+                    class="item-contenido"
+
+                    *ngFor="let contenido of contenidosPaginados"
+
+                >
+
+                    <div class="icono-contenido">
+
+                        <i
+
+                            class="bi"
+
+                            [ngClass]="{
+
+                                'bi-file-earmark-pdf':'PDF'==contenido.tipo_contenido,
+
+                                'bi-file-earmark-word':'WORD'==contenido.tipo_contenido,
+
+                                'bi-file-earmark-excel':'EXCEL'==contenido.tipo_contenido,
+
+                                'bi-file-earmark-ppt':'POWERPOINT'==contenido.tipo_contenido,
+
+                                'bi-image':'IMAGEN'==contenido.tipo_contenido,
+
+                                'bi-journal-text':'ARTICULO'==contenido.tipo_contenido,
+
+                                'bi-folder2-open':'OTRO'==contenido.tipo_contenido
+
+                            }"
+
+                        ></i>
+
+                    </div>
+
+                    <div class="info-contenido">
+
+                        <h3>
+
+                            {{contenido.nombre_contenido}}
+
+                        </h3>
+
+                        <div class="meta-contenido">
+
+                            <div>
+
+                                <strong>Competencia</strong>
+
+                                <span>{{contenido.competencia}}</span>
+
+                            </div>
+
+                            <div>
+
+                                <strong>Submódulo</strong>
+
+                                <span>{{contenido.submodulo}}</span>
+
+                            </div>
+
+                            <div>
+
+                                <strong>Tema</strong>
+
+                                <span>{{contenido.tema}}</span>
+
+                            </div>
+
+                            <div>
+
+                                <strong>Tipo</strong>
+
+                                <span>{{contenido.tipo_contenido}}</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="acciones-contenido">
+
+                        <span
+                            class="estado-contenido"
+                            [class.activo]="contenido.estado"
+                            [class.inactivo]="!contenido.estado"
+                        >
+                            {{contenido.estado ? 'Activo' : 'Inactivo'}}
+                        </span>
+
+                        <button
+                            class="btn-detalle"
+                            (click)="seleccionarContenido(contenido)"
+                        >
+
+                            <i class="bi bi-eye"></i>
+
+                            Ver detalle
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div
+
+                    class="sin-registros"
+
+                    *ngIf="contenidosFiltrados.length==0"
+
+                >
+
+                    <i class="bi bi-folder-x"></i>
+
+                    <p>
+
+                        No existen contenidos disponibles.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div
+
+                class="barra-paginacion"
+
+                *ngIf="contenidosFiltrados.length>0"
+
+            >
+
+                <div class="contador-registros">
+
+                    Mostrando
+
+                    {{registroInicial}}
+
+                    -
+
+                    {{registroFinal}}
+
+                    de
+
+                    {{contenidosFiltrados.length}}
+
+                    contenidos
+
+                </div>
+
+                <div class="paginacion">
+
+                    <button
+
+                        class="btn-pagina"
+
+                        (click)="paginaAnterior()"
+
+                        [disabled]="paginaActual==1"
+
+                    >
+
+                        <i class="bi bi-chevron-left"></i>
+
+                    </button>
+
+                    <span>
+
+                        Página
+
+                        <strong>
+
+                            {{paginaActual}}
+
+                        </strong>
+
+                        de
+
+                        <strong>
+
+                            {{totalPaginas}}
+
+                        </strong>
+
+                    </span>
+
+                    <button
+
+                        class="btn-pagina"
+
+                        (click)="paginaSiguiente()"
+
+                        [disabled]="paginaActual==totalPaginas"
+
+                    >
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Panel detalle -->
+
+        <div class="panel-detalle"
+
+            *ngIf="contenidoSeleccionado"
+
+        >
+
+            <div *ngIf="!modoEdicion">
+
+                
+                
+                <!--======================================
+                DETALLE CONTENIDO
+                =======================================-->
+
+                <div class="cabecera-detalle">
+
+                    <div class="info-principal">
+
+                        <h2>
+
+                            {{contenidoSeleccionado.nombre_contenido}}
+
+                        </h2>
+
+                        <span class="tipo-contenido">
+
+                            {{contenidoSeleccionado.tipo_contenido}}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="visor-contenido">
+
+                    <!--======================================
+                    IMAGEN
+                    =======================================-->
+
+                    <img
+
+                        *ngIf="esImagen()"
+
+                        [src]="urlVistaPrevia"
+
+                        class="preview-imagen"
+
+                    >
+
+                    <!--======================================
+                    PDF / ARTÍCULO
+                    =======================================-->
+
+                    <iframe
+
+                        *ngIf="esPdf()"
+
+                        [src]="urlVistaPrevia"
+
+                        class="preview-pdf"
+
+                    >
+
+                    </iframe>
+
+                    <!--======================================
+                    OTROS DOCUMENTOS
+                    =======================================-->
+
+                    <div
+
+                        class="placeholder-preview"
+
+                        *ngIf="!esImagen() && !esPdf()"
+
+                    >
+
+                        <i
+
+                            class="bi"
+
+                            [ngClass]="{
+
+                                'bi-file-earmark-word':
+
+                                    contenidoSeleccionado.tipo_contenido=='WORD',
+
+                                'bi-file-earmark-excel':
+
+                                    contenidoSeleccionado.tipo_contenido=='EXCEL',
+
+                                'bi-file-earmark-ppt':
+
+                                    contenidoSeleccionado.tipo_contenido=='POWERPOINT',
+
+                                'bi-folder2-open':
+
+                                    contenidoSeleccionado.tipo_contenido=='OTRO'
+
+                            }"
+
+                        ></i>
+
+                        <h4>
+
+                            {{contenidoSeleccionado.tipo_contenido}}
+
+                        </h4>
+
+                        <p>
+
+                            Vista previa no disponible para este tipo de archivo.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <h3 class="titulo-seccion">
+
+                    Información
+
+                </h3>
+
+                <div class="grid-detalle">
+
+                    <div class="detalle-item">
+
+                        <label>
+
+                            Competencia
+
+                        </label>
+
+                        <span>
+
+                            {{contenidoSeleccionado.competencia}}
+
+                        </span>
+
+                    </div>
+
+                    <div class="detalle-item">
+
+                        <label>
+
+                            Submódulo
+
+                        </label>
+
+                        <span>
+
+                            {{contenidoSeleccionado.submodulo}}
+
+                        </span>
+
+                    </div>
+
+                    <div class="detalle-item">
+
+                        <label>
+
+                            Tema
+
+                        </label>
+
+                        <span>
+
+                            {{contenidoSeleccionado.tema}}
+
+                        </span>
+
+                    </div>
+
+                    <div class="detalle-item">
+
+                        <label>
+
+                            Tipo
+
+                        </label>
+
+                        <span>
+
+                            {{contenidoSeleccionado.tipo_contenido}}
+
+                        </span>
+
+                    </div>
+
+                    <div class="detalle-item">
+
+                        <label>
+
+                            Nombre
+
+                        </label>
+
+                        <span>
+
+                            {{contenidoSeleccionado.nombre_contenido}}
+
+                        </span>
+
+                    </div>
+
+                    <div class="descripcion-contenido">
+
+                        <label>
+
+                            Descripción
+
+                        </label>
+
+                        <p>
+
+                            {{contenidoSeleccionado.descripcion_contenido}}
+
+                        </p>
+
+                    </div>
+
+                    <div class="detalle-item">
+
+                        <label>
+
+                            Archivo
+
+                        </label>
+
+                        <span>
+
+                            {{contenidoSeleccionado.archivo}}
+
+                        </span>
+
+                    </div>
+
+                    <div class="detalle-item">
+
+                        <label>
+
+                            Extensión
+
+                        </label>
+
+                        <span>
+
+                            {{contenidoSeleccionado.extension}}
+
+                        </span>
+
+                    </div>
+
+                    <div class="detalle-item">
+
+                        <label>
+
+                            Tamaño
+
+                        </label>
+
+                        <span>
+
+                            {{contenidoSeleccionado.tamano_archivo}}
+
+                            bytes
+
+                        </span>
+
+                    </div>
+
+                    <div class="detalle-item">
+
+                        <label>
+
+                            Estado
+
+                        </label>
+
+                        <span
+
+                            class="estado"
+
+                            [class.activo]="contenidoSeleccionado.estado"
+
+                            [class.inactivo]="!contenidoSeleccionado.estado"
+
+                        >
+
+                            {{contenidoSeleccionado.estado ? 'Activo' : 'Inactivo'}}
+
+                        </span>
+
+                    </div>
+
+                    <div class="acciones-detalle">
+
+                        <button
+
+                            class="btn-editar"
+
+                            (click)="activarEdicion()"
+
+                        >
+
+                            <i class="bi bi-pencil-square"></i>
+
+                            Editar
+
+                        </button>
+
+                        <button
+
+                            class="btn-estado"
+
+                            (click)="cambiarEstado()"
+
+                        >
+
+                            <i class="bi bi-arrow-repeat"></i>
+
+                            Estado
+
+                        </button>
+
+                        <button
+
+                            *ngIf="contenidoSeleccionado?.archivo"
+
+                            class="btn-descargar"
+
+                            (click)="descargarContenido()"
+
+                        >
+
+                            <i class="bi bi-download"></i>
+
+                            Descargar
+
+                        </button>
+
+                        <button
+
+                            class="btn-eliminar"
+
+                            (click)="eliminarContenido()"
+
+                        >
+
+                            <i class="bi bi-trash"></i>
+
+                            Eliminar
+
+                        </button>
+
+                    </div>
+                    
+                </div>
+
+            </div>
+
+             <!--======================================
+            MODO EDICIÓN
+            =======================================-->
+
+            <div *ngIf="modoEdicion">
+                <h2>
+
+                    Editar contenido
+
+                </h2>
+
+                <div class="detalle-item">
+
+                    <label>
+
+                        Competencia
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="contenidoEditando.id_competencia"
+
+                        (change)="cambioCompetenciaEditar()"
+
+                    >
+
+                        <option
+
+                            *ngFor="let competencia of competencias"
+
+                            [ngValue]="competencia.id_competencia"
+
+                        >
+
+                            {{competencia.nombre_competencia}}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <label>
+
+                        Submódulo
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="contenidoEditando.id_submodulo"
+
+                        (change)="cambioSubmoduloEditar()"
+
+                    >
+
+                        <option
+
+                            *ngFor="let submodulo of submodulos"
+
+                            [ngValue]="submodulo.id_submodulo"
+
+                        >
+
+                            {{submodulo.nombre_submodulo}}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <label>
+
+                        Tema
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="contenidoEditando.id_tema"
+
+                    >
+
+                        <option
+
+                            *ngFor="let tema of temas"
+
+                            [ngValue]="tema.id_tema"
+
+                        >
+
+                            {{tema.nombre_tema}}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <label>
+
+                        Nombre
+
+                    </label>
+
+                    <input
+
+                        type="text"
+
+                        [(ngModel)]="contenidoEditando.nombre_contenido"
+
+                    >
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <label>
+
+                        Descripción
+
+                    </label>
+
+                    <textarea
+
+                        rows="5"
+
+                        [(ngModel)]="contenidoEditando.descripcion_contenido"
+
+                    ></textarea>
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <label>
+
+                        Tipo
+
+                    </label>
+
+                    <input
+
+                        type="text"
+
+                        [value]="contenidoSeleccionado.tipo_contenido"
+
+                        disabled
+
+                    >
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <label>
+
+                        Archivo
+
+                    </label>
+
+                    <input
+
+                        type="text"
+
+                        [value]="contenidoSeleccionado.archivo"
+
+                        disabled
+
+                    >
+
+                </div>
+
+                <div class="acciones-detalle">
+
+                    <button
+
+                        class="btn-guardar"
+
+                        (click)="guardarEdicion()"
+
+                    >
+
+                        <i class="bi bi-check-circle"></i>
+
+                        Guardar
+
+                    </button>
+
+                    <button
+
+                        class="btn-cancelar"
+
+                        (click)="cancelarEdicion()"
+
+                    >
+
+                        <i class="bi bi-x-circle"></i>
+
+                        Cancelar
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--======================================
+MODAL NUEVO CONTENIDO
+=======================================-->
+
+<div
+
+    class="modal-overlay"
+
+    *ngIf="mostrarModal"
+
+>
+
+    <div class="modal-contenido">
+
+        <div class="modal-header">
+
+            <h2>
+
+                Añadir contenido académico
+
+            </h2>
+
+            <button
+
+                class="btn-cerrar"
+
+                (click)="mostrarModal=false"
+
+            >
+
+                <i class="bi bi-x-lg"></i>
+
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+
+            <div class="fila-modal">
+
+                <div class="grupo-modal">
+
+                    <label>
+
+                        Competencia
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="nuevoContenido.id_competencia"
+
+                        (change)="cambioCompetenciaModal()"
+
+                    >
+
+                        <option
+
+                            [ngValue]="null"
+
+                        >
+
+                            Seleccione
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let competencia of competencias"
+
+                            [ngValue]="competencia.id_competencia"
+
+                        >
+
+                            {{competencia.nombre_competencia}}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="grupo-modal">
+
+                    <label>
+
+                        Submódulo
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="nuevoContenido.id_submodulo"
+
+                        (change)="cambioSubmoduloModal()"
+
+                    >
+
+                        <option
+
+                            [ngValue]="null"
+
+                        >
+
+                            Seleccione
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let submodulo of submodulos"
+
+                            [ngValue]="submodulo.id_submodulo"
+
+                        >
+
+                            {{submodulo.nombre_submodulo}}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="fila-modal">
+
+                <div class="grupo-modal">
+
+                    <label>
+
+                        Tema
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="nuevoContenido.id_tema"
+
+                    >
+
+                        <option
+
+                            [ngValue]="null"
+
+                        >
+
+                            Seleccione
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let tema of temas"
+
+                            [ngValue]="tema.id_tema"
+
+                        >
+
+                            {{tema.nombre_tema}}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="grupo-modal">
+
+                    <label>
+
+                        Tipo
+
+                    </label>
+
+                    <select
+
+                        [(ngModel)]="nuevoContenido.id_tipo_contenido"
+
+                    >
+
+                        <option
+
+                            [ngValue]="null"
+
+                        >
+
+                            Seleccione
+
+                        </option>
+
+                        <option
+
+                            *ngFor="let tipo of tiposContenido"
+
+                            [ngValue]="tipo.id_tipo_contenido"
+
+                        >
+
+                            {{tipo.nombre_tipo}}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!--======================================
+            NOMBRE
+            =======================================-->
+
+            <div class="grupo-modal">
+
+                <label>
+
+                    Nombre del contenido
+
+                </label>
+
+                <input
+
+                    type="text"
+
+                    [(ngModel)]="nuevoContenido.nombre_contenido"
+
+                    placeholder="Ingrese el nombre del contenido"
+
+                >
+
+            </div>
+
+            <!--======================================
+            DESCRIPCIÓN
+            =======================================-->
+
+            <div class="grupo-modal">
+
+                <label>
+
+                    Descripción
+
+                </label>
+
+                <textarea
+
+                    rows="5"
+
+                    [(ngModel)]="nuevoContenido.descripcion_contenido"
+
+                    placeholder="Describa brevemente el contenido"
+
+                ></textarea>
+
+            </div>
+
+            <!--======================================
+            ARCHIVO
+            =======================================-->
+
+            <div class="grupo-modal">
+
+                <label>
+
+                    Archivo
+
+                </label>
+
+                <div class="zona-archivo">
+
+                    <i class="bi bi-cloud-arrow-up"></i>
+
+                    <p>
+
+                        Seleccione el archivo que desea subir
+
+                    </p>
+
+                    <input
+
+                        type="file"
+
+                        (change)="seleccionarArchivo($event)"
+
+                    >
+
+                    <span
+
+                        *ngIf="archivoSeleccionado"
+
+                    >
+
+                        {{archivoSeleccionado.name}}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!--======================================
+            ACCIONES
+            =======================================-->
+
+            <div class="acciones-modal">
+
+                <button
+                    class="btn-cancelar"
+                    (click)="cerrarModal()"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    class="btn-guardar"
+                    (click)="guardarContenido()"
+                >
+                    <i class="bi bi-cloud-upload"></i>
+                    Guardar contenido
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

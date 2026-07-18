@@ -1,0 +1,1044 @@
+<app-topbar-estudiante
+    [nombreEstudiante]="nombreEstudiante">
+</app-topbar-estudiante>
+
+<app-sidebar-estudiante
+    [(menuAbierto)]="menuAbierto">
+</app-sidebar-estudiante>
+
+<div
+
+    class="contenido"
+
+    [class.expandido]="!menuAbierto"
+
+>
+
+    <!--======================================
+    CABECERA
+    =======================================-->
+
+    <div class="cabecera">
+
+        <div>
+
+            <h1>
+
+                Biblioteca Matemática
+
+            </h1>
+
+            <p>
+
+                Consulte los recursos académicos disponibles para su nivel de formación.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!--======================================
+    FILTROS
+    =======================================-->
+
+    <div class="card-filtros">
+
+        <div class="grupo-filtro">
+
+            <label>
+
+                Competencia
+
+            </label>
+
+            <select
+
+                [(ngModel)]="filtroCompetencia"
+
+                (change)="cambioCompetencia()"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Todas
+
+                </option>
+
+                <option
+
+                    *ngFor="let competencia of competencias"
+
+                    [ngValue]="competencia.id_competencia"
+
+                >
+
+                    {{competencia.nombre_competencia}}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="grupo-filtro">
+
+            <label>
+
+                Submódulo
+
+            </label>
+
+            <select
+
+                [(ngModel)]="filtroSubmodulo"
+
+                (change)="cambioSubmodulo()"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Todos
+
+                </option>
+
+                <option
+
+                    *ngFor="let submodulo of submodulos"
+
+                    [ngValue]="submodulo.id_submodulo"
+
+                >
+
+                    {{submodulo.nombre_submodulo}}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="grupo-filtro">
+
+            <label>
+
+                Tema
+
+            </label>
+
+            <select
+
+                [(ngModel)]="filtroTema"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Todos
+
+                </option>
+
+                <option
+
+                    *ngFor="let tema of temas"
+
+                    [ngValue]="tema.id_tema"
+
+                >
+
+                    {{tema.nombre_tema}}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="grupo-filtro">
+
+            <label>
+
+                Tipo
+
+            </label>
+
+            <select
+
+                [(ngModel)]="filtroTipo"
+
+            >
+
+                <option
+
+                    [ngValue]="null"
+
+                >
+
+                    Todos
+
+                </option>
+
+                <option
+
+                    *ngFor="let tipo of tiposContenido"
+
+                    [ngValue]="tipo.id_tipo_contenido"
+
+                >
+
+                    {{tipo.nombre_tipo}}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="acciones-filtro">
+
+            <button
+
+                class="btn-buscar"
+
+                (click)="buscarContenidos()"
+
+            >
+
+                <i class="bi bi-search"></i>
+
+                Buscar
+
+            </button>
+
+            <button
+
+                class="btn-limpiar"
+
+                (click)="limpiarFiltros()"
+
+            >
+
+                <i class="bi bi-arrow-clockwise"></i>
+
+                Limpiar
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!--======================================
+    PESTAÑAS
+    =======================================-->
+
+    <div class="pestanas">
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='PDF'"
+
+            (click)="seleccionarPestana('PDF')"
+
+        >
+
+            <i class="bi bi-file-earmark-pdf"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    PDF
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('PDF')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='WORD'"
+
+            (click)="seleccionarPestana('WORD')"
+
+        >
+
+            <i class="bi bi-file-earmark-word"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    Word
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('WORD')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='EXCEL'"
+
+            (click)="seleccionarPestana('EXCEL')"
+
+        >
+
+            <i class="bi bi-file-earmark-excel"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    Excel
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('EXCEL')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='POWERPOINT'"
+
+            (click)="seleccionarPestana('POWERPOINT')"
+
+        >
+
+            <i class="bi bi-file-earmark-ppt"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    PowerPoint
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('POWERPOINT')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='IMAGEN'"
+
+            (click)="seleccionarPestana('IMAGEN')"
+
+        >
+
+            <i class="bi bi-image"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    Imagen
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('IMAGEN')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='ARTICULO'"
+
+            (click)="seleccionarPestana('ARTICULO')"
+
+        >
+
+            <i class="bi bi-journal-text"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    Artículo
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('ARTICULO')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+        <button
+
+            class="pestana"
+
+            [class.activa]="pestanaActiva=='OTRO'"
+
+            (click)="seleccionarPestana('OTRO')"
+
+        >
+
+            <i class="bi bi-folder2-open"></i>
+
+            <div class="contenido-pestana">
+
+                <span class="titulo-pestana">
+
+                    Otros
+
+                </span>
+
+                <span class="cantidad-pestana">
+
+                    {{obtenerCantidadPorTipo('OTRO')}}
+
+                    recursos
+
+                </span>
+
+            </div>
+
+        </button>
+
+    </div>
+
+    <!--======================================
+    CONTENEDOR PRINCIPAL
+    =======================================-->
+
+    <div
+
+        class="contenedor-principal"
+
+        [class.detalle-abierto]="contenidoSeleccionado"
+
+    >
+
+        <!--======================================
+        BIBLIOTECA
+        =======================================-->
+
+        <div class="columna-biblioteca">
+
+            <div class="biblioteca">
+
+                <div
+
+                    class="item-contenido"
+
+                    *ngFor="let contenido of contenidosPaginados"
+
+                >
+
+                    <div class="icono-contenido">
+
+                        <i
+
+                            class="bi"
+
+                            [ngClass]="{
+
+                                'bi-file-earmark-pdf':'PDF'==contenido.tipo_contenido,
+
+                                'bi-file-earmark-word':'WORD'==contenido.tipo_contenido,
+
+                                'bi-file-earmark-excel':'EXCEL'==contenido.tipo_contenido,
+
+                                'bi-file-earmark-ppt':'POWERPOINT'==contenido.tipo_contenido,
+
+                                'bi-image':'IMAGEN'==contenido.tipo_contenido,
+
+                                'bi-journal-text':'ARTICULO'==contenido.tipo_contenido,
+
+                                'bi-folder2-open':'OTRO'==contenido.tipo_contenido
+
+                            }"
+
+                        ></i>
+
+                    </div>
+
+                    <div class="info-contenido">
+
+                        <h3>
+
+                            {{contenido.nombre_contenido}}
+
+                        </h3>
+
+                        <div class="meta-contenido">
+
+                            <div>
+
+                                <strong>
+
+                                    Competencia
+
+                                </strong>
+
+                                <span>
+
+                                    {{contenido.competencia}}
+
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+
+                                    Submódulo
+
+                                </strong>
+
+                                <span>
+
+                                    {{contenido.submodulo}}
+
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+
+                                    Tema
+
+                                </strong>
+
+                                <span>
+
+                                    {{contenido.tema}}
+
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+
+                                    Tipo
+
+                                </strong>
+
+                                <span>
+
+                                    {{contenido.tipo_contenido}}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="acciones-contenido">
+
+                        <button
+
+                            class="btn-detalle"
+
+                            (click)="seleccionarContenido(contenido)"
+
+                        >
+
+                            <i class="bi bi-eye"></i>
+
+                            Ver detalle
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div
+
+                    class="sin-registros"
+
+                    *ngIf="contenidosFiltrados.length==0"
+
+                >
+
+                    <i class="bi bi-folder-x"></i>
+
+                    <p>
+
+                        No existen contenidos disponibles.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!--======================================
+            PAGINACIÓN
+            =======================================-->
+
+            <div
+
+                class="barra-paginacion"
+
+                *ngIf="contenidosFiltrados.length>0"
+
+            >
+
+                <div class="contador-registros">
+
+                    Mostrando
+
+                    {{registroInicial}}
+
+                    -
+
+                    {{registroFinal}}
+
+                    de
+
+                    {{contenidosFiltrados.length}}
+
+                    recursos
+
+                </div>
+
+                <div class="paginacion">
+
+                    <button
+
+                        class="btn-pagina"
+
+                        (click)="paginaAnterior()"
+
+                        [disabled]="paginaActual==1"
+
+                    >
+
+                        <i class="bi bi-chevron-left"></i>
+
+                    </button>
+
+                    <span>
+
+                        Página
+
+                        <strong>
+
+                            {{paginaActual}}
+
+                        </strong>
+
+                        de
+
+                        <strong>
+
+                            {{totalPaginas}}
+
+                        </strong>
+
+                    </span>
+
+                    <button
+
+                        class="btn-pagina"
+
+                        (click)="paginaSiguiente()"
+
+                        [disabled]="paginaActual==totalPaginas"
+
+                    >
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+        
+        </div>
+
+        <!--======================================
+            PANEL DETALLE
+            =======================================-->
+
+            <div
+
+                class="panel-detalle"
+
+                *ngIf="contenidoSeleccionado"
+
+            >
+
+                    
+
+                    <div class="info-principal">
+
+                        <h2>
+
+                            {{contenidoSeleccionado.nombre_contenido}}
+
+                        </h2>
+
+                        <span class="tipo-contenido">
+
+                            {{contenidoSeleccionado.tipo_contenido}}
+
+                        </span>
+
+                    </div>
+
+                    <div class="cabecera-detalle">
+
+                    <!--======================================
+                    VISTA PREVIA
+                    =======================================-->
+
+                    <div class="visor-contenido">
+
+                        <!--======================================
+                        IMAGEN
+                        =======================================-->
+
+                        <img
+
+                            *ngIf="esImagen()"
+
+                            [src]="urlVistaPrevia"
+
+                            class="preview-imagen"
+
+                        >
+
+                        <!--======================================
+                        PDF / ARTÍCULO
+                        =======================================-->
+
+                        <iframe
+
+                            *ngIf="esPdf()"
+
+                            [src]="urlVistaPrevia"
+
+                            class="preview-pdf"
+
+                        >
+
+                        </iframe>
+
+                        <!--======================================
+                        WORD / EXCEL / POWERPOINT / OTROS
+                        =======================================-->
+
+                        <div
+
+                            class="placeholder-preview"
+
+                            *ngIf="!esImagen() && !esPdf()"
+
+                        >
+
+                            <i
+
+                                class="bi"
+
+                                [ngClass]="{
+
+                                    'bi-file-earmark-word':
+
+                                        contenidoSeleccionado.tipo_contenido=='WORD',
+
+                                    'bi-file-earmark-excel':
+
+                                        contenidoSeleccionado.tipo_contenido=='EXCEL',
+
+                                    'bi-file-earmark-ppt':
+
+                                        contenidoSeleccionado.tipo_contenido=='POWERPOINT',
+
+                                    'bi-folder2-open':
+
+                                        contenidoSeleccionado.tipo_contenido=='OTRO'
+
+                                }"
+
+                            ></i>
+
+                            <h4>
+
+                                {{contenidoSeleccionado.tipo_contenido}}
+
+                            </h4>
+
+                            <p>
+
+                                Vista previa no disponible para este tipo de archivo.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!--======================================
+                    INFORMACIÓN
+                    =======================================-->
+
+                    <h3 class="titulo-seccion">
+
+                        Información
+
+                    </h3>
+
+                    <div class="grid-detalle">
+
+                        <div class="detalle-item">
+
+                            <label>
+
+                                Competencia
+
+                            </label>
+
+                            <span>
+
+                                {{contenidoSeleccionado.competencia}}
+
+                            </span>
+
+                        </div>
+
+                        <div class="detalle-item">
+
+                            <label>
+
+                                Submódulo
+
+                            </label>
+
+                            <span>
+
+                                {{contenidoSeleccionado.submodulo}}
+
+                            </span>
+
+                        </div>
+
+                        <div class="detalle-item">
+
+                            <label>
+
+                                Tema
+
+                            </label>
+
+                            <span>
+
+                                {{contenidoSeleccionado.tema}}
+
+                            </span>
+
+                        </div>
+
+                        <div class="detalle-item">
+
+                            <label>
+
+                                Tipo
+
+                            </label>
+
+                            <span>
+
+                                {{contenidoSeleccionado.tipo_contenido}}
+
+                            </span>
+
+                        </div>
+
+                        <div class="detalle-item">
+
+                            <label>
+
+                                Nombre
+
+                            </label>
+
+                            <span>
+
+                                {{contenidoSeleccionado.nombre_contenido}}
+
+                            </span>
+
+                        </div>
+
+                        <div class="descripcion-contenido">
+
+                            <label>
+
+                                Descripción
+
+                            </label>
+
+                            <p>
+
+                                {{contenidoSeleccionado.descripcion_contenido}}
+
+                            </p>
+
+                        </div>
+
+                        <div class="detalle-item">
+
+                            <label>
+
+                                Archivo
+
+                            </label>
+
+                            <span>
+
+                                {{contenidoSeleccionado.archivo}}
+
+                            </span>
+
+                        </div>
+
+                        <div class="detalle-item">
+
+                            <label>
+
+                                Extensión
+
+                            </label>
+
+                            <span>
+
+                                {{contenidoSeleccionado.extension}}
+
+                            </span>
+
+                        </div>
+
+                        <div class="detalle-item">
+
+                            <label>
+
+                                Tamaño
+
+                            </label>
+
+                            <span>
+
+                                {{contenidoSeleccionado.tamano_archivo}}
+
+                                bytes
+
+                            </span>
+
+                        </div>
+
+                        <div class="acciones-detalle">
+
+                            <button
+
+                                *ngIf="contenidoSeleccionado?.archivo"
+
+                                class="btn-descargar"
+
+                                (click)="descargarContenido()"
+
+                            >
+
+                                <i class="bi bi-download"></i>
+
+                                Descargar recurso
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+    </div>
+
+</div>

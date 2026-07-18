@@ -39,6 +39,8 @@ from app.routers.admin import(
     router as admin_router
 )
 
+from fastapi.staticfiles import StaticFiles
+
 from app.routers.dashboard_estudiante import router as dashboard_estudiante_router
 
 from app.routers.progreso_estudiante import router as progreso_estudiante_router
@@ -56,6 +58,9 @@ from app.routers.videos_admin import (
     router as videos_admin
 
 )
+
+from app.routers.contenido_academico import router as contenido_academico
+
 
 app = FastAPI()
 
@@ -145,5 +150,29 @@ app.include_router(
 app.include_router(
 
     videos_admin
+
+)
+
+app.include_router(
+
+    contenido_academico
+
+)
+
+# ==========================================
+# ARCHIVOS ESTÁTICOS
+# ==========================================
+
+app.mount(
+
+    "/uploads",
+
+    StaticFiles(
+
+        directory="uploads"
+
+    ),
+
+    name="uploads"
 
 )

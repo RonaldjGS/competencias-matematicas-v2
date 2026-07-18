@@ -122,3 +122,22 @@ class ProfesorOut(BaseModel):
     model_config = ConfigDict(
         from_attributes=True
     )
+    
+
+# ==========================================
+# TIPO CONTENIDO ACADÉMICO
+# ==========================================
+
+class TipoContenidoAcademicoOut(BaseModel):
+
+    id_tipo_contenido:int
+
+    nombre_tipo:str
+
+    descripcion:str | None = None
+
+    estado:bool
+
+    class Config:
+
+        from_attributes = True

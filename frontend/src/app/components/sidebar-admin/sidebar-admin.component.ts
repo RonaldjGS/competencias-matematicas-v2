@@ -102,16 +102,6 @@ export class SidebarAdminComponent {
 
   }
 
-  irEstadisticas(): void {
-
-    this.router.navigate([
-
-      '/estadisticas-admin'
-
-    ]);
-
-  }
-
   cerrarSesion(): void {
 
     localStorage.clear();

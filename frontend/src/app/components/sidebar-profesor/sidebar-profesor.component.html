@@ -68,6 +68,18 @@ class="sidebar"
 
         </li>
 
+        <li (click)="irContenidoAcademico()">
+
+            <i class="bi bi-folder2-open"></i>
+
+            <span *ngIf="menuAbierto">
+
+                Contenido
+
+            </span>
+
+        </li>
+
         <li
 
             class="cerrar-sesion"

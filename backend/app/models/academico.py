@@ -330,3 +330,231 @@ class VideoEstudiante(Base):
         back_populates="videos_estudiante"
 
     )
+
+    
+# ==========================================
+# TIPO CONTENIDO ACADÉMICO
+# ==========================================
+
+class TipoContenidoAcademico(Base):
+
+    __tablename__ = "tipo_contenido_academico"
+
+    id_tipo_contenido = Column(
+
+        Integer,
+
+        primary_key=True,
+
+        index=True
+
+    )
+
+    nombre_tipo = Column(
+
+        String(100),
+
+        nullable=False
+
+    )
+
+    descripcion = Column(
+
+        Text,
+
+        nullable=True
+
+    )
+
+    estado = Column(
+
+        Boolean,
+
+        default=True
+
+    )
+
+
+# ==========================================
+# CONTENIDO ACADÉMICO
+# ==========================================
+
+class ContenidoAcademico(Base):
+
+    __tablename__ = "contenido_academico"
+
+    id_contenido = Column(
+
+        Integer,
+
+        primary_key=True,
+
+        index=True
+
+    )
+
+    id_profesor = Column(
+
+        Integer,
+
+        ForeignKey(
+
+            "profesores.id_profesor"
+
+        ),
+
+        nullable=False
+
+    )
+
+    id_competencia = Column(
+
+        Integer,
+
+        ForeignKey(
+
+            "competencias.id_competencia"
+
+        ),
+
+        nullable=False
+
+    )
+
+    id_submodulo = Column(
+
+        Integer,
+
+        ForeignKey(
+
+            "submodulos.id_submodulo"
+
+        ),
+
+        nullable=False
+
+    )
+
+    id_tema = Column(
+
+        Integer,
+
+        ForeignKey(
+
+            "temas.id_tema"
+
+        ),
+
+        nullable=False
+
+    )
+
+    id_tipo_contenido = Column(
+
+        Integer,
+
+        ForeignKey(
+
+            "tipo_contenido_academico.id_tipo_contenido"
+
+        ),
+
+        nullable=False
+
+    )
+
+    nombre_contenido = Column(
+
+        String(250),
+
+        nullable=False
+
+    )
+
+    descripcion_contenido = Column(
+
+        Text,
+
+        nullable=True
+
+    )
+
+    archivo = Column(
+
+        String(300),
+
+        nullable=False
+
+    )
+
+    extension = Column(
+
+        String(20),
+
+        nullable=True
+
+    )
+
+    tamano_archivo = Column(
+
+        Integer,
+
+        nullable=True
+
+    )
+
+    estado = Column(
+
+        Boolean,
+
+        default=True
+
+    )
+
+    created_at = Column(
+
+        DateTime(timezone=True),
+
+        server_default=func.now()
+
+    )
+
+    updated_at = Column(
+
+        DateTime(timezone=True),
+
+        server_default=func.now(),
+
+        onupdate=func.now()
+
+    )
+
+    profesor = relationship(
+
+        "Profesor"
+
+    )
+
+    competencia = relationship(
+
+        "Competencia"
+
+    )
+
+    submodulo = relationship(
+
+        "Submodulo"
+
+    )
+
+    tema = relationship(
+
+        "Tema"
+
+    )
+
+    tipo = relationship(
+
+        "TipoContenidoAcademico"
+
+    )    

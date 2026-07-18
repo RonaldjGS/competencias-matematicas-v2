@@ -101,16 +101,16 @@ export class SidebarEstudianteComponent{
   }
 
   // =====================================
-  // CONTENIDO MATEMÁTICO
+  // CONTENIDO ACADÉMICO
   // =====================================
 
-  irContenidoMatematico(): void {
+  irContenidoAcademico(): void {
 
-      this.router.navigate([
+    this.router.navigate([
 
-          '/contenido-matematico'
+        '/contenido-academico-estudiante'
 
-      ]);
+    ]);
 
   }
 
