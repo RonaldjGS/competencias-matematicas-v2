@@ -22,6 +22,8 @@ import {
 
 } from '../../../services/configuracion-quiz.service';
 
+import Swal from 'sweetalert2';
+
 @Component({
 
     selector:'app-configuracion-quiz',
@@ -401,11 +403,17 @@ implements OnInit{
 
         ){
 
-            alert(
+            Swal.fire({
 
-                'El número de intentos debe estar entre 1 y 5.'
+                icon: 'warning',
 
-            );
+                title: 'Valor inválido',
+
+                text: 'El número de intentos debe estar entre 1 y 5.',
+
+                confirmButtonColor: '#7c3aed'
+
+            });
 
             this.cerrarModalGuardar();
 
@@ -419,11 +427,17 @@ implements OnInit{
 
         ){
 
-            alert(
+            Swal.fire({
 
-                'La cantidad de preguntas debe ser mayor que cero.'
+                icon: 'warning',
 
-            );
+                title: 'Valor inválido',
+
+                text: 'La cantidad de preguntas debe ser mayor que cero.',
+
+                confirmButtonColor: '#7c3aed'
+
+            });
 
             this.cerrarModalGuardar();
 
@@ -437,11 +451,17 @@ implements OnInit{
 
         ){
 
-            alert(
+            Swal.fire({
 
-                'El tiempo debe ser mayor que cero.'
+                icon: 'warning',
 
-            );
+                title: 'Valor inválido',
+
+                text: 'El tiempo debe ser mayor que cero.',
+
+                confirmButtonColor: '#7c3aed'
+
+            });
 
             this.cerrarModalGuardar();
 
@@ -501,11 +521,17 @@ implements OnInit{
 
                         resp.id_configuracion;
 
-                    alert(
+                    Swal.fire({
 
-                        'La configuración fue guardada correctamente.'
+                        icon: 'success',
 
-                    );
+                        title: 'Configuración guardada',
+
+                        text: 'La configuración fue guardada correctamente.',
+
+                        confirmButtonColor: '#7c3aed'
+
+                    });
 
                     this.obtenerConfiguracion();
 
@@ -517,13 +543,21 @@ implements OnInit{
 
                     this.cerrarModalGuardar();
 
-                    alert(
+                    Swal.fire({
 
-                        error.error?.detail ||
+                        icon: 'error',
 
-                        'No fue posible guardar la configuración.'
+                        title: 'Error',
 
-                    );
+                        text:
+
+                            error.error?.detail ||
+
+                            'No fue posible guardar la configuración.',
+
+                        confirmButtonColor: '#7c3aed'
+
+                    });
 
                 }
 

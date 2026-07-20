@@ -193,6 +193,14 @@ export class ContenidoAcademicoComponent implements OnInit{
 
     ngOnInit():void{
 
+        this.nombreProfesor =
+
+            localStorage.getItem(
+
+                'nombre_profesor'
+
+            ) || 'Profesor';
+
         this.cargarCompetencias();
 
         this.cargarTiposContenido();
@@ -446,6 +454,8 @@ export class ContenidoAcademicoComponent implements OnInit{
     buscarContenidos():void{
 
         this.cerrarDetalle();
+
+        this.cambiarPestanaDesdeFiltro();
 
         this.contenidosFiltrados =
 
@@ -1027,9 +1037,17 @@ export class ContenidoAcademicoComponent implements OnInit{
 
         if(!this.archivoSeleccionado){
 
-            alert(
-                'Debe seleccionar un archivo.'
-            );
+            Swal.fire({
+
+                icon:'warning',
+
+                title:'Archivo requerido',
+
+                text:'Debe seleccionar un archivo.',
+
+                confirmButtonColor:'#6f42c1'
+
+            });
 
             return;
 
@@ -1386,6 +1404,36 @@ export class ContenidoAcademicoComponent implements OnInit{
         this.cambioCompetenciaEditar();
 
         this.cambioSubmoduloEditar();
+
+    }
+
+    private cambiarPestanaDesdeFiltro():void{
+
+        if(!this.filtroTipo){
+
+            return;
+
+        }
+
+        const tipo =
+
+            this.tiposContenido.find(
+
+                t =>
+
+                t.id_tipo_contenido ==
+
+                this.filtroTipo
+
+            );
+
+        if(tipo){
+
+            this.pestanaActiva =
+
+                tipo.nombre_tipo.toUpperCase();
+
+        }
 
     }
 

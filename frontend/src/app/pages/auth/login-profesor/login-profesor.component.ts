@@ -119,9 +119,17 @@ export class LoginProfesorComponent {
 
     ) {
 
-      alert(
-        'Debe ingresar correo y contraseña'
-      );
+      Swal.fire({
+
+        icon: 'warning',
+
+        title: 'Campos incompletos',
+
+        text: 'Debe ingresar correo y contraseña.',
+
+        confirmButtonColor: '#7c3aed'
+
+      });
 
       return;
 
@@ -192,9 +200,17 @@ export class LoginProfesorComponent {
 
           console.error(error);
 
-          alert(
-            'Correo o contraseña incorrectos'
-          );
+          Swal.fire({
+
+            icon: 'error',
+
+            title: 'Acceso denegado',
+
+            text: 'Correo o contraseña incorrectos.',
+
+            confirmButtonColor: '#7c3aed'
+
+          });
 
         }
 
@@ -264,17 +280,37 @@ export class LoginProfesorComponent {
 
       if (
 
-          !this.correoRecuperacion
+        !this.correoRecuperacion
 
       ){
 
-          alert(
+        this.mostrarModalRecuperar = false;
 
-              'Ingrese un correo.'
+        this.refrescarVista();
 
-          );
+        setTimeout(() => {
 
-          return;
+            Swal.fire({
+
+                icon: 'warning',
+
+                title: 'Correo requerido',
+
+                text: 'Ingrese un correo electrónico.',
+
+                confirmButtonColor: '#7c3aed'
+
+            }).then(() => {
+
+                this.mostrarModalRecuperar = true;
+
+                this.refrescarVista();
+
+            });
+
+        }, 100);
+
+        return;
 
       }
 
@@ -292,17 +328,37 @@ export class LoginProfesorComponent {
 
                   if(
 
-                      !respuesta.existe
+                    !respuesta.existe
 
                   ){
 
-                      alert(
+                    this.mostrarModalRecuperar = false;
 
-                          'El correo no existe.'
+                    this.refrescarVista();
 
-                      );
+                    setTimeout(() => {
 
-                      return;
+                        Swal.fire({
+
+                            icon: 'error',
+
+                            title: 'Correo no encontrado',
+
+                            text: 'El correo ingresado no se encuentra registrado.',
+
+                            confirmButtonColor: '#7c3aed'
+
+                        }).then(() => {
+
+                            this.mostrarModalRecuperar = true;
+
+                            this.refrescarVista();
+
+                        });
+
+                    }, 100);
+
+                    return;
 
                   }
 
@@ -410,7 +466,7 @@ export class LoginProfesorComponent {
 
           title: '¿Cambiar contraseña?',
 
-          text: 'Se actualizará la contraseña del estudiante.',
+          text: 'Se actualizará la contraseña del profesor.',
 
           icon: 'question',
 

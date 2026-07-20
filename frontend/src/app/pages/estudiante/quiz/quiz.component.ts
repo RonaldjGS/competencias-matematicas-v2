@@ -27,6 +27,8 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-quiz',
@@ -430,9 +432,17 @@ implements OnInit, OnDestroy {
         !this.respuestaSeleccionada
       ) {
 
-        alert(
-          'Seleccione una respuesta'
-        );
+        Swal.fire({
+
+            icon: 'warning',
+
+            title: 'Respuesta requerida',
+
+            text: 'Seleccione una respuesta antes de continuar.',
+
+            confirmButtonColor: '#7c3aed'
+
+        });
 
         return;
 
@@ -509,9 +519,17 @@ implements OnInit, OnDestroy {
 
       if (!this.respuestaSeleccionada) {
 
-        alert(
-          'Seleccione una respuesta'
-        );
+        Swal.fire({
+
+          icon: 'warning',
+
+          title: 'Respuesta requerida',
+
+          text: 'Seleccione una respuesta antes de continuar.',
+
+          confirmButtonColor: '#7c3aed'
+
+        });
 
         return;
 
@@ -1187,11 +1205,25 @@ implements OnInit, OnDestroy {
 
   finalizarPorTiempo(): void {
 
-      alert(
-          'Se terminó el tiempo. El Quiz será finalizado automáticamente.'
-      );
+      Swal.fire({
 
-      this.finalizarQuiz();
+        icon: 'warning',
+
+        title: 'Tiempo agotado',
+
+        text: 'El tiempo del Quiz ha finalizado. Se procesarán automáticamente tus respuestas.',
+
+        confirmButtonColor: '#7c3aed',
+
+        allowOutsideClick: false,
+
+        allowEscapeKey: false
+
+      }).then(() => {
+
+        this.finalizarQuiz();
+
+    });
 
   }
 

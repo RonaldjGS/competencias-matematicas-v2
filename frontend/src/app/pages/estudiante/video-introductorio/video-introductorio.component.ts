@@ -254,107 +254,115 @@ implements OnInit {
 
     cargarVideo(): void {
 
-      this.cargandoVideo = true;
+        this.cargandoVideo = true;
 
-      this.videoNoDisponible = false;
+        this.videoNoDisponible = false;
 
-      this.videoService
+        this.videoFinalizado = false;
 
-          .getVideoIntro(
+        this.videoIntro = null;
 
-              this.configuracion.idCompetencia,
+        if (this.player) {
 
-              this.configuracion.idSubmodulo,
+            this.player.destroy();
 
-              this.configuracion.idTema
+            this.player = null;
 
-          )
+        }
 
-          .subscribe({
+        this.videoService
 
-              next: (respuesta: any) => {
+            .getVideoIntro(
 
-                  this.videoIntro = respuesta;
+                this.configuracion.idCompetencia,
 
-                  this.cargandoVideo = false;
+                this.configuracion.idSubmodulo,
 
-                  console.log(
+                this.configuracion.idTema
 
-                      'Video obtenido:',
+            )
 
-                      respuesta
+            .subscribe({
 
-                  );
+                next: (respuesta: any) => {
 
-                  this.refrescarVista();
+                    this.videoIntro = respuesta;
+
+                    this.cargandoVideo = false;
+
+                    this.refrescarVista();
 
                     setTimeout(() => {
 
-                      this.cargarApiYoutube();
+                        this.cargarApiYoutube();
 
-                    });
+                    }, 100);
 
-              },
+                },
 
-              error: (error) => {
+                error: (error) => {
 
-                  console.error(
+                    console.error(error);
 
-                      error
+                    this.videoNoDisponible = true;
 
-                  );
+                    this.cargandoVideo = false;
 
-                  this.videoNoDisponible = true;
+                    this.refrescarVista();
 
-                  this.cargandoVideo = false;
+                }
 
-              }
+            });
 
-          });
-
-  }
+    }
 
   // =====================================
   // CARGAR API DE YOUTUBE
   // =====================================
 
-  cargarApiYoutube(): void {
+    cargarApiYoutube(): void {
 
-      if (this.apiYoutubeLista) {
+        if (
 
-          this.crearReproductor();
+            typeof YT !== 'undefined' &&
 
-          return;
+            YT.Player
 
-      }
+        ) {
 
-      const script = document.createElement(
+            this.apiYoutubeLista = true;
 
-          'script'
+            this.crearReproductor();
 
-      );
+            return;
 
-      script.src =
+        }
 
-          'https://www.youtube.com/iframe_api';
+        let script = document.querySelector(
 
-      document.body.appendChild(
+            'script[src="https://www.youtube.com/iframe_api"]'
 
-          script
+        ) as HTMLScriptElement | null;
 
-      );
+        if (!script) {
 
-      (window as any).onYouTubeIframeAPIReady = () => {
+            script = document.createElement('script');
 
-          this.apiYoutubeLista = true;
+            script.src = 'https://www.youtube.com/iframe_api';
 
-          this.crearReproductor();
+            document.body.appendChild(script);
 
-      };
+        }
 
-      this.refrescarVista();
+        (window as any).onYouTubeIframeAPIReady = () => {
 
-  }
+            this.apiYoutubeLista = true;
+
+            this.crearReproductor();
+
+        };
+
+    }
 
   // =====================================
   // CREAR REPRODUCTOR
@@ -362,75 +370,83 @@ implements OnInit {
 
   crearReproductor(): void {
 
-      if (
+    console.log(
+        'Creando reproductor...'
+    );    
+    
+        if (!this.videoIntro) {
 
-          !this.videoIntro
+            return;
 
-      ) {
+        }
 
-          return;
+        const contenedor = document.getElementById(
 
-      }
+            'youtube-player'
 
-      if (
+        );
 
-          this.player
+        if (!contenedor) {
 
-      ) {
+            setTimeout(() => {
 
-          this.player.destroy();
+                this.crearReproductor();
 
-      }
+            }, 100);
 
-      this.player = new YT.Player(
+            return;
 
-          'youtube-player',
+        }
 
-          {
+        if (this.player) {
 
-              width:'100%',
+            this.player.destroy();
 
-              height:'420',
+            this.player = null;
 
-              videoId:this.videoIntro.youtube_id,
+        }
 
-              playerVars:{
+        this.player = new YT.Player(
 
-                  rel:0,
+            'youtube-player',
 
-                  modestbranding:1
+            {
 
-              },
+                width: '100%',
 
-              events:{
+                height: '420',
 
-                  onReady:() => {
+                videoId: this.videoIntro.youtube_id,
 
-                      console.log(
+                playerVars: {
 
-                          'Player listo'
+                    rel: 0,
 
-                      );
+                    modestbranding: 1
 
-                  },
+                },
 
-                  onStateChange:(event:any)=>{
+                events: {
 
-                      this.cambioEstadoVideo(
+                    onReady: () => {
 
-                          event
+                        console.log('Player listo');
 
-                      );
+                    },
 
-                  }
+                    onStateChange: (event: any) => {
 
-              }
+                        this.cambioEstadoVideo(event);
 
-          }
+                    }
 
-      );
+                }
 
-  }
+            }
+
+        );
+
+    }
 
   // =====================================
   // CAMBIO DE ESTADO DEL VIDEO

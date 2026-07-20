@@ -23,6 +23,8 @@ import {
 
 } from '../../../services/catalogos.service';
 
+import Swal from 'sweetalert2';
+
 @Component({
 
     selector:'app-banco-preguntas',
@@ -128,11 +130,17 @@ export class BancoPreguntasComponent implements OnInit{
 
                     console.error(error);
 
-                    alert(
+                    Swal.fire({
 
-                        'No fue posible obtener la información de la pregunta.'
+                        icon: 'error',
 
-                    );
+                        title: 'Error',
+
+                        text: 'No fue posible obtener la información de la pregunta.',
+
+                        confirmButtonColor: '#7c3aed'
+
+                    });
 
                 }
 
@@ -200,11 +208,17 @@ export class BancoPreguntasComponent implements OnInit{
 
                 next:()=>{
 
-                    alert(
+                    Swal.fire({
 
-                        'La pregunta fue actualizada correctamente.'
+                        icon: 'success',
 
-                    );
+                        title: 'Pregunta actualizada',
+
+                        text: 'La pregunta fue actualizada correctamente.',
+
+                        confirmButtonColor: '#7c3aed'
+
+                    });
 
                     this.cargarPreguntas();
 
@@ -224,13 +238,21 @@ export class BancoPreguntasComponent implements OnInit{
 
                     console.error(error);
 
-                    alert(
+                    Swal.fire({
 
-                        error.error?.detail ||
+                        icon: 'error',
 
-                        'No fue posible actualizar la pregunta.'
+                        title: 'Error',
 
-                    );
+                        text:
+
+                            error.error?.detail ||
+
+                            'No fue posible actualizar la pregunta.',
+
+                        confirmButtonColor: '#7c3aed'
+
+                    });
 
                 }
 
@@ -478,19 +500,65 @@ export class BancoPreguntasComponent implements OnInit{
 
             : 'activar';
 
-        if(
+        Swal.fire({
 
-            !confirm(
+            icon: 'question',
 
-                `¿Está seguro de ${accion} esta pregunta?`
+            title:
 
-            )
+                accion === 'activar'
 
-        ){
+                ? '¿Activar pregunta?'
 
-            return;
+                : '¿Desactivar pregunta?',
 
-        }
+            text:
+
+                `¿Está seguro de ${accion} esta pregunta?`,
+
+            showCancelButton: true,
+
+            confirmButtonText: 'Sí',
+
+            cancelButtonText: 'Cancelar',
+
+            confirmButtonColor: '#7c3aed',
+
+            cancelButtonColor: '#6b7280'
+
+        }).then((resultado) => {
+
+            if (!resultado.isConfirmed) {
+
+                return;
+
+            }
+
+            this.preguntasService
+
+                .cambiarEstadoPregunta(
+
+                    this.preguntaSeleccionada.id_pregunta
+
+                )
+
+                .subscribe({
+
+                    next: () => {
+
+                        // aquí va el éxito
+
+                    },
+
+                    error: (error: any) => {
+
+                        // aquí va el error
+
+                    }
+
+                });
+
+        });
 
         this.preguntasService
 
@@ -504,11 +572,17 @@ export class BancoPreguntasComponent implements OnInit{
 
                 next:()=>{
 
-                    alert(
+                    Swal.fire({
 
-                        `Pregunta ${accion}da correctamente.`
+                        icon: 'success',
 
-                    );
+                        title: 'Estado actualizado',
+
+                        text: `La pregunta fue ${accion}da correctamente.`,
+
+                        confirmButtonColor: '#7c3aed'
+
+                    });
 
                     this.cargarPreguntas();
 
@@ -528,13 +602,21 @@ export class BancoPreguntasComponent implements OnInit{
 
                     console.error(error);
 
-                    alert(
+                    Swal.fire({
 
-                        error.error?.detail ||
+                        icon: 'error',
 
-                        'No fue posible cambiar el estado.'
+                        title: 'Error',
 
-                    );
+                        text:
+
+                            error.error?.detail ||
+
+                            'No fue posible cambiar el estado.',
+
+                        confirmButtonColor: '#7c3aed'
+
+                    });
 
                 }
 

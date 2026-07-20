@@ -74,6 +74,8 @@ export class PreguntasAdminComponent implements OnInit {
 
         private cdr: ChangeDetectorRef
 
+        
+
     ) {}
     
     ngOnInit(): void {

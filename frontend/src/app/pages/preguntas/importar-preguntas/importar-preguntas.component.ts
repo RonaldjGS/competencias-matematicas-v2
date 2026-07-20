@@ -20,6 +20,8 @@ import {
   PreguntasService
 } from '../../../services/preguntas.service';
 
+import Swal from 'sweetalert2';
+
 
 
 @Component({
@@ -90,6 +92,10 @@ implements OnInit {
   descripcionPaso = '';
 
   dragActivo = false;
+
+  wizardBloqueado = false;
+
+
 
   private pasos = [
 
@@ -240,9 +246,17 @@ implements OnInit {
 
               if(!this.competenciaSeleccionada){
 
-                  alert(
-                      'Debe seleccionar una competencia antes de continuar.'
-                  );
+                  Swal.fire({
+
+                    icon:'warning',
+
+                    title:'Competencia requerida',
+
+                    text:'Debe seleccionar una competencia antes de continuar.',
+
+                    confirmButtonColor:'#6f42c1'
+
+                  });
 
                   return false;
 
@@ -254,9 +268,17 @@ implements OnInit {
 
               if(!this.competenciaSeleccionada){
 
-                  alert(
-                      'Debe seleccionar una competencia antes de continuar.'
-                  );
+                  Swal.fire({
+
+                    icon:'warning',
+
+                    title:'Competencia requerida',
+
+                    text:'Debe seleccionar una competencia antes de continuar.',
+
+                    confirmButtonColor:'#6f42c1'
+
+                  });
 
                   return false;
 
@@ -264,9 +286,17 @@ implements OnInit {
 
               if(!this.submoduloSeleccionado){
 
-                  alert(
-                      'Debe seleccionar un submódulo antes de continuar.'
-                  );
+                  Swal.fire({
+
+                    icon:'warning',
+
+                    title:'Submódulo requerido',
+
+                    text:'Debe seleccionar un submódulo antes de continuar.',
+
+                    confirmButtonColor:'#6f42c1'
+
+                  });
 
                   return false;
 
@@ -278,9 +308,17 @@ implements OnInit {
 
               if(!this.competenciaSeleccionada){
 
-                  alert(
-                      'Debe seleccionar una competencia antes de continuar.'
-                  );
+                  Swal.fire({
+
+                    icon:'warning',
+
+                    title:'Competencia requerida',
+
+                    text:'Debe seleccionar una competencia antes de continuar.',
+
+                    confirmButtonColor:'#6f42c1'
+
+                  });
 
                   return false;
 
@@ -288,9 +326,17 @@ implements OnInit {
 
               if(!this.submoduloSeleccionado){
 
-                  alert(
-                      'Debe seleccionar un submódulo antes de continuar.'
-                  );
+                  Swal.fire({
+
+                    icon:'warning',
+
+                    title:'Submódulo requerido',
+
+                    text:'Debe seleccionar un submódulo antes de continuar.',
+
+                    confirmButtonColor:'#6f42c1'
+
+                  });
 
                   return false;
 
@@ -298,9 +344,17 @@ implements OnInit {
 
               if(!this.temaSeleccionado){
 
-                  alert(
-                      'Debe seleccionar un tema antes de continuar.'
-                  );
+                  Swal.fire({
+
+                    icon:'warning',
+
+                    title:'Tema requerido',
+
+                    text:'Debe seleccionar un tema antes de continuar.',
+
+                    confirmButtonColor:'#6f42c1'
+
+                  });
 
                   return false;
 
@@ -312,9 +366,17 @@ implements OnInit {
 
               if(!this.archivoExcel){
 
-                  alert(
-                      'Debe seleccionar un archivo Excel antes de continuar.'
-                  );
+                  Swal.fire({
+
+                    icon:'warning',
+
+                    title:'Archivo requerido',
+
+                    text:'Debe seleccionar un archivo Excel antes de continuar.',
+
+                    confirmButtonColor:'#6f42c1'
+
+                  });
 
                   return false;
 
@@ -332,6 +394,24 @@ implements OnInit {
     paso:number
   ): void {
 
+      //======================================
+      // WIZARD FINALIZADO
+      //======================================
+
+      if(
+
+          this.wizardBloqueado
+
+      ){
+
+          return;
+
+      }
+
+      //======================================
+      // VALIDAR AVANCE
+      //======================================
+
       if(
 
           paso > this.pasoActual &&
@@ -343,6 +423,10 @@ implements OnInit {
           return;
 
       }
+
+      //======================================
+      // CAMBIAR PASO
+      //======================================
 
       this.pasoActual = paso;
 
@@ -551,11 +635,17 @@ implements OnInit {
 
       ){
 
-          alert(
+          Swal.fire({
 
-              'Solo se permiten archivos Excel (.xlsx).'
+            icon:'warning',
 
-          );
+            title:'Archivo no válido',
+
+            text:'Solo se permiten archivos Excel (.xlsx).',
+
+            confirmButtonColor:'#6f42c1'
+
+          });
 
           return;
 
@@ -646,11 +736,17 @@ implements OnInit {
 
       ){
 
-          alert(
+          Swal.fire({
 
-              'Debe completar todos los campos.'
+            icon:'warning',
 
-          );
+            title:'Información incompleta',
+
+            text:'Debe completar todos los campos antes de importar.',
+
+            confirmButtonColor:'#6f42c1'
+
+          });
 
           return;
 
@@ -782,27 +878,61 @@ implements OnInit {
 
                   this.irPaso(5);
 
+                  this.wizardBloqueado = true;
+
+                  this.refrescarVista();
+
                   switch(this.estadoImportacion){
 
                     case 'exito':
 
-                        alert(this.mensajeResultado);
+                        Swal.fire({
+
+                            icon:'success',
+
+                            title:'Importación completada',
+
+                            text:this.mensajeResultado,
+
+                            confirmButtonColor:'#6f42c1'
+
+                        });
 
                     break;
 
                     case 'advertencia':
 
-                        alert(this.mensajeResultado);
+                        Swal.fire({
+
+                            icon:'warning',
+
+                            title:'Importación completada con observaciones',
+
+                            text:this.mensajeResultado,
+
+                            confirmButtonColor:'#6f42c1'
+
+                        });
 
                     break;
 
                     case 'error':
 
-                        alert(this.mensajeResultado);
+                        Swal.fire({
+
+                            icon:'error',
+
+                            title:'No fue posible importar las preguntas',
+
+                            text:this.mensajeResultado,
+
+                            confirmButtonColor:'#6f42c1'
+
+                        });
 
                     break;
 
-                }
+                  }
 
                 this.actualizarCabeceraPaso();
 
@@ -824,9 +954,23 @@ implements OnInit {
 
                     'Ocurrió un error inesperado.';
 
-                alert(
-                  this.mensajeResultado
-                );
+                this.irPaso(5);
+
+                this.wizardBloqueado = true;
+
+                this.refrescarVista();
+
+                Swal.fire({
+
+                  icon:'error',
+
+                  title:'Error durante la importación',
+
+                  text:this.mensajeResultado,
+
+                  confirmButtonColor:'#6f42c1'
+
+                });
 
                 this.totalPreguntas = 0;
 
@@ -835,8 +979,6 @@ implements OnInit {
                 this.preguntasRechazadas = 0;
 
                 this.erroresImportacion = [];
-
-                this.irPaso(5);
 
               }
 
@@ -863,6 +1005,8 @@ implements OnInit {
     this.preguntasImportadas = 0;
 
     this.preguntasRechazadas = 0;
+
+    this.wizardBloqueado = false;
 
     this.irPaso(1);
 
@@ -966,11 +1110,17 @@ implements OnInit {
 
                   console.error(error);
 
-                  alert(
+                    Swal.fire({
 
-                      'No fue posible descargar la plantilla.'
+                    icon:'error',
 
-                  );
+                    title:'Error',
+
+                    text:'No fue posible descargar la plantilla.',
+
+                    confirmButtonColor:'#6f42c1'
+
+                  });
 
               }
 

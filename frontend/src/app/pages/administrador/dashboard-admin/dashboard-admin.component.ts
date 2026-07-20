@@ -191,29 +191,20 @@ export class DashboardAdminComponent implements OnInit {
 
         private catalogosService: CatalogosService,
 
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+
+        @Inject(PLATFORM_ID)
+        private platformId: Object
 
     ) {}
 
   ngOnInit(): void {
 
-    if (
+    if (isPlatformBrowser(this.platformId)) {
 
-      isPlatformBrowser(
-
-        PLATFORM_ID as any
-
-      )
-
-    ) {
-
-      this.nombreAdministrador =
-
-        localStorage.getItem(
-
-          'nombre_admin'
-
-        ) || 'Administrador';
+        this.nombreAdministrador =
+            localStorage.getItem('nombre_admin') ||
+            'Administrador';
 
     }
 
@@ -247,6 +238,8 @@ export class DashboardAdminComponent implements OnInit {
 
                 next: (respuesta) => {
 
+                    this.refrescarVista();
+                    
                     this.resumen = respuesta;
 
                     console.log(
@@ -254,8 +247,6 @@ export class DashboardAdminComponent implements OnInit {
                         this.resumen
 
                     );
-
-                    this.refrescarVista();
 
                 },
 
@@ -1239,6 +1230,8 @@ export class DashboardAdminComponent implements OnInit {
 
                         this.cargarUsuarios();
 
+                        this.cargarResumen();
+
                         this.refrescarVista();
 
                     }
@@ -1510,6 +1503,8 @@ export class DashboardAdminComponent implements OnInit {
 
                     this.roles = respuesta;
 
+                    this.refrescarVista();
+
                 },
 
                 error: (error) => {
@@ -1556,11 +1551,19 @@ export class DashboardAdminComponent implements OnInit {
 
                     this.cargarUsuarios();
 
+                    this.cargarResumen();
+
                     this.resetNuevoUsuario();
+
+                    this.refrescarVista();
 
                 },
 
                 error:(error)=>{
+
+                    this.mostrarModalNuevoUsuario = false;
+
+                    this.refrescarVista();
 
                     console.error(error);
 

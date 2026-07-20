@@ -1378,15 +1378,13 @@ def crear_usuario_admin(
 
             correo_admin=datos.correo,
 
-            password_hash=hash_password(
+            password_hash_admin=hash_password(
 
                 datos.password
 
             ),
 
-            id_rol=1,
-
-            estado=True
+            id_rol=1
 
         )
 

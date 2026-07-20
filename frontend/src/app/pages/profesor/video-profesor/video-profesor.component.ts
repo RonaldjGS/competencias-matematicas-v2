@@ -44,6 +44,8 @@ import {
 
 } from '@angular/forms';
 
+import Swal from 'sweetalert2';
+
 @Component({
 
   selector: 'app-video-profesor',
@@ -88,8 +90,6 @@ export class VideoProfesorComponent implements OnInit {
 
     temaSeleccionado: number | null = null;
 
-    tipoSeleccionado = '';
-
     estadoSeleccionado = '';
 
     videoSeleccionado: any = null;
@@ -97,6 +97,8 @@ export class VideoProfesorComponent implements OnInit {
     cargando = false;
 
     menuAbierto=false;
+
+    nombreProfesor = '';
 
     modoEdicion = false;
 
@@ -140,6 +142,8 @@ export class VideoProfesorComponent implements OnInit {
 
     videosPagina: any[] = [];
 
+    paginas: number[] = [];
+
     constructor(
 
         private videoService: VideoProfesorService,
@@ -151,6 +155,14 @@ export class VideoProfesorComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+
+        this.nombreProfesor =
+
+            localStorage.getItem(
+
+                'nombre_profesor'
+
+            ) || 'Profesor';
 
         this.cargarResumen();
 
@@ -245,6 +257,22 @@ export class VideoProfesorComponent implements OnInit {
                 next: (respuesta) => {
 
                     this.videoSeleccionado = respuesta;
+
+                    if (
+
+                        typeof this.videoSeleccionado.estado === 'boolean'
+
+                    ) {
+
+                        this.videoSeleccionado.estado =
+
+                            this.videoSeleccionado.estado
+
+                            ? 'Activo'
+
+                            : 'Inactivo';
+
+                    }
 
                     this.refrescarVista();
 
@@ -481,43 +509,109 @@ export class VideoProfesorComponent implements OnInit {
         }
 
     
-        cambiarEstadoVideo():void{
+        cambiarEstadoVideo(): void {
 
-            if(!this.videoSeleccionado){
+            if (!this.videoSeleccionado) {
 
                 return;
 
             }
 
-            this.videoService
+            const activar =
 
-                .actualizarEstado(
+                this.videoSeleccionado.estado === 'Inactivo';
 
-                    this.videoSeleccionado.id_video
+            Swal.fire({
 
-                )
+                icon: 'question',
 
-                .subscribe({
+                title: activar
 
-                    next:()=>{
+                    ? '¿Activar video?'
 
-                        this.cargarVideos();
+                    : '¿Desactivar video?',
 
-                        this.seleccionarVideo(
+                text: activar
 
-                            this.videoSeleccionado.id_video
+                    ? 'El video volverá a estar disponible para los estudiantes.'
 
-                        );
+                    : 'El video dejará de estar disponible para los estudiantes.',
 
-                    },
+                showCancelButton: true,
 
-                    error:(error)=>{
+                confirmButtonColor: activar
 
-                        console.error(error);
+                    ? '#16a34a'
 
-                    }
+                    : '#dc2626',
 
-                });
+                cancelButtonColor: '#6b7280',
+
+                confirmButtonText: activar
+
+                    ? 'Sí, activar'
+
+                    : 'Sí, desactivar',
+
+                cancelButtonText: 'Cancelar'
+
+            }).then((resultado) => {
+
+                if (!resultado.isConfirmed) {
+
+                    return;
+
+                }
+
+                this.videoService
+
+                    .actualizarEstado(
+
+                        this.videoSeleccionado.id_video
+
+                    )
+
+                    .subscribe({
+
+                        next: () => {
+
+                            Swal.fire({
+
+                                icon: 'success',
+
+                                title: 'Estado actualizado',
+
+                                text: activar
+
+                                    ? 'El video fue activado.'
+
+                                    : 'El video fue desactivado.',
+
+                                confirmButtonColor: '#7c3aed'
+
+                            });
+
+                            this.cargarVideos();
+
+                            this.seleccionarVideo(
+
+                                this.videoSeleccionado.id_video
+
+                            );
+
+                            this.cargarResumen();
+
+                        },
+
+                        error: (error) => {
+
+                            console.error(error);
+
+                        }
+
+                    });
+
+            });
 
         }
 
@@ -601,11 +695,17 @@ export class VideoProfesorComponent implements OnInit {
 
             ) {
 
-                alert(
+                Swal.fire({
 
-                    'Debe completar todos los campos obligatorios.'
+                    icon:'warning',
 
-                );
+                    title:'Campos incompletos',
+
+                    text:'Debe completar todos los campos obligatorios.',
+
+                    confirmButtonColor:'#7c3aed'
+
+                });
 
                 return;
 
@@ -639,11 +739,17 @@ export class VideoProfesorComponent implements OnInit {
 
                     next: (respuesta:any)=>{
 
-                        alert(
+                        Swal.fire({
 
-                            respuesta.mensaje
+                            icon:'success',
 
-                        );
+                            title:'Video registrado',
+
+                            text:respuesta.mensaje,
+
+                            confirmButtonColor:'#7c3aed'
+
+                        });
 
                         this.cerrarModal();
                         
@@ -659,13 +765,21 @@ export class VideoProfesorComponent implements OnInit {
 
                         console.error(error);
 
-                        alert(
+                        Swal.fire({
 
-                            error.error.detail ||
+                            icon:'error',
 
-                            'Error al registrar el video.'
+                            title:'Error',
 
-                        );
+                            text:
+
+                                error.error?.detail ||
+
+                                'Error al registrar el video.',
+
+                            confirmButtonColor:'#7c3aed'
+
+                        });
 
                     }
 
@@ -702,16 +816,6 @@ export class VideoProfesorComponent implements OnInit {
 
                     this.temaSeleccionado;
 
-                const tipo =
-
-                    !this.tipoSeleccionado ||
-
-                    this.tipoSeleccionado === 'Todos' ||
-
-                    video.tipo ===
-
-                    this.tipoSeleccionado;
-
                 const estado =
 
                     !this.estadoSeleccionado ||
@@ -729,8 +833,6 @@ export class VideoProfesorComponent implements OnInit {
                     submodulo &&
 
                     tema &&
-
-                    tipo &&
 
                     estado
 
@@ -756,8 +858,6 @@ export class VideoProfesorComponent implements OnInit {
 
             );
 
-            this.refrescarVista();
-
             const inicio =
 
                 (this.paginaActual - 1)
@@ -773,6 +873,74 @@ export class VideoProfesorComponent implements OnInit {
                     inicio + this.videosPorPagina
 
                 );
+
+            this.paginas = Array(
+
+                this.totalPaginas
+
+            ).fill(0).map(
+
+                (_, index) => index + 1
+
+            );
+
+            this.refrescarVista();
+
+        }
+
+        // =====================================
+        // PÁGINA ANTERIOR
+        // =====================================
+
+        paginaAnterior(): void {
+
+            if (
+
+                this.paginaActual > 1
+
+            ) {
+
+                this.paginaActual--;
+
+                this.actualizarPaginacion();
+
+            }
+
+        }
+
+        // =====================================
+        // PÁGINA SIGUIENTE
+        // =====================================
+
+        paginaSiguiente(): void {
+
+            if (
+
+                this.paginaActual < this.totalPaginas
+
+            ) {
+
+                this.paginaActual++;
+
+                this.actualizarPaginacion();
+
+            }
+
+        }
+
+        // =====================================
+        // IR A PÁGINA
+        // =====================================
+
+        irPagina(
+
+            pagina: number
+
+        ): void {
+
+            this.paginaActual = pagina;
+
+            this.actualizarPaginacion();
 
         }
 

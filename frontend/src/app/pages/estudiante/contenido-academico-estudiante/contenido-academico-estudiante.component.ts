@@ -116,7 +116,13 @@ export class ContenidoAcademicoEstudianteComponent implements OnInit{
 
     ngOnInit():void{
 
-        
+        this.nombreEstudiante =
+
+        localStorage.getItem(
+
+            'nombre_estudiante'
+
+        ) || 'Estudiante';
 
         this.cargarCompetencias();
 
@@ -321,6 +327,8 @@ export class ContenidoAcademicoEstudianteComponent implements OnInit{
     buscarContenidos():void{
 
         this.cerrarDetalle();
+
+        this.cambiarPestanaDesdeFiltro();
 
         this.contenidosFiltrados =
 
@@ -615,6 +623,36 @@ export class ContenidoAcademicoEstudianteComponent implements OnInit{
         this.menuAbierto=
 
         !this.menuAbierto;
+
+    }
+
+    private cambiarPestanaDesdeFiltro():void{
+
+        if(!this.filtroTipo){
+
+            return;
+
+        }
+
+        const tipo =
+
+            this.tiposContenido.find(
+
+                t =>
+
+                t.id_tipo_contenido ==
+
+                this.filtroTipo
+
+            );
+
+        if(tipo){
+
+            this.pestanaActiva =
+
+                tipo.nombre_tipo.toUpperCase();
+
+        }
 
     }
 

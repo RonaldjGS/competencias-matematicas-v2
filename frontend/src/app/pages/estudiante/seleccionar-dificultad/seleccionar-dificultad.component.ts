@@ -34,6 +34,8 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector:
     'app-seleccionar-dificultad',
@@ -217,11 +219,17 @@ implements OnInit {
 
     ) {
 
-      alert(
+      Swal.fire({
 
-        'Debe seleccionar una dificultad antes de continuar.'
+        icon: 'warning',
 
-      );
+        title: 'Dificultad requerida',
+
+        text: 'Debe seleccionar una dificultad antes de continuar.',
+
+        confirmButtonColor: '#7c3aed'
+
+      });
 
       return;
 
@@ -251,13 +259,6 @@ implements OnInit {
         this.dificultadSeleccionada
 
       );
-
-    console.log(
-
-      this.quizConfigService
-        .obtenerConfiguracion()
-
-    );
 
     this.router.navigate([
 

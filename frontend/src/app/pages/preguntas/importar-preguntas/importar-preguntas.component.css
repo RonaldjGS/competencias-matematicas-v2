@@ -1249,3 +1249,13 @@ RESPONSIVE
     }
 
 }
+
+.circulo.bloqueado{
+
+    pointer-events:none;
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+}

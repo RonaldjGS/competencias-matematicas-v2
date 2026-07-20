@@ -4,7 +4,13 @@
         [(menuAbierto)]="menuAbierto">
     </app-sidebar-profesor>
 
-    <app-topbar-profesor></app-topbar-profesor>
+    <app-topbar-profesor
+
+    [nombreProfesor]="nombreProfesor"
+
+    >
+
+    </app-topbar-profesor>
 
     <div
         class="contenido"
@@ -250,45 +256,6 @@
 
                 </div>
 
-                <!-- Tipo -->
-
-                <div class="grupo-filtro">
-
-                    <label>
-
-                        Tipo
-
-                    </label>
-
-                    <select
-
-                        [(ngModel)]="tipoSeleccionado"
-
-                        (change)="aplicarFiltros()"
-                    >
-
-                        <option>
-
-                            Todos
-
-                        </option>
-
-                        <option>
-
-                            DIAGNOSTICO
-
-                        </option>
-
-                        <option>
-
-                            REFUERZO
-
-                        </option>
-
-                    </select>
-
-                </div>
-
                 <!-- Estado -->
 
                 <div class="grupo-filtro">
@@ -364,7 +331,7 @@
 
                         <div
                             class="card-video"
-                            *ngFor="let video of videosFiltrados">
+                            *ngFor="let video of videosPagina">
 
                             <div class="thumbnail">
 
@@ -442,6 +409,54 @@
                             </div>
 
                         </div>
+
+                    </div>
+
+                    <div
+
+                        class="paginacion"
+
+                        *ngIf="totalPaginas > 1"
+
+                    >
+
+                        <button
+
+                            (click)="paginaAnterior()"
+
+                            [disabled]="paginaActual === 1"
+
+                        >
+
+                            Anterior
+
+                        </button>
+
+                        <button
+
+                            *ngFor="let pagina of paginas"
+
+                            (click)="irPagina(pagina)"
+
+                            [class.activa]="pagina === paginaActual"
+
+                        >
+
+                            {{ pagina }}
+
+                        </button>
+
+                        <button
+
+                            (click)="paginaSiguiente()"
+
+                            [disabled]="paginaActual === totalPaginas"
+
+                        >
+
+                            Siguiente
+
+                        </button>
 
                     </div>
 

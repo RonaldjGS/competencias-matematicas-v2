@@ -166,7 +166,7 @@ FILTROS
 
     display:grid;
 
-    grid-template-columns:repeat(5,1fr);
+    grid-template-columns:repeat(4,1fr);
 
     gap:18px;
 
@@ -1105,5 +1105,63 @@ MODAL VIDEO
     background:#7c3aed;
 
     border-radius:20px;
+
+}
+
+.paginacion{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-top:30px;
+
+}
+
+.paginacion button{
+
+    min-width:40px;
+
+    padding:10px 16px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    background:#f3f4f6;
+
+    transition:.2s;
+
+}
+
+.paginacion button:hover:not(:disabled){
+
+    background:#7c3aed;
+
+    color:white;
+
+}
+
+.paginacion button.activa{
+
+    background:#7c3aed;
+
+    color:white;
+
+    font-weight:600;
+
+}
+
+.paginacion button:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
 
 }

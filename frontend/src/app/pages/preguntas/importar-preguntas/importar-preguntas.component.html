@@ -43,6 +43,14 @@
 
                             class="circulo"
 
+                            [class.bloqueado]="
+
+                                wizardBloqueado &&
+
+                                paso.numero !== 5
+
+                            "
+
                             [class.activo]="paso.numero <= pasoActual"
 
                             [class.actual]="paso.numero === pasoActual"
@@ -95,7 +103,7 @@
 
                     <button
 
-                        *ngIf="pasoActual > 1"
+                        *ngIf="pasoActual > 1 && !wizardBloqueado"
 
                         class="btn-volver"
 
@@ -669,9 +677,15 @@
 
             <aside class="panel-ayuda"
                 *ngIf="
+
                     competenciaSeleccionada &&
+
                     submoduloSeleccionado &&
-                    temaSeleccionado
+
+                    temaSeleccionado &&
+
+                    !wizardBloqueado
+
                 "
             >
 

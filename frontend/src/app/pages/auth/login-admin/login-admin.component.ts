@@ -28,6 +28,8 @@ import {
 
 } from '../../../services/auth-admin.service';
 
+import Swal from 'sweetalert2';
+
 @Component({
 
   selector: 'app-login-admin',
@@ -124,11 +126,17 @@ export class LoginAdminComponent {
 
         ) {
 
-            alert(
+            Swal.fire({
 
-                'Debe ingresar correo y contraseña'
+                icon: 'warning',
 
-            );
+                title: 'Campos incompletos',
+
+                text: 'Debe ingresar correo y contraseña.',
+
+                confirmButtonColor: '#7c3aed'
+
+            });
 
             return;
 
@@ -194,11 +202,17 @@ export class LoginAdminComponent {
 
                 error: () => {
 
-                    alert(
+                    Swal.fire({
 
-                        'Correo o contraseña incorrectos'
+                        icon: 'error',
 
-                    );
+                        title: 'Acceso denegado',
+
+                        text: 'Correo o contraseña incorrectos.',
+
+                        confirmButtonColor: '#7c3aed'
+
+                    });
 
                 }
 
