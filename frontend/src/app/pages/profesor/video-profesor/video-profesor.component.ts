@@ -120,8 +120,6 @@ export class VideoProfesorComponent implements OnInit {
 
         id_tema: null,
 
-        tipo: 'REFUERZO',
-
         youtube_url: '',
 
         estado: true
@@ -458,8 +456,6 @@ export class VideoProfesorComponent implements OnInit {
 
             `https://www.youtube.com/watch?v=${this.videoSeleccionado.youtube_id}`,
 
-            tipo: this.videoSeleccionado.tipo,
-
             actualizado_por: Number(
 
             localStorage.getItem(
@@ -639,8 +635,6 @@ export class VideoProfesorComponent implements OnInit {
 
                 id_tema: null,
 
-                tipo: 'REFUERZO',
-
                 youtube_url: '',
 
                 estado: true
@@ -689,9 +683,7 @@ export class VideoProfesorComponent implements OnInit {
 
                 !this.nuevoVideo.id_tema ||
 
-                !this.nuevoVideo.youtube_url ||
-
-                !this.nuevoVideo.tipo
+                !this.nuevoVideo.youtube_url
 
             ) {
 

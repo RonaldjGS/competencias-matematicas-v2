@@ -181,10 +181,16 @@ def obtener_videos(
             Video.updated_at,
 
             Video.id_competencia,
+            
+            Competencia.nombre_competencia,
 
             Video.id_submodulo,
+            
+            Submodulo.nombre_submodulo,
 
             Video.id_tema,
+            
+            Tema.nombre_tema
 
         )
 
@@ -253,14 +259,24 @@ def obtener_videos(
             "id_competencia":
 
             fila.id_competencia,
+            
+            "competencia":
+            fila.nombre_competencia,
 
             "id_submodulo":
 
             fila.id_submodulo,
+            
+            "submodulo":
+
+            fila.nombre_submodulo,
 
             "id_tema":
 
             fila.id_tema,
+            
+            "tema":
+            fila.nombre_tema,
 
             "youtube_id": 
                 

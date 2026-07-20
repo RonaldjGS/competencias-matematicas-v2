@@ -328,46 +328,6 @@
 
                 </div>
 
-                <!--==================================
-                TIPO
-                ==================================-->
-
-                <div class="campo">
-
-                    <label>
-
-                        Tipo de video
-
-                    </label>
-
-                    <select
-
-                        [(ngModel)]="tipoSeleccionado"
-
-                    >
-
-                        <option value="">
-
-                            Todos
-
-                        </option>
-
-                        <option value="DIAGNOSTICO">
-
-                            Diagnóstico
-
-                        </option>
-
-                        <option value="REFUERZO">
-
-                            Refuerzo
-
-                        </option>
-
-                    </select>
-
-                </div>
-
             </div>
 
             <!--==================================
@@ -460,7 +420,7 @@
 
                                 <th>Título</th>
 
-                                <th>Tipo</th>
+                                <th>Submodulo</th>
 
                                 <th>Estado</th>
 
@@ -520,7 +480,7 @@
 
                                     <td>
 
-                                        {{ video.tipo }}
+                                        {{ video.submodulo }}
 
                                     </td>
 
@@ -929,54 +889,6 @@
                                             </option>
 
                                         }
-
-                                    </select>
-
-                                }
-
-                            </div>
-
-                            <!--======================================
-                            TIPO
-                            =======================================-->
-
-                            <div class="campo-detalle">
-
-                                <label>
-
-                                    Tipo
-
-                                </label>
-
-                                @if(!modoEdicion){
-
-                                    <span class="badge-tipo">
-
-                                        {{ videoSeleccionado.tipo }}
-
-                                    </span>
-
-                                }
-
-                                @if(modoEdicion){
-
-                                    <select
-
-                                        [(ngModel)]="videoEditando.tipo"
-
-                                    >
-
-                                        <option value="DIAGNOSTICO">
-
-                                            Diagnóstico
-
-                                        </option>
-
-                                        <option value="REFUERZO">
-
-                                            Refuerzo
-
-                                        </option>
 
                                     </select>
 

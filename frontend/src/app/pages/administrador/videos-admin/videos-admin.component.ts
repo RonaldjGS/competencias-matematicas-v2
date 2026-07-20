@@ -124,8 +124,6 @@ export class VideosAdminComponent implements OnInit{
 
     temaSeleccionado:number|null = null;
 
-    tipoSeleccionado:string = '';
-
     //======================================
     // MODAL
     // (Se eliminará después)
@@ -146,8 +144,6 @@ export class VideosAdminComponent implements OnInit{
         id_tema:null,
 
         youtube_url:'',
-
-        tipo:'REFUERZO',
 
         actualizado_por:null
 
@@ -324,6 +320,8 @@ export class VideosAdminComponent implements OnInit{
             .subscribe({
 
                 next:(resp:any)=>{
+
+                    console.log(resp);
 
                     this.videos = resp;
 
@@ -858,14 +856,6 @@ export class VideosAdminComponent implements OnInit{
 
                         this.temaSeleccionado)
 
-                    &&
-
-                    (!this.tipoSeleccionado ||
-
-                        video.tipo===
-
-                        this.tipoSeleccionado)
-
                 );
 
             });
@@ -887,8 +877,6 @@ export class VideosAdminComponent implements OnInit{
         this.submoduloSeleccionado = null;
 
         this.temaSeleccionado = null;
-
-        this.tipoSeleccionado = '';
 
         this.videosFiltrados = [
 

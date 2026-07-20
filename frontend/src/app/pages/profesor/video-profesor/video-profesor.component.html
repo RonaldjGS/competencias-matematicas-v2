@@ -386,12 +386,6 @@
 
                                 </span>
 
-                                <span class="tipo">
-
-                                    {{ video.tipo }}
-
-                                </span>
-
                             </div>
 
                             <div class="acciones">
@@ -554,7 +548,7 @@
 
                                     <p>
 
-                                        {{ videoSeleccionado.competencia }}
+                                        {{ videoSeleccionado.titulo }}
 
                                     </p>
 
@@ -695,50 +689,6 @@
                                     >
 
                                         {{ tema.nombre_tema }}
-
-                                    </option>
-
-                                </select>
-
-                            </ng-template>
-
-                        </div>
-
-                        <div class="campo">
-
-                            <label>
-
-                                Tipo
-
-                            </label>
-
-                            <ng-container *ngIf="!modoEdicion; else editarTipo">
-
-                                <span class="badge-tipo">
-
-                                    {{ videoSeleccionado.tipo }}
-
-                                </span>
-
-                            </ng-container>
-
-                            <ng-template #editarTipo>
-
-                                <select
-
-                                    [(ngModel)]="videoSeleccionado.tipo"
-
-                                >
-
-                                    <option value="DIAGNOSTICO">
-
-                                        DIAGNOSTICO
-
-                                    </option>
-
-                                    <option value="REFUERZO">
-
-                                        REFUERZO
 
                                     </option>
 
@@ -1053,38 +1003,6 @@
                             >
 
                                 {{ tema.nombre_tema }}
-
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                    <!-- Tipo -->
-
-                    <div class="grupo">
-
-                        <label>
-
-                            Tipo
-
-                        </label>
-
-                        <select
-
-                            [(ngModel)]="nuevoVideo.tipo"
-
-                        >
-
-                            <option value="DIAGNOSTICO">
-
-                                Diagnóstico
-
-                            </option>
-
-                            <option value="REFUERZO">
-
-                                Refuerzo
 
                             </option>
 
