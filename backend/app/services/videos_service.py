@@ -24,7 +24,9 @@ import re
 
 def obtener_resumen_videos(
 
-    db: Session
+    db: Session,
+    
+    id_nivel: int
 
 ):
 
@@ -41,6 +43,20 @@ def obtener_resumen_videos(
                 Video.id_video
 
             )
+
+        )
+
+        .join(
+
+            Tema,
+
+            Tema.id_tema == Video.id_tema
+
+        )
+
+        .filter(
+
+            Tema.id_nivel == id_nivel
 
         )
 
@@ -64,9 +80,19 @@ def obtener_resumen_videos(
 
         )
 
+        .join(
+
+            Tema,
+
+            Tema.id_tema == Video.id_tema
+
+        )
+
         .filter(
 
-            Video.estado == True
+            Video.estado == True,
+
+            Tema.id_nivel == id_nivel
 
         )
 
@@ -94,6 +120,20 @@ def obtener_resumen_videos(
 
         )
 
+        .join(
+
+            Tema,
+
+            Tema.id_tema == Video.id_tema
+
+        )
+
+        .filter(
+
+            Tema.id_nivel == id_nivel
+
+        )
+
         .scalar()
 
     )
@@ -107,6 +147,20 @@ def obtener_resumen_videos(
         db.query(
 
             Video.updated_at
+
+        )
+
+        .join(
+
+            Tema,
+
+            Tema.id_tema == Video.id_tema
+
+        )
+
+        .filter(
+
+            Tema.id_nivel == id_nivel
 
         )
 
@@ -156,7 +210,9 @@ def obtener_resumen_videos(
 
 def obtener_videos(
 
-    db: Session
+    db: Session,
+    
+    id_nivel: int
 
 ):
 
@@ -221,6 +277,12 @@ def obtener_videos(
             Tema.id_tema
             ==
             Video.id_tema
+
+        )
+        
+        .filter(
+
+            Tema.id_nivel == id_nivel
 
         )
 

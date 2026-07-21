@@ -72,25 +72,20 @@ router = APIRouter(
 # RESUMEN
 # ==========================================
 
-@router.get(
-
-    "/resumen"
-
-)
-
+@router.get("/resumen")
 def resumen(
 
-    db: Session = Depends(
+    id_nivel: int,
 
-        get_db
-
-    )
+    db: Session = Depends(get_db)
 
 ):
 
     return obtener_resumen_contenido(
 
-        db
+        db,
+
+        id_nivel
 
     )
     
@@ -98,25 +93,20 @@ def resumen(
 # LISTA
 # ==========================================
 
-@router.get(
-
-    "/lista"
-
-)
-
+@router.get("/lista")
 def lista(
 
-    db: Session = Depends(
+    id_nivel: int,
 
-        get_db
-
-    )
+    db: Session = Depends(get_db)
 
 ):
 
     return obtener_contenidos(
 
-        db
+        db,
+
+        id_nivel
 
     )
     

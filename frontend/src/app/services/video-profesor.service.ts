@@ -25,9 +25,15 @@ export class VideoProfesorService {
 
   getResumen(): Observable<any> {
 
+    const idNivel = localStorage.getItem(
+
+        'id_nivel'
+
+    );
+
     return this.http.get<any>(
 
-      `${this.apiUrl}/resumen`
+        `${this.apiUrl}/resumen?id_nivel=${idNivel}`
 
     );
 
@@ -35,9 +41,15 @@ export class VideoProfesorService {
 
   getVideos(): Observable<any[]> {
 
+    const idNivel = localStorage.getItem(
+
+        'id_nivel'
+
+    );
+
     return this.http.get<any[]>(
 
-      `${this.apiUrl}/lista`
+        `${this.apiUrl}/lista?id_nivel=${idNivel}`
 
     );
 

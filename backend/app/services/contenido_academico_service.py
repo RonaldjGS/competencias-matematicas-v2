@@ -107,35 +107,99 @@ for carpeta in CARPETAS.values():
 
 def obtener_resumen_contenido(
 
-    db: Session
+    db: Session,
+    
+    id_nivel: int
 
 ):
 
-    total = db.query(
+    total = (
 
-        ContenidoAcademico
+        db.query(
 
-    ).count()
+            ContenidoAcademico
 
-    activos = db.query(
+        )
 
-        ContenidoAcademico
+        .join(
 
-    ).filter(
+            Tema,
 
-        ContenidoAcademico.estado == True
+            Tema.id_tema ==
 
-    ).count()
+            ContenidoAcademico.id_tema
 
-    inactivos = db.query(
+        )
 
-        ContenidoAcademico
+        .filter(
 
-    ).filter(
+            Tema.id_nivel == id_nivel
 
-        ContenidoAcademico.estado == False
+        )
 
-    ).count()
+        .count()
+
+    )
+
+    activos = (
+
+        db.query(
+
+            ContenidoAcademico
+
+        )
+
+        .join(
+
+            Tema,
+
+            Tema.id_tema ==
+
+            ContenidoAcademico.id_tema
+
+        )
+
+        .filter(
+
+            ContenidoAcademico.estado == True,
+
+            Tema.id_nivel == id_nivel
+
+        )
+
+        .count()
+
+    )
+
+    inactivos = (
+
+        db.query(
+
+            ContenidoAcademico
+
+        )
+
+        .join(
+
+            Tema,
+
+            Tema.id_tema ==
+
+            ContenidoAcademico.id_tema
+
+        )
+
+        .filter(
+
+            ContenidoAcademico.estado == False,
+
+            Tema.id_nivel == id_nivel
+
+        )
+
+        .count()
+
+    )
 
     return {
 
@@ -153,7 +217,9 @@ def obtener_resumen_contenido(
 
 def obtener_contenidos(
 
-    db: Session
+    db: Session,
+    
+    id_nivel: int
 
 ):
 
@@ -268,6 +334,12 @@ def obtener_contenidos(
             TipoContenidoAcademico.id_tipo_contenido ==
 
             ContenidoAcademico.id_tipo_contenido
+
+        )
+        
+        .filter(
+
+            Tema.id_nivel == id_nivel
 
         )
 

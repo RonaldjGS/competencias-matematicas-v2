@@ -61,20 +61,19 @@ router = APIRouter(
     "/resumen"
 
 )
-
 def resumen_videos(
 
-    db: Session = Depends(
+    id_nivel: int,
 
-        get_db
-
-    )
+    db: Session = Depends(get_db)
 
 ):
 
     return obtener_resumen_videos(
 
-        db
+        db,
+
+        id_nivel
 
     )
     
@@ -83,25 +82,20 @@ def resumen_videos(
 # LISTA VIDEOS
 # ==========================================
 
-@router.get(
-
-    "/lista"
-
-)
-
+@router.get("/lista")
 def lista_videos(
 
-    db: Session = Depends(
+    id_nivel: int,
 
-        get_db
-
-    )
+    db: Session = Depends(get_db)
 
 ):
 
     return obtener_videos(
 
-        db
+        db,
+
+        id_nivel
 
     )
     

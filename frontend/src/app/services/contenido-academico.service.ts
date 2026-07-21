@@ -74,9 +74,17 @@ export class ContenidoAcademicoService{
 
     obtenerContenidos():Observable<any[]>{
 
+        const idNivel =
+
+            localStorage.getItem(
+
+                'id_nivel'
+
+            );
+
         return this.http.get<any[]>(
 
-            `${this.apiUrl}/lista`,
+            `${this.apiUrl}/lista?id_nivel=${idNivel}`,
 
             this.obtenerHeaders()
 
@@ -197,6 +205,26 @@ export class ContenidoAcademicoService{
         return this.http.get<any[]>(
 
             `${this.apiUrl}/estudiante`,
+
+            this.obtenerHeaders()
+
+        );
+
+    }
+
+    obtenerResumen(){
+
+        const idNivel =
+
+            localStorage.getItem(
+
+                'id_nivel'
+
+            );
+
+        return this.http.get(
+
+            `${this.apiUrl}/resumen?id_nivel=${idNivel}`,
 
             this.obtenerHeaders()
 
