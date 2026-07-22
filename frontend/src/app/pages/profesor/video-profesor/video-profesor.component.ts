@@ -674,7 +674,7 @@ export class VideoProfesorComponent implements OnInit {
         guardarVideo(): void {
 
             if (
-
+                
                 !this.nuevoVideo.titulo ||
 
                 !this.nuevoVideo.id_competencia ||
@@ -698,6 +698,8 @@ export class VideoProfesorComponent implements OnInit {
                     confirmButtonColor:'#7c3aed'
 
                 });
+
+                this.cerrarModal();
 
                 return;
 
@@ -754,6 +756,8 @@ export class VideoProfesorComponent implements OnInit {
                     },
 
                     error:(error)=>{
+
+                        this.cerrarModal();
 
                         console.error(error);
 
