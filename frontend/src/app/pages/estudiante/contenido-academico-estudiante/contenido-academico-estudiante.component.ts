@@ -44,6 +44,8 @@ import {
 
 } from '../../../services/contenido-academico.service';
 
+import { environment } from '../../../../environments/environment';
+
 @Component({
 
     selector:'app-contenido-academico-estudiante',
@@ -428,13 +430,8 @@ export class ContenidoAcademicoEstudianteComponent implements OnInit{
 
                     this.contenidoSeleccionado=resp;
 
-                    this.urlVistaPrevia=
-
-                        'http://localhost:1031/uploads/contenido_academico/'
-
-                        +
-
-                        resp.archivo;
+                    this.urlVistaPrevia =
+                        `${environment.apiUrl}/uploads/contenido_academico/${resp.archivo}`;
 
                     this.refrescarVista();
 
@@ -456,13 +453,8 @@ export class ContenidoAcademicoEstudianteComponent implements OnInit{
 
             document.createElement('a');
 
-        enlace.href=
-
-            'http://localhost:1031/uploads/contenido_academico/'
-
-            +
-
-            this.contenidoSeleccionado.archivo;
+        enlace.href =
+            `${environment.apiUrl}/uploads/contenido_academico/${this.contenidoSeleccionado.archivo}`;
 
         enlace.download=
 

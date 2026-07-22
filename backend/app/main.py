@@ -39,6 +39,8 @@ from app.routers.admin import(
     router as admin_router
 )
 
+import os
+
 from fastapi.staticfiles import StaticFiles
 
 from app.routers.dashboard_estudiante import router as dashboard_estudiante_router
@@ -64,12 +66,16 @@ from app.routers.contenido_academico import router as contenido_academico
 
 app = FastAPI()
 
+FRONTEND_URL = os.getenv(
+    "FRONTEND_URL",
+    "http://localhost:1030"
+)
+
 app.add_middleware(
     CORSMiddleware,
 
     allow_origins=[
-        "http://localhost:4200",   # Desarrollo fuera de Docker
-        "http://localhost:1030"    # Desarrollo con Docker
+        FRONTEND_URL
     ],
 
     allow_credentials=True,

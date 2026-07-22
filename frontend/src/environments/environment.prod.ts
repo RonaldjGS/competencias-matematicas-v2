@@ -2,6 +2,6 @@ export const environment = {
 
   production: true,
 
-  apiUrl: 'http://localhost:1031'
+  apiUrl: 'http://51.75.26.211:1031'
 
 };

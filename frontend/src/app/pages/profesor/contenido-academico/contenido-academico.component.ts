@@ -50,6 +50,7 @@ import {
 
 import Swal from 'sweetalert2';
 
+import { environment } from '../../../../environments/environment';
 
 @Component({
 
@@ -568,12 +569,7 @@ export class ContenidoAcademicoComponent implements OnInit{
                     this.contenidoSeleccionado = resp;
 
                     const url =
-
-                        'http://localhost:1031/uploads/contenido_academico/'
-
-                        +
-
-                        resp.archivo;
+                        `${environment.apiUrl}/uploads/contenido_academico/${resp.archivo}`;
 
                     this.urlVistaPrevia =
 
@@ -878,12 +874,7 @@ export class ContenidoAcademicoComponent implements OnInit{
             document.createElement('a');
 
         enlace.href =
-
-            'http://localhost:1031/uploads/contenido_academico/'
-
-            +
-
-            this.contenidoSeleccionado.archivo;
+            `${environment.apiUrl}/uploads/contenido_academico/${this.contenidoSeleccionado.archivo}`;
 
         enlace.download =
 
