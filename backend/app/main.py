@@ -2,6 +2,10 @@ from fastapi import FastAPI
 
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.database.database import engine
+from app.database.base import Base
+import app.models
+
 from app.routers.auth_estudiantes import (
     router as auth_estudiantes_router
 
@@ -65,6 +69,8 @@ from app.routers.contenido_academico import router as contenido_academico
 
 
 app = FastAPI()
+
+Base.metadata.create_all(bind=engine)
 
 FRONTEND_URL = os.getenv(
     "FRONTEND_URL",

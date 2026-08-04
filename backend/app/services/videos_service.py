@@ -23,185 +23,73 @@ import re
 # ==========================================
 
 def obtener_resumen_videos(
-
     db: Session,
-    
-    id_nivel: int
-
+    id_nivel: int | None = None
 ):
 
-    # ======================================
-    # TOTAL VIDEOS
-    # ======================================
-
-    total_videos = (
-
-        db.query(
-
-            func.count(
-
-                Video.id_video
-
-            )
-
-        )
-
-        .join(
-
-            Tema,
-
-            Tema.id_tema == Video.id_tema
-
-        )
-
-        .filter(
-
-            Tema.id_nivel == id_nivel
-
-        )
-
-        .scalar()
-
+    consulta_total = (
+        db.query(func.count(Video.id_video))
+        .join(Tema, Tema.id_tema == Video.id_tema)
     )
 
-    # ======================================
-    # VIDEOS ACTIVOS
-    # ======================================
-
-    videos_activos = (
-
-        db.query(
-
-            func.count(
-
-                Video.id_video
-
-            )
-
-        )
-
-        .join(
-
-            Tema,
-
-            Tema.id_tema == Video.id_tema
-
-        )
-
-        .filter(
-
-            Video.estado == True,
-
-            Tema.id_nivel == id_nivel
-
-        )
-
-        .scalar()
-
+    consulta_activos = (
+        db.query(func.count(Video.id_video))
+        .join(Tema, Tema.id_tema == Video.id_tema)
+        .filter(Video.estado == True)
     )
 
-    # ======================================
-    # COMPETENCIAS CUBIERTAS
-    # ======================================
-
-    competencias = (
-
+    consulta_competencias = (
         db.query(
-
             func.count(
-
-                func.distinct(
-
-                    Video.id_competencia
-
-                )
-
+                func.distinct(Video.id_competencia)
             )
-
         )
-
-        .join(
-
-            Tema,
-
-            Tema.id_tema == Video.id_tema
-
-        )
-
-        .filter(
-
-            Tema.id_nivel == id_nivel
-
-        )
-
-        .scalar()
-
+        .join(Tema, Tema.id_tema == Video.id_tema)
     )
 
-    # ======================================
-    # ÚLTIMA ACTUALIZACIÓN
-    # ======================================
+    consulta_ultima = (
+        db.query(Video.updated_at)
+        .join(Tema, Tema.id_tema == Video.id_tema)
+    )
+
+    if id_nivel is not None:
+
+        consulta_total = consulta_total.filter(
+            Tema.id_nivel == id_nivel
+        )
+
+        consulta_activos = consulta_activos.filter(
+            Tema.id_nivel == id_nivel
+        )
+
+        consulta_competencias = consulta_competencias.filter(
+            Tema.id_nivel == id_nivel
+        )
+
+        consulta_ultima = consulta_ultima.filter(
+            Tema.id_nivel == id_nivel
+        )
+
+    total_videos = consulta_total.scalar()
+
+    videos_activos = consulta_activos.scalar()
+
+    competencias = consulta_competencias.scalar()
 
     ultima_actualizacion = (
-
-        db.query(
-
-            Video.updated_at
-
-        )
-
-        .join(
-
-            Tema,
-
-            Tema.id_tema == Video.id_tema
-
-        )
-
-        .filter(
-
-            Tema.id_nivel == id_nivel
-
-        )
-
-        .order_by(
-
-            desc(
-
-                Video.updated_at
-
-            )
-
-        )
-
+        consulta_ultima
+        .order_by(desc(Video.updated_at))
         .first()
-
     )
 
     return {
-
-        "total_videos":
-
-        total_videos,
-
-        "videos_activos":
-
-        videos_activos,
-
-        "competencias":
-
-        competencias,
-
+        "total_videos": total_videos,
+        "videos_activos": videos_activos,
+        "competencias": competencias,
         "ultima_actualizacion":
-
-        ultima_actualizacion.updated_at
-
-        if ultima_actualizacion
-
-        else
-
-        None
-
+            ultima_actualizacion.updated_at
+            if ultima_actualizacion
+            else None
     }
     
 # ==========================================
@@ -211,12 +99,12 @@ def obtener_resumen_videos(
 def obtener_videos(
 
     db: Session,
-    
-    id_nivel: int
+
+    id_nivel: int | None = None
 
 ):
 
-    videos = (
+    consulta = (
 
         db.query(
 
@@ -237,15 +125,15 @@ def obtener_videos(
             Video.updated_at,
 
             Video.id_competencia,
-            
+
             Competencia.nombre_competencia,
 
             Video.id_submodulo,
-            
+
             Submodulo.nombre_submodulo,
 
             Video.id_tema,
-            
+
             Tema.nombre_tema
 
         )
@@ -254,9 +142,7 @@ def obtener_videos(
 
             Competencia,
 
-            Competencia.id_competencia
-            ==
-            Video.id_competencia
+            Competencia.id_competencia == Video.id_competencia
 
         )
 
@@ -264,9 +150,7 @@ def obtener_videos(
 
             Submodulo,
 
-            Submodulo.id_submodulo
-            ==
-            Video.id_submodulo
+            Submodulo.id_submodulo == Video.id_submodulo
 
         )
 
@@ -274,17 +158,27 @@ def obtener_videos(
 
             Tema,
 
-            Tema.id_tema
-            ==
-            Video.id_tema
+            Tema.id_tema == Video.id_tema
 
         )
-        
-        .filter(
+
+    )
+
+    # ======================================
+    # FILTRAR SOLO SI SE ENVÍA EL NIVEL
+    # ======================================
+
+    if id_nivel is not None:
+
+        consulta = consulta.filter(
 
             Tema.id_nivel == id_nivel
 
         )
+
+    videos = (
+
+        consulta
 
         .order_by(
 
@@ -321,14 +215,15 @@ def obtener_videos(
             "id_competencia":
 
             fila.id_competencia,
-            
+
             "competencia":
+
             fila.nombre_competencia,
 
             "id_submodulo":
 
             fila.id_submodulo,
-            
+
             "submodulo":
 
             fila.nombre_submodulo,
@@ -336,12 +231,13 @@ def obtener_videos(
             "id_tema":
 
             fila.id_tema,
-            
+
             "tema":
+
             fila.nombre_tema,
 
-            "youtube_id": 
-                
+            "youtube_id":
+
             fila.youtube_id,
 
             "tipo":
@@ -365,6 +261,7 @@ def obtener_videos(
             "updated_at":
 
             fila.updated_at
+
         })
 
     return resultado
